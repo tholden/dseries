@@ -104,7 +104,7 @@ o = dseries(data, o.dates, o.name, o.tex);
 %$    t(7) = dassert(max(mean(b2.data)),0,1e-12);
 %$    t(8) = dassert(max(mean(b3.data)),0,1e-12);
 %$    t(9) = dassert(max(mean(b4.data)),0,1e-12);
-%$    t(10) = dassert(max(mean(b5.data)),0,8e-11);
+%$    t(10) = dassert(max(mean(b5.data)),0,1e-9);
 %$ end
 %$ T = all(t);
 %@eof:1
