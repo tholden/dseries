@@ -16,7 +16,7 @@ function [freq, init, data, varlist] = load_csv_file_data(file)
 %  names. Similarly, if the first column does not contain dates, then
 %  freq will be 1 and init will be year 1.
 
-% Copyright (C) 2012-2014 Dynare Team
+% Copyright (C) 2012-2015 Dynare Team
 %
 % This file is part of Dynare.
 %
@@ -44,16 +44,11 @@ if isoctave
     fid = fopen(file, 'r');
     firstline = fgetl(fid, 4097);
     fclose(fid);
-    if length(firstline) < 4097
-        if ~user_has_octave_forge_package('io')
-            try
-                pkg load io
-            catch
-                error(['The io package is required to read CSV files from Octave. ' ...
-                       'It can be installed by running the following from the Octave ' ...
-                       ' command line: pkg install -forge io']);
-            end
-        end
+    if length(firstline) < 4097 && user_has_octave_forge_package('io')
+        A = csv2cell(file);
+        [data, T, L] = parsecell(A);
+        withvars = L.numlimits(2,1) > L.txtlimits(2,1);
+        withtime = L.numlimits(1,1) > L.txtlimits(1,1);
     else
         fid = fopen(file, 'r');
         bfile = fread(fid);
