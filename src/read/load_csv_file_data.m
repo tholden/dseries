@@ -44,7 +44,16 @@ if isoctave
     fid = fopen(file, 'r');
     firstline = fgetl(fid, 4097);
     fclose(fid);
-    if length(firstline) < 4097 && user_has_octave_forge_package('io')
+    if length(firstline) < 4097
+        if ~user_has_octave_forge_package('io')
+            try
+                pkg load io
+            catch
+                error(['The io package is required to read CSV files from Octave. ' ...
+                       'It can be installed by running the following from the Octave ' ...
+                       ' command line: pkg install -forge io']);
+            end
+        end
         A = csv2cell(file);
         [data, T, L] = parsecell(A);
         withvars = L.numlimits(2,1) > L.txtlimits(2,1);
