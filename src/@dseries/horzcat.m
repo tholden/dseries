@@ -98,7 +98,7 @@ function a = concatenate(b,c)
             c.data = [c.data; NaN(b_last_date-c_last_date, vobs(c))];
         end
         a.data = [b.data, c.data];
-        a.dates = unique([b.dates, c.dates]);
+        a.dates = sort(unique([b.dates, c.dates]));
     end
 
 %@test:1

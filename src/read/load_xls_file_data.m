@@ -16,7 +16,7 @@ function [freq, init, data, varlist] = load_xls_file_data(file, sheet, range)
 % REMARKS 
 %  The range argument is only available on windows platform (with Excel installed).
 
-% Copyright (C) 2013 Dynare Team
+% Copyright (C) 2013-2015 Dynare Team
 %
 % This file is part of Dynare.
 %
@@ -42,6 +42,16 @@ if nargin<3 || isempty(range)
             error('load_xls_file_data:: I need at least one input (name of the xls or xlsx file)!')
         end
     end
+end
+
+if isoctave && ~user_has_octave_forge_package('io')
+  try
+    pkg load io
+  catch
+    error(['The io package is required to read CSV files from Octave. ' ...
+             'It can be installed by running the following from the Octave ' ...
+             ' command line: pkg install -forge io']);
+  end
 end
 
 % Check file extension.
