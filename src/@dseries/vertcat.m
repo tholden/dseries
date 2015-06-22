@@ -66,6 +66,7 @@ function d = vertcat_(b, c)
     if ~isequal(vobs(b), vobs(c))
         error('dseries::vertcat: Number of variables must be common!')
     end
+    reorder_variables_in_c = false;
     if ~isequal(b.name, c.name)
         [t, idx] = ismember(c.name, b.name);
         if all(t)
