@@ -179,9 +179,7 @@ end
 %$ ds = dseries([.25; .5; 1; 2; 4; 8; 16], [], A_name, []);
 %$
 %$ % Check the results.
-%$ warning off, % Because the names of the variables are not the same...
-%$ t(1) = dassert(ts,ts);
-%$ warning_config
+%$ t(1) = dassert(ts.data,ds.data);
 %$ T = all(t);
 %@eof:3
 
