@@ -364,7 +364,12 @@ end
 %$ t = zeros(5,1);
 %$
 %$ try
-%$    A = dataset('dynseries_test_data.csv');
+%$    [strfile, status] = urlwrite('http://www.dynare.org/Datasets/dseries/dynseries_test_data.csv','dynseries_test_data.csv');
+%$    if ~status
+%$        error()
+%$    end
+%$    A = dseries('dynseries_test_data.csv');
+%$    delete('dynseries_test_data.csv');
 %$    t(1) = 1;
 %$ catch
 %$    t = 0;
