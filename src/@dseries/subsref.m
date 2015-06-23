@@ -597,29 +597,29 @@ end
 %$ T = all(t);
 %@eof:12
 
-%@test:13
-%$ try
-%$     data = transpose(0:1:50);
-%$     ts = dseries(data,'1950Q1');
-%$     a = ts.lag;
-%$     b = ts.lead;
-%$     tt = dynTimeIndex();
-%$     c = ts(tt-1);
-%$     d = ts(tt+1);
-%$     t(1) = 1;
-%$ catch
-%$     t(1) = 0;
-%$ end
-%$
-%$ if t(1)>1
-%$     t(2) = (a==c);
-%$     t(3) = (b==d);
-%$ end
-%$
-%$ T = all(t);
-%@eof:13
+% % @test:13
+% %$ try
+% %$     data = transpose(0:1:50);
+% %$     ts = dseries(data,'1950Q1');
+% %$     a = ts.lag;
+% %$     b = ts.lead;
+% %$     tt = dynTimeIndex();
+% %$     c = ts(tt-1);
+% %$     d = ts(tt+1);
+% %$     t(1) = 1;
+% %$ catch
+% %$     t(1) = 0;
+% %$ end
+% %$
+% %$ if t(1)>1
+% %$     t(2) = (a==c);
+% %$     t(3) = (b==d);
+% %$ end
+% %$
+% %$ T = all(t);
+% %@eof:13
 
-%@test:14
+%@test:13 %14
 %$ try
 %$     data = transpose(0:1:50);
 %$     ts = dseries(data,'1950Q1');
@@ -638,9 +638,9 @@ end
 %$ end
 %$
 %$ T = all(t);
-%@eof:14
+%@eof:13
 
-%@test:15
+%@test:14 %15
 %$ try
 %$     ds = dseries(transpose(1:5));
 %$     ts = ds(ds.dates(2:3));
@@ -655,9 +655,9 @@ end
 %$ end
 %$
 %$ T = all(t);
-%@eof:15
+%@eof:14
 
-%@test:16
+%@test:15 %16
 %$ try
 %$     ds = dseries(transpose(1:5));
 %$     ts = ds(ds.dates(2:6));
@@ -667,9 +667,9 @@ end
 %$ end
 %$
 %$ T = all(t);
-%@eof:16
+%@eof:15
 
-%@test:17
+%@test:16 %17
 %$ try
 %$     ds = dseries(transpose(1:5));
 %$     ts = ds(dates('1Y'):dates('6Y'));
@@ -679,9 +679,9 @@ end
 %$ end
 %$
 %$ T = all(t);
-%@eof:17
+%@eof:16
 
-%@test:18
+%@test:17 %18
 %$ try
 %$     ds = dseries(transpose(1:5));
 %$     ts = ds(dates('-2Y'):dates('4Y'));
@@ -691,4 +691,4 @@ end
 %$ end
 %$
 %$ T = all(t);
-%@eof:18
+%@eof:17
