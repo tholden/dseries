@@ -19,11 +19,13 @@ try
     initialize_dseries_toolbox;
 catch
     unit_tests_root = strrep(which('runalldseriestests'),'runalldseriestests.m','');
-    addpath([unit_tests_root '/../src']);
+    addpath([unit_tests_root '../src']);
     initialize_dseries_toolbox;
 end
 
-run_unitary_tests_in_directory(dseries_src_root);
+tmp = dseries_src_root;
+tmp = tmp(1:end-1); % Remove trailing slash.
+run_unitary_tests_in_directory(tmp);
 
 delete('*.log');
 rmdir('../externals/m-unit-tests-master','s');
