@@ -1,15 +1,15 @@
-% Check that dates module is in matlab path.
+% Check that the dates module is available.
 try
     initialize_dates_toolbox;
 catch
-    message =               'The dates toolbox is not in the Matlab/Octave''s path!';
-    message = char(message, 'The toolbox can be downloaded here:');
-    message = char(message, '     https://github.com/DynareTeam/dates');
-    message = char(message, 'Check that you added the dates/src folder in the path.');
-    disp(' ')
-    disp(message)
-    disp(' ')
-    error('Please install the dates module or check Matlab/Octave''s path!')
+    urlwrite('https://github.com/DynareTeam/dates/archive/master.zip','master.zip');
+    warning('off','MATLAB:MKDIR:DirectoryExists')
+    mkdir('../externals')
+    warning('on','MATLAB:MKDIR:DirectoryExists')
+    unzip('master.zip','../externals')
+    delete('master.zip')
+    addpath([pwd() '/../externals/dates-master/src'])
+    initialize_dates_toolbox;
 end
 
 % Get the path to the dseries toolbox.
