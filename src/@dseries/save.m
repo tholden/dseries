@@ -29,8 +29,9 @@ end
 
 switch format
   case 'm'
-    if exist([basename, '.m'],'file')
-        copyfile([basename, '.m'],[basename, '.old.m']);
+    currentdirectorycontent = dir();
+    if ismember([basename, '.m'],{currentdirectorycontent.name})
+        copyfile([basename, '.m'],[basename, '.m.csv']);
     end
     fid = fopen([basename, '.m'],'w');
     fprintf(fid,'%% File created on %s.\n',datestr(now));
@@ -72,12 +73,14 @@ switch format
         str = [str, A.name{v} ' = A.data(:,' num2str(v) ');' ];
     end
     eval(str);
-    if exist([basename, '.mat'],'file')
+    currentdirectorycontent = dir();
+    if ismember([basename, '.mat'],{currentdirectorycontent.name})
         copyfile([basename, '.mat'],[basename, '.old.mat']);
     end
     save([basename '.mat'],'INIT__','FREQ__','NAMES__','TEX__',A.name{:});
   case 'csv'
-    if exist([basename, '.csv'],'file')
+    currentdirectorycontent = dir();
+    if ismember([basename, '.csv'],{currentdirectorycontent.name})
         copyfile([basename, '.csv'],[basename, '.old.csv']);
     end
     fid = fopen([basename, '.csv'],'w');
