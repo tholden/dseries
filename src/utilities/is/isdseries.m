@@ -1,15 +1,15 @@
 function B = isdseries(A)
 
-% Copyright (C) 2011-2013 Dynare Team
+% Returns true iff ```A``` is a dseries object.
+
+% Copyright (C) 2011-2015 Dynare Team
 %
-% This file is part of Dynare.
-%
-% Dynare is free software: you can redistribute it and/or modify
+% This code is free software: you can redistribute it and/or modify
 % it under the terms of the GNU General Public License as published by
 % the Free Software Foundation, either version 3 of the License, or
 % (at your option) any later version.
 %
-% Dynare is distributed in the hope that it will be useful,
+% Dynare dseries submodule is distributed in the hope that it will be useful,
 % but WITHOUT ANY WARRANTY; without even the implied warranty of
 % MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 % GNU General Public License for more details.

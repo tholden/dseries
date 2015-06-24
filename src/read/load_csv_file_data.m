@@ -11,7 +11,7 @@ function [freq, init, data, varlist] = load_csv_file_data(file)
 %  o data        matrix of doubles, the data.
 %  o varlist     cell of strings, names of the variables.
 %
-% REMARKS
+% REMARKS 
 %  The varlist output will be set only if the first line contains variable
 %  names. Similarly, if the first column does not contain dates, then
 %  freq will be 1 and init will be year 1.
@@ -62,7 +62,7 @@ if isoctave
         fid = fopen(file, 'r');
         bfile = fread(fid);
         fclose(fid);
-        
+
         if isunix || ismac
             newline_code = 10;
         elseif ispc
@@ -70,7 +70,7 @@ if isoctave
         else
             error('load_csv_file_data is not implemented for your OS');
         end
-        
+
         % Get the positions of the end-of-line code
         end_of_line_locations = find(bfile==newline_code);
         if ispc && isempty(end_of_line_locations)
@@ -78,16 +78,33 @@ if isoctave
             end_of_line_locations = find(bfile==newline_code);
         end;
         tmp = find(bfile==newline_code);
-        
+
         % Get the number of lines in the file
         ndx = length(tmp);
-        
+
         % Create a cell of indices for each line
         b = [1; end_of_line_locations+1];
         c = [end_of_line_locations-1; length(bfile)+1];
         b = b(1:end-1);
         c = c(1:end-1);
         linea = 1;
+
+
+        % Test the content of the first elements of the first column
+        withtime = 1;
+        for r=2:length(b)
+            linee = char(transpose(bfile(b(r):c(r))));
+            [B,C] = get_cells_id(linee,',');
+            if ~isdates(linee(B(1):C(1)))
+                break
+            end
+        end
+
+        % Test the content of the first line
+        linee = char(transpose(bfile(b(1):c(1))));
+        [B,C] = get_cells_id(linee,',');
+        withnames = isvarname(linee(B(2):C(2)));
+
         if withnames
             % Get the first line of the csv file (names of the variables).
             linee = char(transpose(bfile(b(linea):c(linea))));
@@ -105,7 +122,7 @@ if isoctave
             varlist = strtrim(varlist);
             linea = linea+1;
         end
-        
+
         % Get following line (number 1 or 2 depending on withnames flag)
         linee = char(transpose(bfile(b(linea):c(linea))));
         comma_locations = transpose(strfind(linee,','));
@@ -126,14 +143,14 @@ if isoctave
         else
             first = 1;
         end
-        
+
         if ~withnames
             number_of_variables = length(tmp)-withtime;
         end
-        
+
         % Initialization of matrix data.
         data = zeros(ndx,number_of_variables);
-        
+
         % Populate data.
         for linea = 1+withnames:ndx
             linee = char(transpose(bfile(b(linea):c(linea))));
@@ -142,17 +159,18 @@ if isoctave
                 data(linea,i-withtime) = str2double(linee(B(i):C(i)));
             end
         end
-        
+
         % Remove first line if withnames
         data = data(1+withnames:ndx, :);
     end
+    return
 else
     A = importdata(file, ',');
     if ~isstruct(A)
         data = A;
         T = {};
         withvars = 0;
-            withtime = 0;
+        withtime = 0;
     else
         data = A.data;
         T = A.textdata;

@@ -124,9 +124,7 @@ end
 %$ ts2 = dseries(transpose(1:10), [], A_name, []);
 %$
 %$ % Check the results.
-%$ warning off, % Because the names of the variables are not the same...
-%$ t(1) = dassert(ts1,ts2);
-%$ warning_config
+%$ t(1) = dassert(ts1.data,ts2.data);
 %$ T = all(t);
 %@eof:1
 
@@ -147,9 +145,7 @@ end
 %$ ts2 = dseries(transpose(1:10), [], A_name, []);
 %$
 %$ % Check the results.
-%$ warning off, % Because the names of the variables are not the same...
-%$ t(1) = dassert(ts1,ts2);
-%$ warning_config
+%$ t(1) = dassert(ts1.data,ts2.data);
 %$ T = all(t);
 %@eof:2
 
@@ -162,7 +158,7 @@ end
 %$
 %$ % Instantiate a time series object.
 %$ ts1 = dseries(A,[],A_name,[]);
-%$ 
+%$
 %$ % Call the tested method.
 %$ ts1 = cumsum(ts1,dates('3Y'));
 %$
@@ -170,9 +166,7 @@ end
 %$ ts2 = dseries([-2; -1; 0; 1; 2; 3; 4; 5; 6; 7], [], A_name, []);
 %$
 %$ % Check the results.
-%$ warning off, % Because the names of the variables are not the same...
-%$ t(1) = dassert(ts1,ts2);
-%$ warning_config
+%$ t(1) = dassert(ts1.data,ts2.data);
 %$ T = all(t);
 %@eof:3
 
@@ -194,9 +188,7 @@ end
 %$ ts4 = dseries([-2; -1; 0; 1; 2; 3; 4; 5; 6; 7]+pi, [], A_name, []);
 %$
 %$ % Check the results.
-%$ warning off, % Because the names of the variables are not the same...
-%$ t(1) = dassert(ts3,ts4);
-%$ warning_config
+%$ t(1) = dassert(ts3.data,ts4.data);
 %$ T = all(t);
 %@eof:4
 
@@ -218,8 +210,6 @@ end
 %$ ts4 = dseries([-2; -1; 0; 1; 2; 3; 4; 5; 6; 7]+pi, [], A_name, []);
 %$
 %$ % Check the results.
-%$ warning off, % Because the names of the variables are not the same...
-%$ t(1) = dassert(ts3,ts4);
-%$ warning_config
+%$ t(1) = dassert(ts3.data,ts4.data);
 %$ T = all(t);
 %@eof:5
