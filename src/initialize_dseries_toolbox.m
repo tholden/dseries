@@ -21,7 +21,7 @@ addpath([dseries_src_root '/utilities/is'])
 addpath([dseries_src_root '/utilities/str'])
 addpath([dseries_src_root '/utilities/insert'])
 addpath([dseries_src_root '/utilities/file'])
-
+addpath([dseries_src_root '/utilities/from'])
 
 % Add missing routines if dynare is not in the path
 if ~exist('demean','file')
