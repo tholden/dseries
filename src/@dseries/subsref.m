@@ -472,6 +472,8 @@ end
 %$    t = 0;
 %$ end
 %$
+%$ delete('ts1.csv');
+%$
 %$ T = all(t);
 %@eof:7
 
@@ -486,6 +488,7 @@ end
 %$ try
 %$    ts1 = dseries(A,[],A_name,[]);
 %$    ts1.save('test_generated_data_file','m');
+%$    delete('test_generated_data_file.m');
 %$    t = 1;
 %$ catch
 %$    t = 0;
@@ -593,6 +596,8 @@ end
 %$ catch
 %$    t = 0;
 %$ end
+%$
+%$ delete('ts1.csv')
 %$
 %$ T = all(t);
 %@eof:12
