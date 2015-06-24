@@ -107,6 +107,8 @@ end
 %$     return
 %$ end
 %$
+%$ delete('datafile_for_test.mat');
+%$
 %$ % Check the results.
 %$ t(2) = dassert(freq,12);
 %$ t(3) = dassert(isa(init,'dates'),true);
@@ -140,6 +142,8 @@ end
 %$     LOG = getReport(exception,'extended');
 %$     return
 %$ end
+%$
+%$ delete('datafile_for_test.mat');
 %$
 %$ % Check the results.
 %$ t(2) = dassert(freq,12);

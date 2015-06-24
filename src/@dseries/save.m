@@ -109,6 +109,8 @@ end
 %$    t = 0;
 %$ end
 %$
+%$ delete('ts1.csv');
+%$
 %$ T = all(t);
 %@eof:1
 
@@ -128,6 +130,8 @@ end
 %$    t = 0;
 %$ end
 %$
+%$ delete('ts1.m');
+%$
 %$ T = all(t);
 %@eof:2
 
@@ -146,6 +150,8 @@ end
 %$ catch
 %$    t = 0;
 %$ end
+%$
+%$ delete('ts1.mat');
 %$
 %$ T = all(t);
 %@eof:3
@@ -169,6 +175,8 @@ end
 %$ catch
 %$    t = 0;
 %$ end
+%$
+%$ delete('ts1.csv');
 %$
 %$ T = all(t);
 %@eof:4
