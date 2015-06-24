@@ -198,6 +198,7 @@ end
 %$        error()
 %$    end
 %$    db = dseries('dd.csv');
+%$    delete('dd.csv');
 %$    t(1) = 1;
 %$ catch
 %$    t(1) = 0;
