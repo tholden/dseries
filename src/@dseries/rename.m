@@ -17,14 +17,28 @@ function ts = rename(ts,old,new) % --*-- Unitary tests --*--
 % You should have received a copy of the GNU General Public License
 % along with Dynare.  If not, see <http://www.gnu.org/licenses/>.
 
-if ~ischar(old) || ~ischar(new)
-    error(['dseries::rename: Input arguments ''' inputname(2) ''' and ''' inputname(3) '''  have to be strings!'])
+if isempty(ts)
+    error('dseries::rename: Cannot rename variable(s) because the object is empty!')
 end
-    
-idname = find(strcmp(old,ts.name));
 
-if isempty(idname)
-    error(['dseries::rename: Variable ' old ' is unknown in dseries object ' inputname(1)  '!'])
+if nargin<3
+    if isequal(vobs(ts), 1)
+        new = old;
+    else
+        error('dseries::rename: Missing argument!')
+    end
+    if ~ischar(new)
+        error(['dseries::rename: Input argument ''' inputname(2)  '''  has to be a string!'])
+    end
+    idname = 1;
+else
+    if ~ischar(old) || ~ischar(new)
+        error(['dseries::rename: Input arguments ''' inputname(2) ''' and ''' inputname(3) '''  have to be strings!'])
+    end
+    idname = find(strcmp(old,ts.name));
+    if isempty(idname)
+        error(['dseries::rename: Variable ' old ' is unknown in dseries object ' inputname(1)  '!'])
+    end
 end
 
 ts.name(idname) = {new};
@@ -74,3 +88,20 @@ ts.name(idname) = {new};
 %$
 %$ T = all(t);
 %@eof:2
+
+%@test:3
+%$ t = zeros(2,1);
+%$ ts = dseries(randn(10,1));
+%$ try
+%$     ts = ts.rename('Dora');
+%$     t(1) = 1;
+%$ catch
+%$     t = 0;
+%$ end
+%$
+%$ if length(t)>1
+%$     t(2) = dassert(ts.name,{'Dora'});
+%$ end
+%$
+%$ T = all(t);
+%@eof:3
