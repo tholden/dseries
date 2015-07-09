@@ -1,6 +1,9 @@
 opath = path();
 
 % Check that the m-unit-tests module is available.
+
+install_unit_test_toolbox = false;
+
 try
     initialize_unit_tests_toolbox;
 catch
@@ -12,6 +15,7 @@ catch
     delete('master.zip')
     addpath([pwd() '/../externals/m-unit-tests-master/src'])
     initialize_unit_tests_toolbox;
+    install_unit_test_toolbox = true;
 end
 
 % Initialize the dseries module
@@ -28,5 +32,8 @@ tmp = tmp(1:end-1); % Remove trailing slash.
 run_unitary_tests_in_directory(tmp);
 
 delete('*.log');
-rmdir('../externals/m-unit-tests-master','s');
+
+if install_unit_test_toolbox
+    rmdir('../externals/m-unit-tests-master','s');
+end
 path(opath);
