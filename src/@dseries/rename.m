@@ -88,3 +88,20 @@ ts.name(idname) = {new};
 %$
 %$ T = all(t);
 %@eof:2
+
+%@test:3
+%$ t = zeros(2,1);
+%$ ts = dseries(randn(10,1));
+%$ try
+%$     ts = ts.rename('Dora');
+%$     t(1) = 1;
+%$ catch
+%$     t = 0;
+%$ end
+%$
+%$ if length(t)>1
+%$     t(2) = dassert(ts.name,{'Dora'});
+%$ end
+%$
+%$ T = all(t);
+%@eof:3
