@@ -36,7 +36,7 @@ function ts = baxter_king_filter(ts, high_frequency, low_frequency, K) % --*-- U
 % You should have received a copy of the GNU General Public License
 % along with Dynare.  If not, see <http://www.gnu.org/licenses/>.
 
-if nargin<4 || isempty(truncature)
+if nargin<4 || isempty(K)
     K = 12;
     if nargin<3 || isempty(low_frequency)
         % Set default number of periods corresponding to the lowest frequency.
