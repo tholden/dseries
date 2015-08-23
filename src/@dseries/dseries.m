@@ -238,6 +238,9 @@ switch nargin
 end
 
 if isempty(ts.dates)
+    if ~exist( 'init', 'var' ) || isempty( init )
+        init = 1;
+    end
     ts.dates = init:init+(nobs(ts)-1);
 end
 
