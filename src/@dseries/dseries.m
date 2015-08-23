@@ -146,7 +146,19 @@ switch nargin
         ts.name = default_name(vobs(ts));
         ts.tex = name2tex(ts.name);
         ts.dates = dates(1,1):dates(1,1)+(nobs(ts)-1);
-    end
+    elseif isa(varargin{1},'dseries')
+		source_ts = struct( varargin{1} );
+		ts.data = source_ts.data;
+		ts.name = source_ts.name;
+		ts.tex = source_ts.tex;
+		ts.dates = source_ts.dates;
+    elseif isstruct(varargin{1})
+		source_ts = varargin{1};
+		ts.data = source_ts.data;
+		ts.name = source_ts.name;
+		ts.tex = source_ts.tex;
+		ts.dates = source_ts.dates;
+	end
   case {2,3,4}
     if isequal(nargin,2) && ischar(varargin{1}) && isdates(varargin{2})
         % Instantiate dseries object with a data file and force the initial date to be as given by the second input argument.
