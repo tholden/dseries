@@ -102,8 +102,7 @@ switch nargin
             % Create an empty dseries object with an initial date.
             ts.dates = varargin{1};
           otherwise
-            % A range of dates is passed to the constructor
-            ts.dates = varargin{1};
+            error('dseries::dseries: Input (identified as a dates object) must have a unique element!')
         end
         return
     elseif ischar(varargin{1})
