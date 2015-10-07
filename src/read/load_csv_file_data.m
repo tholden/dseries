@@ -1,4 +1,4 @@
-function [freq, init, data, varlist] = load_csv_file_data(file)
+function [freq, init, data, varlist] = load_csv_file_data(file) % --*-- Unitary tests --*--
 %function [freq, init, data, varlist] = load_csv_file_data(file)
 % Loads data in a csv file.
 %
@@ -191,3 +191,22 @@ if withtime
 end
 
 varlist = transpose(varlist);
+
+%@test:1
+%$ % Download csv file with data.
+%$ urlwrite('http://www.dynare.org/Datasets/data_ca1_csv.csv','data_ca1_csv.csv');
+%$
+%$ % Instantiate a dseries from the data in the csv file.
+%$ try
+%$   d = dseries('data_ca1_csv.csv')
+%$   t(1) = true;
+%$ catch
+%$   t(1) = false;
+%$ end
+%$
+%$ if t(1)
+%$   t(2) = dassert(d.name,{'y_obs'; 'pie_obs'; 'R_obs'; 'de'; 'dq'});
+%$ end
+%$
+%$ T = all(t);
+%@eof:1
