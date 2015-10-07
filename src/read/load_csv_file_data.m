@@ -162,8 +162,8 @@ if isoctave
 
         % Remove first line if withnames
         data = data(1+withnames:ndx, :);
+        return
     end
-    return
 else
     A = importdata(file, ',');
     if ~isstruct(A)
@@ -182,7 +182,7 @@ else
 end
 
 if withvars
-    varlist = T(1, 2:end);
+    varlist = T(1, 1+withtime:end);
     T = T(2:end, :);
 end
 if withtime
