@@ -68,7 +68,7 @@ function d = vertcat_(b, c)
     end
     reorder_variables_in_c = false;
     if ~isequal(b.name, c.name)
-        [t, idx] = ismember(c.name, b.name);
+        [t, idx] = ismember(b.name, c.name);
         if all(t)
             reorder_variables_in_c = true;
         else
@@ -150,3 +150,21 @@ function d = vertcat_(b, c)
 %$ t(5) = dassert(ts4.nobs,30);
 %$ T = all(t);
 %@eof:2
+
+%@test:3
+%$ A = dseries([ones(5,1), 2*ones(5,1)],'1938Q4',{'A1', 'A2'});
+%$ B = dseries([2*ones(2,1), ones(2,1)],'1945Q3',{'A2', 'A1'});
+%$
+%$ try
+%$    C = [A; B];
+%$    t(1) = true;
+%$ catch
+%$    t(1) = false;
+%$ end
+%$
+%$ % Check the results.
+%$ if t(1)
+%$    t(2) = dassert(C.data,[ones(7,1), 2*ones(7,1)]);
+%$ end
+%$ T = all(t);
+%@eof:3
