@@ -86,7 +86,7 @@ else
     end;
     Z = [Z2 Z1];
     A.data = Z(:,IBC);
-    A_init = B.dates(1);
+    A_init = firstdate(B);
 end
 
 A.dates = A_init:A_init+(nobs(A)-1);
