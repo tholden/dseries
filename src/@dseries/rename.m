@@ -1,6 +1,6 @@
 function ts = rename(ts,old,new) % --*-- Unitary tests --*--
 
-% Copyright (C) 2013 Dynare Team
+% Copyright (C) 2013-2015 Dynare Team
 %
 % This file is part of Dynare.
 %
@@ -22,13 +22,15 @@ if isempty(ts)
 end
 
 if nargin<3
-    if isequal(vobs(ts), 1)
+    if isequal(vobs(ts), 1) || isequal(vobs(ts), length(old))
         new = old;
     else
         error('dseries::rename: Missing argument!')
     end
-    if ~ischar(new)
-        error(['dseries::rename: Input argument ''' inputname(2)  '''  has to be a string!'])
+    if ~ischar(new) && ~(iscellstr(new) && isequal(vobs(ts), length(new)))
+        error(['dseries::rename: Input argument ''' ...
+               inputname(2) ...
+               ''' has to be either a string or a cellstring that has the same number of entries as observed variables!'])
     end
     idname = 1;
 else
@@ -41,7 +43,11 @@ else
     end
 end
 
-ts.name(idname) = {new};
+if iscellstr(new)
+    ts.name = new;
+else
+    ts.name(idname) = {new};
+end
 
 %@test:1
 %$ t = zeros(8,1);
@@ -105,3 +111,20 @@ ts.name(idname) = {new};
 %$
 %$ T = all(t);
 %@eof:3
+
+%@test:4
+%$ t = zeros(2,1);
+%$ ts = dseries(randn(10,3));
+%$ try
+%$     ts = ts.rename({'Dora', 'The', 'Explorer'});
+%$     t(1) = 1;
+%$ catch
+%$     t = 0;
+%$ end
+%$
+%$ if length(t)>1
+%$     t(2) = dassert(ts.name, {'Dora', 'The', 'Explorer'});
+%$ end
+%$
+%$ T = all(t);
+%@eof:4
