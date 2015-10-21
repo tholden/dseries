@@ -22,7 +22,7 @@ function us = qdiff(ts) % --*-- Unitary tests --*--
 %! @end deftypefn
 %@eod:
 
-% Copyright (C) 2012-2013 Dynare Team
+% Copyright (C) 2012-2015 Dynare Team
 %
 % This file is part of Dynare.
 %
@@ -43,7 +43,7 @@ us = ts;
 
 switch frequency(ts)
   case 1
-    error('dseries::qgrowth: I cannot compute quaterly differences from yearly data!')
+    error('dseries::qdiff: I cannot compute quaterly differences from yearly data!')
   case 4
     us.data(2:end,:) = ts.data(2:end,:)-ts.data(1:end-1,:);
     us.data(1,:) = NaN;
@@ -59,9 +59,9 @@ switch frequency(ts)
         us.tex(i) = {['\Delta_3 ' us.tex{i}]};
     end
   case 52
-    error('dseries::qgrowth: I do not know yet how to compute quaterly differences from weekly data!')
+    error('dseries::qdiff: I do not know yet how to compute quaterly differences from weekly data!')
   otherwise
-    error(['dseries::ygrowth: object ' inputname(1) ' has unknown frequency']);
+    error(['dseries::qdiff: object ' inputname(1) ' has unknown frequency']);
 end
 
 %@test:1

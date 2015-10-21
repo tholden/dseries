@@ -22,7 +22,7 @@ function us = ydiff(ts) % --*-- Unitary tests --*--
 %! @end deftypefn
 %@eod:
 
-% Copyright (C) 2012-2013 Dynare Team
+% Copyright (C) 2012-2015 Dynare Team
 %
 % This file is part of Dynare.
 %
@@ -71,7 +71,7 @@ switch frequency(ts)
         us.tex(i) = {['\Delta_{52} ' us.tex{i}]};
     end
   otherwise
-    error(['dseries::ygrowth: object ' inputname(1) ' has unknown frequency']);
+    error(['dseries::ydiff: object ' inputname(1) ' has unknown frequency']);
 end
 
 %@test:1
