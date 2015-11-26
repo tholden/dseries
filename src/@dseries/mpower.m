@@ -1,29 +1,15 @@
-function A = mpower(B,C) % --*-- Unitary tests --*--
+function q = mpower(o, p) % --*-- Unitary tests --*--
 
-%@info:
-%! @deftypefn {Function File} {@var{A} =} mpower (@var{B},@var{C})
-%! @anchor{@dseries/mpower}
-%! @sp 1
-%! Overloads the mpower method for the Dynare time series class (@ref{dseries}).
-%! @sp 2
-%! @strong{Inputs}
-%! @sp 1
-%! @table @ @var
-%! @item B
-%! Dynare time series object instantiated by @ref{dseries}, with T observations and N variables.
-%! @item C
-%! Real scalar or a dseries object with T observations and N variables.
-%! @end table
-%! @sp 1
-%! @strong{Outputs}
-%! @sp 1
-%! @table @ @var
-%! @item A
-%! dseries object with T observations and N variables.
-%! @end deftypefn
-%@eod:
+% Overloads the power (^) operator for dseries objects.
+%
+% INPUTS 
+% - o [dseries] A dseries object with T observations and N variables.
+% - p [real]    A real scalar.
+%
+% OUTPUTS 
+% - q [dseries] A dseries object with T observations and N variables.
 
-% Copyright (C) 2013 Dynare Team
+% Copyright (C) 2013-2015 Dynare Team
 %
 % This file is part of Dynare.
 %
@@ -40,55 +26,55 @@ function A = mpower(B,C) % --*-- Unitary tests --*--
 % You should have received a copy of the GNU General Public License
 % along with Dynare.  If not, see <http://www.gnu.org/licenses/>.
 
-if isnumeric(B) && isvector(B) && length(B)>1
-    if ~isdseries(C)
-        error('dseries::mpower: Second input argument must be a dseries object!')
+if isnumeric(o) && isvector(o) && length(o)>1
+    if ~isdseries(p)
+        error('dseries:WrongInputArguments', 'Second input argument must be a dseries object!')
     end
-    A = C;
-    A.data = bsxfun(@power,C.data,B);
+    q = copy(p);
+    q.data = bsxfun(@power, p.data, o);
     return;
 end
 
-if isnumeric(C) && isvector(C) && length(C)>1
-    if ~isdseries(B)
-        error('dseries::mpower: First input argument must be a dseries object!')
+if isnumeric(p) && isvector(p) && length(p)>1
+    if ~isdseries(o)
+        error('dseries:WrongInputArguments', 'First input argument must be a dseries object!')
     end
-    A = B;
-    A.data = bsxfun(@power,B.data,C);
+    q = copy(o);
+    q.data = bsxfun(@power, o.data, p);
     return
 end
 
-if isdseries(B) && isnumeric(C) && isreal(C) &&  isscalar(C)
-    A = dseries();
-    A.dates = B.dates;
-    A.data = B.data.^C;
-    A.name = cell(vobs(A),1);
-    A.tex = cell(vobs(A),1);
-    for i=1:vobs(A)
-        A.name(i) = {['power(' B.name{i} ';' num2str(C) ')']};
-        A.tex(i) = {[B.tex{i} '^' num2str(C) ]};
+if isdseries(o) && isnumeric(p) && isreal(p) &&  isscalar(p)
+    q = dseries();
+    q.dates = o.dates;
+    q.data = o.data.^p;
+    q.name = cell(vobs(q),1);
+    q.tex = cell(vobs(q),1);
+    for i=1:vobs(q)
+        q.name(i) = {['power(' o.name{i} ';' num2str(p) ')']};
+        q.tex(i) = {[o.tex{i} '^' num2str(p) ]};
     end
     return
 end
 
-if isdseries(B) && isdseries(C)
-    if isequal(nobs(B),nobs(C)) && isequal(vobs(B), vobs(C)) && isequal(frequency(B),frequency(C))
-        A = dseries();
-        A.data = B.data.^C.data;
-        A.dates = B.dates;
-        A.name = cell(vobs(A),1);
-        A.tex = cell(vobs(A),1);
-        for i=1:vobs(A)
-            A.name(i) = {['power(' B.name{i} ';' C.name{i} ')']};
-            A.tex(i) = {[B.tex{i} '^{' C.tex{i} '}']};
+if isdseries(o) && isdseries(p)
+    if isequal(nobs(o),nobs(p)) && isequal(vobs(o), vobs(p)) && isequal(frequency(o),frequency(p))
+        q = dseries();
+        q.data = (o.data).^p.data;
+        q.dates = o.dates;
+        q.name = cell(vobs(q),1);
+        q.tex = cell(vobs(q),1);
+        for i=1:vobs(q)
+            q.name(i) = {['power(' o.name{i} ';' p.name{i} ')']};
+            q.tex(i) = {[o.tex{i} '^{' p.tex{i} '}']};
         end
     else
-        error('dseries::mpower: If both input arguments are dseries objects, they must have the same numbers of variables and observations and common frequency!')
+        error('dseries:WrongInputArguments', 'If both input arguments are dseries objects, they must have the same numbers of variables and observations and common frequency!')
     end
     return
 end
 
-error(['dseries::mpower: Wrong calling sequence!'])
+error('dseries:WrongInputArguments', 'Wrong calling sequence! Please check the manual.')
 
 %@test:1
 %$ % Define a datasets.
@@ -103,9 +89,9 @@ error(['dseries::mpower: Wrong calling sequence!'])
 %$    ts1 = dseries(A,[],A_name,[]);
 %$    ts2 = dseries(B,[],B_name,[]);
 %$    ts3 = ts1^ts2;
-%$    t = 1;
+%$    t(1) = true;
 %$ catch
-%$    t = 0;
+%$    t(1) = false;
 %$ end
 %$
 %$ if t(1)
@@ -130,9 +116,9 @@ error(['dseries::mpower: Wrong calling sequence!'])
 %$ try
 %$    ts1 = dseries(A,[],A_name,[]);
 %$    ts3 = ts1^2;
-%$    t = 1;
+%$    t(1) = true;
 %$ catch
-%$    t = 0;
+%$    t(1) = false;
 %$ end
 %$
 %$ if t(1)
@@ -152,9 +138,9 @@ error(['dseries::mpower: Wrong calling sequence!'])
 %$ % Use the power
 %$ try
 %$    ts2 = ts1^transpose(1:3);
-%$    t = 1;
+%$    t(1) = true;
 %$ catch
-%$    t = 0;
+%$    t(1) = false;
 %$ end
 %$
 %$ if t(1)

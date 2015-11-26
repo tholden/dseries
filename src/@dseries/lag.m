@@ -1,28 +1,29 @@
-function us = lag(ts,p) % --*-- Unitary tests --*--
+function q = lag(o, p) % --*-- Unitary tests --*--
 
-%@info:
-%! @deftypefn {Function File} {@var{us} =} lag (@var{ts})
-%! @anchor{lag}
-%! @sp 1
-%! Computes lagged time series.
-%! @sp 2
-%! @strong{Inputs}
-%! @sp 1
-%! @table @var
-%! @item ts
-%! Dynare time series object, instantiated by @ref{dseries}
-%! @end table
-%! @sp 2
-%! @strong{Outputs}
-%! @sp 1
-%! @table @var
-%! @item us
-%! Dynare time series object with transformed data field.
-%! @end table
-%! @end deftypefn
-%@eod:
+% Returns a lagged time series
+%
+% INPUTS 
+% - o [dseries]
+% - p [integer] Number of lags
+%
+% OUTPUTS 
+% - o [dseries]
+%
+% EXAMPLE 
+% Define a dseries object as follows:
+%
+% >> o = dseries(transpose(1:5))
+%
+% then o.lag(1) returns
+%
+%       | lag(Variable_1,1)
+%    1Y | NaN              
+%    2Y | 1                
+%    3Y | 2                
+%    4Y | 3                
+%    5Y | 4         
 
-% Copyright (C) 2013 Dynare Team
+% Copyright (C) 2013-2015 Dynare Team
 %
 % This file is part of Dynare.
 %
@@ -44,19 +45,24 @@ if nargin<2
     p = 1;
 end
 
+% Check second input argument
 if p<=0
-    error('dseries::lag: Second input argument must be strictly positive! Use lead method instead.')
+    error('dseries:WrongInputArguments','Second input argument must be strictly positive! Use lead method instead.')
+end
+
+if ~isint(p)
+    error('dseries:WrongInputArguments','Second input argument must be an integer!')
 end
 
 % Copy of ts dseries object
-us = ts;
+q = copy(o);
 
 % Update data member
-us.data = [NaN(p, vobs(ts));  ts.data(1:end-p,:)];
+q.data = [NaN(p, vobs(o));  q.data(1:end-p,:)];
 
-for i=1:vobs(ts)
-    us.name(i) = {[ 'lag(' ts.name{i} ',' int2str(p) ')']};
-    us.tex(i) = {[ ts.tex{i} '_{-' int2str(p) '}']};
+for i=1:vobs(o)
+    q.name(i) = {[ 'lag(' o.name{i} ',' int2str(p) ')']};
+    q.tex(i) = {[ o.tex{i} '_{-' int2str(p) '}']};
 end
 
 %@test:1
@@ -68,12 +74,12 @@ end
 %$     a = ts.lag;
 %$     b = ts.lag.lag;
 %$     c = lag(ts,2);
-%$     t(1) = 1;
+%$     t(1) = true;
 %$ catch
-%$     t = 0;
+%$     t(1) = false;
 %$ end
 %$
-%$ if length(t)>1
+%$ if t(1)
 %$     DATA = [NaN(1,ts.vobs); transpose(0:1:49)];
 %$     t(2) = dassert(a.data,DATA,1e-15);
 %$     DATA = [NaN(2,ts.vobs); transpose(0:1:48)];

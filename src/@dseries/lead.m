@@ -1,28 +1,29 @@
-function us = lead(ts,p) % --*-- Unitary tests --*--
+function q = lead(o, p) % --*-- Unitary tests --*--
 
-%@info:
-%! @deftypefn {Function File} {@var{us} =} lead (@var{ts})
-%! @anchor{lag}
-%! @sp 1
-%! Computes leaded time series.
-%! @sp 2
-%! @strong{Inputs}
-%! @sp 1
-%! @table @var
-%! @item ts
-%! Dynare time series object, instantiated by @ref{dseries}
-%! @end table
-%! @sp 2
-%! @strong{Outputs}
-%! @sp 1
-%! @table @var
-%! @item us
-%! Dynare time series object with transformed data field.
-%! @end table
-%! @end deftypefn
-%@eod:
+% Returns a lagged time series
+%
+% INPUTS 
+% - o [dseries]
+% - p [integer] Number of leads
+%
+% OUTPUTS 
+% - o [dseries]
+%
+% EXAMPLE 
+% Define a dseries object as follows:
+%
+% >> o = dseries(transpose(1:5))
+%
+% then o.lag(1) returns
+%
+%       | lead(Variable_1,1)
+%    1Y | 2                 
+%    2Y | 3                 
+%    3Y | 4                 
+%    4Y | 5                 
+%    5Y | NaN       
 
-% Copyright (C) 2013 Dynare Team
+% Copyright (C) 2013-2015 Dynare Team
 %
 % This file is part of Dynare.
 %
@@ -44,41 +45,45 @@ if nargin<2
     p = 1;
 end
 
+% Check second input argument
 if p<=0
-    error('dseries::lead: Second input argument must be strictly positive! Use lag method instead.')
+    error('dseries:WrongInputArguments','Second input argument must be strictly positive! Use lag method instead.')
+end
+
+if ~isint(p)
+    error('dseries:WrongInputArguments','Second input argument must be an integer!')
 end
 
 % Copy of ts dseries object
-us = ts;
+q = copy(o);
 
 % Update data member
-us.data = [  ts.data(p+1:end,:); NaN(p, vobs(ts));];
+q.data = [  o.data(p+1:end,:); NaN(p, vobs(o));];
 
-for i=1:vobs(ts)
-    us.name(i) = {[ 'lead(' ts.name{i} ',' int2str(p) ')']};
-    us.tex(i) = {[ ts.tex{i} '_{+' int2str(p) '}']};
+for i=1:vobs(o)
+    q.name(i) = {[ 'lead(' q.name{i} ',' int2str(p) ')']};
+    q.tex(i) = {[ q.tex{i} '_{+' int2str(p) '}']};
 end
 
 %@test:1
-%$ t = zeros(4,1);
-%$
 %$ try
-%$     data = transpose(0:1:50);
+%$     data = transpose(1:50);
 %$     ts = dseries(data,'1950Q1');
 %$     a = ts.lead;
 %$     b = ts.lead.lead;
 %$     c = lead(ts,2);
-%$     t(1) = 1;
+%$     t(1) = true;
 %$ catch
-%$     t = 0;
+%$     t(1) = false;
 %$ end
 %$
-%$ if length(t)>1
-%$     DATA = [transpose(1:50); NaN(1,ts.vobs)];
-%$     t(2) = dassert(a.data,DATA,1e-15);
-%$     DATA = [transpose(2:50); NaN(2,ts.vobs)];
-%$     t(3) = dassert(b.data,DATA,1e-15);
-%$     t(4) = dassert(b.data,c.data,1e-15);
+%$ if t(1)
+%$
+%$     DATA = [data(2:end); NaN(1)];
+%$     t(2) = dassert(a.data, DATA, 1e-15);
+%$     DATA = [data(3:end); NaN(2,1)];
+%$     t(3) = dassert(b.data, DATA, 1e-15);
+%$     t(4) = dassert(c.data, DATA, 1e-15);
 %$ end
 %$
 %$ T = all(t);

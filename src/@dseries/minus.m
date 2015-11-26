@@ -1,29 +1,33 @@
-function A = minus(B,C) % --*-- Unitary tests --*--
+function q = minus(o, p) % --*-- Unitary tests --*--
 
-%@info:
-%! @deftypefn {Function File} {@var{A} =} minus (@var{B},@var{C})
-%! @anchor{@dseries/minus}
-%! @sp 1
-%! Overloads the minus method for the Dynare time series class (@ref{dseries}).
-%! @sp 2
-%! @strong{Inputs}
-%! @sp 1
-%! @table @ @var
-%! @item B
-%! Dynare time series object instantiated by @ref{dseries}.
-%! @item C
-%! Dynare time series object instantiated by @ref{dseries}.
-%! @end table
-%! @sp 1
-%! @strong{Outputs}
-%! @sp 1
-%! @table @ @var
-%! @item A
-%! Dynare time series object.
-%! @end deftypefn
-%@eod:
+% Overloads the minus operator for dseries objects.
+%
+% INPUTS 
+% - o [dseries]
+% - p [dseries]
+%
+% OUTPUTS 
+% - q [dseries]
+%
+% EXAMPLE 
+% Define a dseries object:
+%
+% >> a = dseries(transpose(1:5));
+%
+% Then we have
+%
+%  >> a-a
+%   
+%  ans is a dseries object:
+%   
+%     | minus(Variable_1;Variable_1)
+%  1Y | 0                           
+%  2Y | 0                           
+%  3Y | 0                           
+%  4Y | 0                           
+%  5Y | 0       
 
-% Copyright (C) 2012-2014, Dynare Team
+% Copyright (C) 2012-2015, Dynare Team
 %
 % This file is part of Dynare.
 %
@@ -40,68 +44,68 @@ function A = minus(B,C) % --*-- Unitary tests --*--
 % You should have received a copy of the GNU General Public License
 % along with Dynare.  If not, see <http://www.gnu.org/licenses/>.
 
-if isnumeric(B) && (isscalar(B) ||  isvector(B))
-    if ~isdseries(C)
-        error('dseries::minus: Second input argument must be a dseries object!')
+if isnumeric(o) && (isscalar(o) ||  isvector(o))
+    if ~isdseries(p)
+        error('dseries:WrongInputArguments', 'Second input argument must be a dseries object!')
     end
-    A = C;
-    A.data = bsxfun(@minus,B,C.data);
+    q = copy(p);
+    q.data = bsxfun(@minus, o, p.data);
     return;
 end
 
-if isnumeric(C) && (isscalar(C) || isvector(C))
-    if ~isdseries(B)
+if isnumeric(p) && (isscalar(p) || isvector(p))
+    if ~isdseries(o)
         error('dseries::minus: First input argument must be a dseries object!')
     end
-    A = B;
-    A.data = bsxfun(@minus,B.data,C);
+    q = copy(o);
+    q.data = bsxfun(@minus,o.data,p);
     return
 end
 
-if ~isequal(vobs(B), vobs(C)) && ~(isequal(vobs(B),1) || isequal(vobs(C),1))
-    error(['dseries::minus: Cannot substract ' inputname(1) ' and ' inputname(2) ' (wrong number of variables)!'])
+if ~isequal(vobs(o), vobs(p)) && ~(isequal(vobs(o),1) || isequal(vobs(p),1))
+    error('dseries:WrongInputArguments', 'Cannot substract %s and %s (wrong number of variables)!', inputname(1), inputname(2))
 else
-    if vobs(B)>vobs(C)
-        idB = 1:vobs(B);
-        idC = ones(1:vobs(B));
-    elseif vobs(B)<vobs(C)
-        idB = ones(1,vobs(C));
-        idC = 1:vobs(C);
+    if vobs(o)>vobs(p)
+        ido = 1:vobs(o);
+        idp = ones(1:vobs(o));
+    elseif vobs(o)<vobs(p)
+        ido = ones(1,vobs(p));
+        idp = 1:vobs(p);
     else
-        idB = 1:vobs(B);
-        idC = 1:vobs(C);
+        ido = 1:vobs(o);
+        idp = ido;
     end
 end
 
-if ~isequal(frequency(B),frequency(C))
-    error(['dseries::plus: Cannot substract ' inputname(1) ' and ' inputname(2) ' (frequencies are different)!'])
+if ~isequal(frequency(o),frequency(p))
+    error('dseries:WrongInputArguments', 'Cannot substract %s and %s (frequencies are different)!', inputname(1), inputname(2))
 end
 
-if ~isequal(nobs(B), nobs(C)) || ~isequal(firstdate(B),firstdate(C))
-    [B, C] = align(B, C);
+if ~isequal(nobs(o), nobs(p)) || ~isequal(firstdate(o),firstdate(p))
+    [o, p] = align(o, p);
 end
 
-if isempty(B)
-    A = -C;
+if isempty(o)
+    q = -copy(p);
     return
 end
 
-if isempty(C)
-    A = B;
+if isempty(p)
+    q = copy(o);
     return
 end
 
-A = dseries();
+q = dseries();
 
-A.dates = B.dates;
-A_vobs = max(vobs(B), vobs(C));
-A.name = cell(A_vobs,1);
-A.tex = cell(A_vobs,1);
-for i=1:A_vobs
-    A.name(i) = {['minus(' B.name{idB(i)} ';' C.name{idC(i)} ')']};
-    A.tex(i) = {['(' B.tex{idB(i)} '-' C.tex{idC(i)} ')']};
+q.dates = o.dates;
+q_vobs = max(vobs(o), vobs(p));
+q.name = cell(q_vobs,1);
+q.tex = cell(q_vobs,1);
+for i=1:q_vobs
+    q.name(i) = {['minus(' o.name{ido(i)} ';' p.name{idp(i)} ')']};
+    q.tex(i) = {['(' o.tex{ido(i)} '-' p.tex{idp(i)} ')']};
 end
-A.data = bsxfun(@minus,B.data,C.data);
+q.data = bsxfun(@minus, o.data, p.data);
 
 %@test:1
 %$ % Define a datasets.
