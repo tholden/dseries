@@ -164,29 +164,24 @@ switch length(S)
               end
           elseif ischar(S(1).subs{1}) && isequal(S(1).subs{1},':') && isempty(A)
               if isnumeric(B)
-                  if isequal(rows(B),1)
-                      A.data = repmat(B,A.dates.ndat,1);
-                  elseif isequal(rows(B),A.dates.ndat)
-                      A.data = B;
+                  A.data = B;
+                  A.name = default_name(vobs(A));
+                  A.tex = name2tex(A.name);
+                  if isempty(A.dates)
+                      if isempty(A.dates.freq)
+                          init = dates('1Y')
+                      else
+                          init = dates(A.dates.freq, 1, 1);
+                      end
                   else
-                      error('dseries::subsasgn: Wrong syntax!')
+                      init = A.dates(1);
                   end
-                  if isempty(A.name)
-                      A.name = default_name(vobs(A));
-                      A.tex = name2tex(A.name);
-                  end
+                  A.dates = init:(init+rows(B)-1);
               elseif isdseries(B)
-                  if isequal(nobs(B), 1)
-                      A.data = repmat(B.data,A.dates.ndat,1);
-                  elseif isequal(nobs(B), A.dates.ndat)
-                      A.data = B;
-                  else
-                      error('dseries::subsasgn: Wrong syntax!')
-                  end
-                  if isempty(A.name)
-                      A.name = B.name;
-                      A.tex = B.tex;
-                  end
+                  A.data = B.data;
+                  A.name = B.name;
+                  A.tex = N.tex;
+                  A.dates = B.dates;
               end
               return
           else
