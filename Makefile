@@ -9,3 +9,6 @@ check-octave:
 
 check-matlab:
 	@$(MATLAB)  -nosplash -nodisplay -r "cd tests; runalltests; quit"
+
+check-clean:
+	rm -f tests/*_test_*.m tests/*.csv tests/*.xls tests/*.xlsx tests/*.mat tests/failed tests/datafile_for_test
