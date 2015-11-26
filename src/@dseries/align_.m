@@ -1,5 +1,5 @@
-function [o, p] = align(o, p) % --*-- Unitary tests --*--
-
+function [o, p] = align_(o, p) % --*-- Unitary tests --*--
+    
 % If necessay completes dseries object o and p so that they are defined on the same time range
 % (in place modification). 
 %    
@@ -28,9 +28,46 @@ function [o, p] = align(o, p) % --*-- Unitary tests --*--
 % You should have received a copy of the GNU General Public License
 % along with Dynare.  If not, see <http://www.gnu.org/licenses/>.
 
-o = copy(o);
-p = copy(p);
-align_(o, p);
+if ~isequal(frequency(o),frequency(p))
+    error(['dseries::align: ''' inputname(1) ''' and ''' inputname(2) ''' dseries objects must have common frequencies!'])
+end
+
+init = min(firstdate(o),firstdate(p));
+last = max(lastdate(o),lastdate(p));
+
+if isempty(intersect(o.dates,p.dates))
+    error(['dseries::align: ''' inputname(1) ''' and ''' inputname(2) ''' dseries object must have at least one common date!'])
+end
+
+o_init = init;
+p_init = init;
+o_last = last;
+p_last = last;
+
+if firstdate(p)>init
+    n = firstdate(p)-init;
+    p.data = [NaN(n, vobs(p)); p.data];
+    p_init = init;
+end
+
+if firstdate(o)>init
+    n = firstdate(o)-init;
+    o.data = [NaN(n, vobs(o)); o.data];
+    o_init = init;
+end
+
+if lastdate(p)<last
+    n = last-lastdate(p);
+    p.data = [p.data; NaN(n, vobs(p))];
+end
+
+if lastdate(o)<last
+    n = last-lastdate(o);
+    o.data = [o.data; NaN(n, vobs(o))];
+end
+
+o.dates = o_init:o_init+(nobs(o)-1);
+o.dates = o_init:o_init+(nobs(o)-1);
 
 %@test:1
 %$ % Define a datasets.

@@ -1,6 +1,6 @@
-function o = exp(o) % --*-- Unitary tests --*--
+function o = log_(o) % --*-- Unitary tests --*--
 
-% Apply the exponential to all the variables in a dseries object (without in place modification).
+% Apply the logarithm to all the variables in a dseries object (in place modification).
 %
 % INPUTS 
 % - o [dseries]
@@ -25,26 +25,36 @@ function o = exp(o) % --*-- Unitary tests --*--
 % You should have received a copy of the GNU General Public License
 % along with Dynare.  If not, see <http://www.gnu.org/licenses/>.
 
-o = copy(o);
-o.exp_();
+if any(o.data<eps)
+    error('dseries:WrongInputArguments', 'Variables in %s have be strictly positive!', inputname(1))
+end
+
+for i=1:vobs(o)
+    o.name(i) = {['log(' o.name{i} ')']};
+    o.tex(i) = {['\log(' o.tex{i} ')']};
+end
+
+o.data = log(o.data);
 
 %@test:1
 %$ % Define a dates object
-%$ data = zeros(10,2);
+%$ data = ones(10,2);
 %$ o = dseries(data);
-%$ q = dseries(data);
+%$ q = o;
+%$ r = copy(o);
 %$
 %$ % Call the tested routine.
 %$ try
-%$     p = o.exp();
+%$     o.log_();
 %$     t(1) = true;
 %$ catch
 %$     t(1) = false;
 %$ end
-%$ 
+%$
 %$ if t(1)
-%$      t(2) = dassert(o, q);
-%$      t(3) = dassert(p.data, ones(10, 2));
+%$      t(2) = dassert(o.data, zeros(10,2));
+%$      t(3) = dassert(q.data, zeros(10,2));
+%$      t(4) = dassert(r.data, ones(10, 2));
 %$ end
 %$
 %$ T = all(t);
@@ -52,24 +62,27 @@ o.exp_();
 
 %@test:2
 %$ % Define a dates object
-%$ data = zeros(10,2);
+%$ data = ones(10,2);
 %$ o = dseries(data);
-%$ q = dseries(data);
+%$ q = o;
+%$ r = copy(o);
 %$
 %$ % Call the tested routine.
 %$ try
-%$     p = o.exp();
+%$     o.log_();
 %$     t(1) = true;
 %$ catch
 %$     t(1) = false;
 %$ end
 %$ 
 %$ if t(1)
-%$      t(2) = dassert(length(p.name), 2);
-%$      t(3) = dassert(p.name{1},'exp(Variable_1)');
-%$      t(4) = dassert(p.name{2},'exp(Variable_2)');
-%$      t(5) = dassert(o.name{1},'Variable_1');
-%$      t(6) = dassert(o.name{2},'Variable_2');
+%$      t(2) = dassert(length(o.name), 2);
+%$      t(3) = dassert(o.name{1},'log(Variable_1)');
+%$      t(4) = dassert(o.name{2},'log(Variable_2)');
+%$      t(5) = dassert(q.name{1},'log(Variable_1)');
+%$      t(6) = dassert(q.name{2},'log(Variable_2)');
+%$      t(7) = dassert(r.name{1},'Variable_1');
+%$      t(8) = dassert(r.name{2},'Variable_2');
 %$ end
 %$
 %$ T = all(t);

@@ -70,7 +70,7 @@ switch S(1).type
             error(['dseries::subsref: ' S(1).subs ' is not a method but a member!'])
         end
         B = builtin('subsref', A, S(1));
-      case {'log','exp','ygrowth','qgrowth','ydiff','qdiff','abs'}         % Give "dot access" to public methods without args.
+      case {'log','log_','exp','exp_','ygrowth','qgrowth','ydiff','qdiff','abs'}         % Give "dot access" to public methods without args.
         B = feval(S(1).subs,A);
         if length(S)>1 && isequal(S(2).type,'()') && isempty(S(2).subs)
             S = shiftS(S,1);
