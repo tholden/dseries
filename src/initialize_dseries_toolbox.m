@@ -35,5 +35,3 @@ end
 if ~exist('sample_hp_filter','file')
     addpath([dseries_src_root '/utilities/missing/sample_hp_filter'])
 end
-
-%dseries('initialize');
