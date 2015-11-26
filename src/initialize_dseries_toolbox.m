@@ -35,3 +35,7 @@ end
 if ~exist('sample_hp_filter','file')
     addpath([dseries_src_root '/utilities/missing/sample_hp_filter'])
 end
+
+if isoctave && ~exist('user_has_octave_forge_package','file')
+    addpath([dseries_src_root '/utilities/missing/user_has_octave_forge_package'])
+end
