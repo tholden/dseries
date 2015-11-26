@@ -809,6 +809,30 @@ end
 %@eof:20
 
 %@test:21
+%$ % Define a datasets.
+%$ A = rand(4,3);
+%$
+%$ % Instantiate an empty dseries object.
+%$ ts = dseries(dates('1950Q1'));
+%$
+%$ % Populate ts
+%$ try
+%$     ts(:) = A;
+%$     t(1) = 1;
+%$ catch
+%$     t(1) = 0;
+%$ end
+%$
+%$ % Instantiate a time series object.
+%$ if t(1)
+%$    t(2) = dassert(ts.vobs,3);
+%$    t(3) = dassert(ts.nobs,4);
+%$    t(4) = dassert(ts.data,A,1e-15);
+%$ end
+%$ T = all(t);
+%@eof:21
+
+%@test:22
 %$ % Instantiate a dseries object.
 %$ ts0 = dseries(randn(10,6), '1999y');
 %$
@@ -830,4 +854,4 @@ end
 %$    end
 %$ end
 %$ T = all(t);
-%@eof:21
+%@eof:22
