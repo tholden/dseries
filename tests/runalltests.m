@@ -29,8 +29,11 @@ catch
     initialize_dseries_toolbox;
 end
 
+warning off
+
 if isoctave
     more off;
+    addpath([unit_tests_root 'fake']);
 end
 
 tmp = dseries_src_root;
@@ -42,8 +45,10 @@ delete('*.log');
 if install_unit_test_toolbox
     rmdir('../externals/m-unit-tests-master','s');
 end
-path(opath);
 
 if any(~[report{:,3}])
     system('touch failed');
 end
+
+warning on
+path(opath);
