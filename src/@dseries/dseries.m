@@ -384,12 +384,12 @@ end % classdef
 
 %@test:9
 %$ try
-%$     [strfile, status] = urlwrite('http://www.dynare.org/Datasets/dseries/dynseries_test_data-1.xls','dynseries_test_data-1.xls');
+%$     [strfile, status] = urlwrite('http://www.dynare.org/Datasets/dseries/dynseries_test_data-1.xlsx','dynseries_test_data-1.xlsx');
 %$     if ~status
 %$         error()
 %$     end
-%$     ts = dseries('dynseries_test_data-1.xls');
-%$     delete('dynseries_test_data-1.xls');
+%$     ts = dseries('dynseries_test_data-1.xlsx');
+%$     delete('dynseries_test_data-1.xlsx');
 %$     t(1) = 1;
 %$ catch
 %$     t(1) = 0;
@@ -410,12 +410,12 @@ end % classdef
 
 %@test:10
 %$ try
-%$     [strfile, status] = urlwrite('http://www.dynare.org/Datasets/dseries/dynseries_test_data-2.xls','dynseries_test_data-2.xls');
+%$     [strfile, status] = urlwrite('http://www.dynare.org/Datasets/dseries/dynseries_test_data-2.xlsx','dynseries_test_data-2.xlsx');
 %$     if ~status
 %$         error()
 %$     end
-%$     ts = dseries('dynseries_test_data-2.xls');
-%$     delete('dynseries_test_data-2.xls');
+%$     ts = dseries('dynseries_test_data-2.xlsx');
+%$     delete('dynseries_test_data-2.xlsx');
 %$     t(1) = 1;
 %$ catch
 %$     t(1) = 0;
@@ -436,12 +436,12 @@ end % classdef
 
 %@test:11
 %$ try
-%$     [strfile, status] = urlwrite('http://www.dynare.org/Datasets/dseries/dynseries_test_data-3.xls','dynseries_test_data-3.xls');
+%$     [strfile, status] = urlwrite('http://www.dynare.org/Datasets/dseries/dynseries_test_data-3.xlsx','dynseries_test_data-3.xlsx');
 %$     if ~status
 %$         error()
 %$     end
-%$     ts = dseries('dynseries_test_data-3.xls');
-%$     delete('dynseries_test_data-3.xls');
+%$     ts = dseries('dynseries_test_data-3.xlsx');
+%$     delete('dynseries_test_data-3.xlsx');
 %$     t(1) = 1;
 %$ catch
 %$     t(1) = 0;
@@ -462,12 +462,12 @@ end % classdef
 
 %@test:12
 %$ try
-%$     [strfile, status] = urlwrite('http://www.dynare.org/Datasets/dseries/dynseries_test_data-4.xls','dynseries_test_data-4.xls');
+%$     [strfile, status] = urlwrite('http://www.dynare.org/Datasets/dseries/dynseries_test_data-4.xlsx','dynseries_test_data-4.xlsx');
 %$     if ~status
 %$         error()
 %$     end
-%$     ts = dseries('dynseries_test_data-4.xls');
-%$     delete('dynseries_test_data-4.xls');
+%$     ts = dseries('dynseries_test_data-4.xlsx');
+%$     delete('dynseries_test_data-4.xlsx');
 %$     t(1) = 1;
 %$ catch
 %$     t(1) = 0;
