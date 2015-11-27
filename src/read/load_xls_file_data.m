@@ -70,10 +70,16 @@ if ~(check_file_extension(file,'xls') || check_file_extension(file,'xlsx'))
     end
 end
 
-% load excel file.
+% Check if io package is installed.
 if isoctave && ~user_has_octave_forge_package('io')
     error('The io package is required to read XLS/XLSX files from Octave')
 end
+
+% Do not support XLS with octave.
+if isoctave && isequal(get_file_extension(file), 'xls')
+    warning('XLS files not supported with Octave! Please use XLSX instead.')
+end
+
 [num,txt,raw] = xlsread(file, sheet, range);
 
 % Get dimensions of num, txt and raw
