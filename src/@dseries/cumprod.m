@@ -30,10 +30,6 @@ function B = cumprod(varargin) % --*-- Unitary tests --*--
 % Get indices of the columns without NaNs
 idx = find(~any(isnan(varargin{1}.data)));
 
-if isempty(idx)
-    error('dseries::cumprod: All the variables have NaNs. The cumulated product cannot be computed!')
-end
-
 if ~isequal(idx(:),transpose(1:vobs(varargin{1})))
     warning('dseries::cumprod: The cumulated product is not computed for some variables because they have NaNs!')
 end

@@ -30,10 +30,6 @@ function B = cumsum(varargin) % --*-- Unitary tests --*--
 % Get indices of the columns without NaNs
 idx = find(~any(isnan(varargin{1}.data)));
 
-if isempty(idx)
-    error('dseries::cumsum: All the variables have NaNs. The cumulated sum cannot be computed!')
-end
-
 if ~isequal(idx(:),transpose(1:vobs(varargin{1})))
     warning('dseries::cumsum: The cumulated sum is not computed for some variables because they have NaNs!')
 end
