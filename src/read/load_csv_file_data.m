@@ -121,6 +121,8 @@ if isoctave
             end
             varlist = strtrim(varlist);
             linea = linea+1;
+            % Remove double quotes if any
+            varlist = strrep(varlist,'"','');
         end
 
         % Get following line (number 1 or 2 depending on withnames flag)
@@ -191,6 +193,9 @@ if withtime
 end
 
 varlist = transpose(varlist);
+
+% Remove double quotes if any
+varlist = strrep(varlist,'"','');
 
 %@test:1
 %$ % Download csv file with data.
