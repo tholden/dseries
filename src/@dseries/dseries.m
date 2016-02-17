@@ -570,7 +570,7 @@ end
 
 %@test:15
 %$ try
-%$     ts = dseries([1; 2],dates('1990Q1'):dates('1990Q4'));
+%$     evalc('dseries([1; 2],dates(''1990Q1''):dates(''1990Q4''));');
 %$     t = 0;
 %$ catch
 %$     t = 1;
