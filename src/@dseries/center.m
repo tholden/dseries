@@ -43,7 +43,7 @@ end
 %$ % Instantiate a time series object and compute the mean.
 %$ try
 %$    ts = dseries(A);
-%$    ts.center(true);
+%$    ts = center(ts, true);
 %$    t(1) = 1;
 %$ catch
 %$    t = 0;
