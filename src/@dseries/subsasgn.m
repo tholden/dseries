@@ -52,7 +52,7 @@ switch length(S)
                   error(['dseries::subsasgn: You cannot use implicit loops and regular expressions in the same rule!'])
               end
               if ~isempty(idArobase)
-                  elements = build_list_of_variables_with_loops(A.name, idArobase, element, {});
+                  elements = build_list_of_variables_with_loops({}, idArobase, element, {});
                   S(1).subs = replace_object_in_a_one_dimensional_cell_array(S(1).subs, elements(:), i);
               end
               if ~isempty(idBracket.open)

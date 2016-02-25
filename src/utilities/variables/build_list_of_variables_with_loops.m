@@ -17,7 +17,7 @@ function list_of_variables = build_list_of_variables_with_loops(o_list_of_variab
 % You should have received a copy of the GNU General Public License
 % along with Dynare.  If not, see <http://www.gnu.org/licenses/>.
 
-checknames = isempty(o_list_of_variables);
+checknames = ~isempty(o_list_of_variables);
     
 NumberOfImplicitLoops = .5*length(idArobase);
 
