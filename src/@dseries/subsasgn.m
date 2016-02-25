@@ -36,45 +36,28 @@ switch length(S)
           end
           for i=1:numel(S(1).subs)
               element = S(1).subs{i};
+              % Implicit loop.
               idArobase = strfind(element,'@');
+              if mod(length(idArobase),2)
+                  error('dseries::subsasgn: (Implicit loops) The number of @ symbols must be even!')
+              end
+              % regular expression.
+              idBracket.open = strfind(element, '[');
+              idBracket.close = strfind(element, ']');
+              if ~isequal(length(idBracket.open),length(idBracket.open))
+                  error('dseries::subsasgn: (Matlab/Octave''s regular expressions) Check opening and closing square brackets!')
+              end
+              % Loops and regular expressions are not compatible
+              if length(idArobase) && length(idBracket.open)
+                  error(['dseries::subsasgn: You cannot use implicit loops and regular expressions in the same rule!'])
+              end
               if ~isempty(idArobase)
-                  switch length(idArobase)
-                    case 2
-                      idComma = strfind(element(idArobase(1)+1:idArobase(2)-1),',');
-                      if ~isempty(idComma)
-                          elements = cell(1,numel(idComma)+1); j = 1;
-                          expression = element(idArobase(1)+1:idArobase(2)-1);
-                          while ~isempty(expression)
-                              [token, expression] = strtok(expression,',');
-                              elements(j) = {[element(1:idArobase(1)-1), token, element(idArobase(2)+1:end)]};
-                              j = j + 1;
-                          end
-                          S(1).subs = replace_object_in_a_one_dimensional_cell_array(S(1).subs, elements(:), i);
-                      else
-                          error('dseries::subsasgn: Wrong syntax, matlab''s regular expressions cannot be used here!')
-                      end
-                    case 4
-                      idComma_1 = strfind(element(idArobase(1)+1:idArobase(2)-1),',');
-                      idComma_2 = strfind(element(idArobase(3)+1:idArobase(4)-1),',');
-                      if ~isempty(idComma_1)
-                          elements = cell(1,(numel(idComma_1)+1)*(numel(idComma_2)+1)); j = 1;
-                          expression_1 = element(idArobase(1)+1:idArobase(2)-1);
-                          while ~isempty(expression_1)
-                              [token_1, expression_1] = strtok(expression_1,',');
-                              expression_2 = element(idArobase(3)+1:idArobase(4)-1);
-                              while ~isempty(expression_2)
-                                  [token_2, expression_2] = strtok(expression_2,',');
-                                  elements(j) = {[element(1:idArobase(1)-1), token_1, element(idArobase(2)+1:idArobase(3)-1), token_2, element(idArobase(4)+1:end)]};
-                                  j = j+1;
-                              end
-                          end
-                          S(1).subs = replace_object_in_a_one_dimensional_cell_array(S(1).subs, elements(:), i);
-                      else
-                          error('dseries::subsasgn: Wrong syntax, matlab''s regular expressions cannot be used here!')
-                      end
-                    otherwise
-                      error('dseries::subsasgn: Wrong syntax!')
-                  end
+                  elements = build_list_of_variables_with_loops(A.name, idArobase, element, {});
+                  S(1).subs = replace_object_in_a_one_dimensional_cell_array(S(1).subs, elements(:), i);
+              end
+              if ~isempty(idBracket.open)
+                  elements = build_list_of_variables_with_regexp(A.name, idBracket, element, {});
+                  S(1).subs = replace_object_in_a_one_dimensional_cell_array(S(1).subs, elements(:), i);
               end
           end
           if isempty(B)

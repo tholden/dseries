@@ -25,87 +25,26 @@ A = dseries();
 VariableName_ = {};
 for i=1:nargin-1
     VariableName = varargin{i};
+    % Implicit loop.
     idArobase = strfind(VariableName,'@');
     if mod(length(idArobase),2)
         error('dseries::extract: (Implicit loops) The number of @ symbols must be even!')
     end
+    % Regular expression
     idBracket.open = strfind(VariableName,'[');
     idBracket.close = strfind(VariableName,']');
     if ~isequal(length(idBracket.open),length(idBracket.open))
         error('dseries::extract: (Matlab/Octave''s regular expressions) Check opening and closing square brackets!')
     end
+    % Loops and regular expressions are not compatible
+    if length(idArobase) && length(idBracket.open)
+        error(['dseries::extract: You cannot use implicit loops and regular expressions in the same rule!'])
+    end
+    % Update the list of variables.
     if length(idArobase)
-        NumberOfImplicitLoops = .5*length(idArobase);
-        idComma = cell(NumberOfImplicitLoops,1);
-        expressions = cell(NumberOfImplicitLoops,1);
-        for i=0:NumberOfImplicitLoops-1
-            idComma(i+1) = { strfind(VariableName(idArobase(2*i+1)+1:idArobase(2*i+2)-1),',') };
-            expressions(i+1) = { VariableName(idArobase(2*i+1)+1:idArobase(2*i+2)-1) };
-        end
-        if any(cellfun(@isempty,idComma))
-            error('dseries::extract: (Implicit loops) Wrong syntax!')
-        end
-        switch NumberOfImplicitLoops
-          case 1
-            expression = expressions{1};
-            idVariables_ = [];
-            while ~isempty(expression)
-                [token, expression] = strtok(expression,',');             
-                candidate = [VariableName(1:idArobase(1)-1), token, VariableName(idArobase(2)+1:end)];
-                id = find(strcmp(candidate,B.name));
-                if isempty(id)
-                    error(['dseries::extract: (Implicit loops) Variable ''' candidate ''' does not exist in dseries object ''' inputname(1) '''!'])
-                else
-                    idVariables_ = [idVariables_; id];
-                end
-            end
-            VariableName = B.name(idVariables_);
-          case 2
-            idVariables_ = [];
-            expression_1 = expressions{1};
-            while ~isempty(expression_1)
-                [token_1, expression_1] = strtok(expression_1,',');
-                expression_2 = expressions{2};
-                while ~isempty(expression_2)
-                    [token_2, expression_2] = strtok(expression_2,',');
-                    candidate = [VariableName(1:idArobase(1)-1), token_1, VariableName(idArobase(2)+1:idArobase(3)-1),  token_2, VariableName(idArobase(4)+1:end)];
-                    id = find(strcmp(candidate,B.name));
-                    if isempty(id)
-                        error(['dseries::extract: (Implicit loops) Variable ''' candidate ''' does not exist in dseries object ''' inputname(1) '''!'])
-                    else
-                        idVariables_ = [idVariables_; id];
-                    end
-                end
-            end
-            VariableName = B.name(idVariables_);
-          otherwise
-            error('dseries::extract: (Implicit loops) Cannot unroll more than two implicit loops!')
-        end
-        VariableName_ = vertcat(VariableName_,VariableName);
+        VariableName_ = build_list_of_variables_with_loops(B.name, idArobase, VariableName, VariableName_);
     elseif length(idBracket.open)
-        % Matlab/Octave's regular expressions.
-        first_block_id = 0;
-        last_block_id = 0;
-        idVariables = find(isnotempty_cell(regexp(B.name,VariableName,'match')));
-        if isempty(idVariables)
-            error(['dseries::extract: Can''t find any variable matching ' VariableName ' pattern!'])
-        end
-        idVariables_ = [];
-        for j = 1:length(idVariables)
-            first_block_flag = 0;
-            if (first_block_id && strcmp(B.name{idVariables(j)}(1:first_block_id),VariableName(1:first_block_id))) || ~first_block_id
-                first_block_flag = 1;
-            end
-            last_block_flag = 0;
-            if (last_block_id && strcmp(B.name{idVariables(j)}(end-last_block_id:end),VariableName(end-last_block_id:end))) || ~last_block_id
-                last_block_flag = 1;
-            end
-            if first_block_flag && last_block_flag
-                idVariables_ = [idVariables_; idVariables(j)];
-            end
-        end
-        VariableName = B.name(idVariables_);
-        VariableName_ = vertcat(VariableName_,VariableName);
+        VariableName_ = build_list_of_variables_with_regexp(B.name, idBracket, VariableName, VariableName_);
     else
         VariableName_ = varargin(:);
     end
@@ -128,15 +67,6 @@ A.data = B.data(:,idVariableName);
 A.dates = B.dates;
 A.name = B.name(idVariableName);
 A.tex = B.tex(idVariableName);
-
-function b = isnotempty_cell(CellArray)
-    CellArrayDimension = size(CellArray);
-    b = NaN(CellArrayDimension);
-    for i=1:CellArrayDimension(1)
-        for j = 1:CellArrayDimension(2)
-            b(i,j) = ~isempty(CellArray{i,j});
-        end
-    end
     
     
 %@test:1
