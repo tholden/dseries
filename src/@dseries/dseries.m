@@ -197,28 +197,9 @@ classdef dseries<handle % --*-- Unitary tests --*--
             if isempty(o.dates)
                 o.dates = init:init+(nobs(o)-1);
             end
-<<<<<<< HEAD
-        else
-            error('dseries::dseries: The number of declared tex names does not match the number of variables!')
-        end
-    else
-        ts.tex = name2tex(ts.name);
-    end
-  otherwise
-    error('dseries::dseries: Can''t instantiate the class, wrong calling sequence!')
-end
-
-if isempty(ts.dates)
-    if ~exist( 'init', 'var' ) || isempty( init )
-        init = 1;
-    end
-    ts.dates = init:init+(nobs(ts)-1);
-end
-=======
         end % dseries
     end % methods
 end % classdef
->>>>>>> DynareTeam/master
 
 %@test:1
 %$ % Test if we can instantiate an empty dseries object.

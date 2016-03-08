@@ -103,3 +103,28 @@ switch nargin
         if ~iscell(d) && ~isempty(d)
             d = cellstr(d);
         end
+
+
+
+
+===========================
+
+
+
+        else
+            error('dseries::dseries: The number of declared tex names does not match the number of variables!')
+        end
+    else
+        ts.tex = name2tex(ts.name);
+    end
+  otherwise
+    error('dseries::dseries: Can''t instantiate the class, wrong calling sequence!')
+end
+
+if isempty(ts.dates)
+    if ~exist( 'init', 'var' ) || isempty( init )
+        init = 1;
+    end
+    ts.dates = init:init+(nobs(ts)-1);
+end
+
