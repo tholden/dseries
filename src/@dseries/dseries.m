@@ -1,74 +1,15 @@
-function ts = dseries(varargin) % --*-- Unitary tests --*--
+classdef dseries<handle % --*-- Unitary tests --*--
 
-%@info:
-%! @deftypefn {Function File} {@var{ts} =} dseries (@var{a},@var{b},@var{c},@var{d})
-%! @anchor{dseries}
-%! @sp 1
-%! Constructor for the Dynare time series class.
-%! @sp 2
-%! @strong{Inputs}
-%! @sp 2
-%! If @code{nargin==0} then an empty dseries object is created. The object can be populated with data subsequently using the overloaded subsref method.
-%! @sp 2
-%! If @code{nargin==1} and if the input argument is a @ref{dates} object, then a dseries object without data is created. This object can be populated with the overload subsref method.
-%! @sp 2
-%! If @code{nargin==1} and if the input argument is a string for the name of a csv, m or mat file containing data, then a dseries object is created from these data.
-%! @sp 2
-%! If @code{nargin>1}:
-%! @sp 1
-%! @table @ @var
-%! @item a
-%! T*1 vector or T*N matrix of data.
-%! @item b
-%! Initial date. For Quaterly, Monthly or Weekly data, b must be a string. For yearly data or if the frequence is not defined b must be an integer.
-%! @item c
-%! N*1 cell array of strings or N*q array of strings. Names of the N time series.
-%! @item d
-%! N*1 cell array of strings or N*p array of characters. TeX names of the N time series.
-%! @end table
-%! @sp 2
-%! @strong{Outputs}
-%! @sp 1
-%! @table @ @var
-%! @item ts
-%! Dynare time series object.
-%! @end table
-%! @sp 2
-%! @strong{Properties}
-%! @sp 1
-%! The constructor defines the following properties:
-%! @sp 1
-%! @table @ @var
-%! @item data
-%! Array of doubles (nobs*vobs).
-%! @item nobs
-%! Scalar integer, the number of observations.
-%! @item vobs
-%! Scalar integer, the number of variables.
-%! @item name
-%! Cell array of strings, names of the variables.
-%! @item tex
-%! Cell array of strings, tex names of the variables.
-%! @item freq
-%! Scalar integer, the frequency of the time series. @var{freq} is equal to 1 if data are on a yearly basis or if
-%! frequency is unspecified. @var{freq} is equal to 4 if data are on a quaterly basis. @var{freq} is equal to
-%! 12 if data are on a monthly basis. @var{freq} is equal to 52 if data are on a weekly basis.
-%! @item init
-%! @ref{dates} object, initial date of the dataset.
-%! @end table
-%! @end deftypefn
-%@eod:
+% Class for time series.
 
-% Copyright (C) 2011-2013 Dynare Team
+% Copyright (C) 2013-2015 Dynare Team
 %
-% This file is part of Dynare.
-%
-% Dynare is free software: you can redistribute it and/or modify
+% This code is free software: you can redistribute it and/or modify
 % it under the terms of the GNU General Public License as published by
 % the Free Software Foundation, either version 3 of the License, or
 % (at your option) any later version.
 %
-% Dynare is distributed in the hope that it will be useful,
+% Dynare dates submodule is distributed in the hope that it will be useful,
 % but WITHOUT ANY WARRANTY; without even the implied warranty of
 % MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 % GNU General Public License for more details.
@@ -76,169 +17,187 @@ function ts = dseries(varargin) % --*-- Unitary tests --*--
 % You should have received a copy of the GNU General Public License
 % along with Dynare.  If not, see <http://www.gnu.org/licenses/>.
 
-if nargin>0 && ischar(varargin{1}) && isequal(varargin{1},'initialize')
-    ts = struct;
-    ts.data  = [];
-    ts.name  = {};
-    ts.tex   = {};
-    ts.dates = dates();
-    ts = class(ts,'dseries');
-    assignin('base','emptydseriesobject',ts);
-    return
-end
+    properties
+        data  = [];         % Array of data (a column per variable, a row per observation)
+        name  = {};         % Names of the variables.
+        tex   = {};         % TeX names of the variables.
+        dates = dates();    % Dates associated to the observations.
+    end
 
-ts = evalin('base','emptydseriesobject');
-
-switch nargin
-  case 0
-    %  Create an empty dseries object.
-    return
-  case 1
-    if isdates(varargin{1})
-        switch length(varargin{1})
-          case 0
-            error(['dseries::dseries: Input (identified as a dates object) must be non empty!'])
-          case 1
-            % Create an empty dseries object with an initial date.
-            ts.dates = varargin{1};
-          otherwise
-            % A range of dates is passed to the constructor
-            ts.dates = varargin{1};
-        end
-        return
-    elseif ischar(varargin{1})
-        % Create a dseries object loading data in a file (*.csv, *.m, *.mat).
-        if isempty(varargin{1})
-            error('dseries:: Wrong calling sequence! Input argument cannot be an empty string.')
-        elseif check_file_extension(varargin{1},'m')
-            [freq,init,data,varlist,tex] = load_m_file_data(varargin{1});
-        elseif check_file_extension(varargin{1},'mat')
-            [freq,init,data,varlist,tex] = load_mat_file_data(varargin{1});
-        elseif check_file_extension(varargin{1},'csv')
-            [freq,init,data,varlist] = load_csv_file_data(varargin{1});
-            tex = [];
-        elseif check_file_extension(varargin{1},'xls') || check_file_extension(varargin{1},'xlsx')
-            if isglobalinbase('options_')
-                % Check that the object is instantiated within a dynare session so that options_ global structure exists.
-                % Should provide latter a mechanism to pass range and sheet to dseries constructor...
-                range = evalin('base','options_.xls_range');
-                sheet = evalin('base','options_.xls_sheet');
-            else
-                % By default only the (whole) first sheet is loaded.
-                range = [];
-                sheet = [];
+    methods
+        function o = dseries(varargin)
+        % Constructor for the dseries class
+        % 
+        % INPUTS 
+        %
+        % - If no input arguments, the constructore returns an empty dseries object.
+        %
+        % - If only one input argument is provided, the behaviour of the constructor depends on the type of the argument:
+        %  + varargin{1}  [dates]   Constructor will return a dseries object without data. The dseries object can be populated later using dseries' methods.
+        %  + varargin{1}  [char]    The name of a csv, m, mat or xlsx file containing data. A dseries object is created from these data.
+        %  + varargin{1}  [double]  A T*N array of data. A dseries object is created from the array (T observations, N variables).  
+        %
+        % - If only one two, three or four arguments are provided, we must have:
+        %  + varargin{1}  [double]      A T*N array of data.
+        %  + varargin{2}  [dates, char] A single element dates object or a string representing a date, the initial date of the database.
+        %  + varargin{3}  [cell]        A N*1 cell of char or a N*q array of char, the names of  the variables.
+        %  + varargin{4}  [cell]        A N*1 cell of char or a N*q array of char, the TeX names of  the variables.
+        %
+        % OUTPUTS 
+        % - o [dseries]
+            switch nargin
+              case 0
+                % Return empty object.
+                o.data  = [];
+                o.name  = {};
+                o.tex   = {};
+                o.dates = dates(); 
+                return
+              case 1
+                if isdates(varargin{1})
+                    switch length(varargin{1})
+                      case 0
+                        error('dseries:WrongInputArguments', 'Input (identified as a dates object) must be non empty!');
+                      case 1
+                        % Create an empty dseries object with an initial date.
+                        o.data  = [];
+                        o.name  = {};
+                        o.tex   = {};
+                        o.dates = varargin{1};
+                      otherwise
+                        error('dseries:WrongInputArguments', 'Input (identified as a dates object) must have a unique element!');
+                    end
+                    return
+                elseif ischar(varargin{1})
+                    % Create a dseries object loading data in a file (*.csv, *.m, *.mat).
+                    if isempty(varargin{1})
+                        error('dseries:WrongInputArguments', 'Input argument cannot be an empty string!')
+                    elseif check_file_extension(varargin{1},'m')
+                        [freq,init,data,varlist,tex] = load_m_file_data(varargin{1});
+                    elseif check_file_extension(varargin{1},'mat')
+                        [freq,init,data,varlist,tex] = load_mat_file_data(varargin{1});
+                    elseif check_file_extension(varargin{1},'csv')
+                        [freq,init,data,varlist] = load_csv_file_data(varargin{1});
+                        tex = [];
+                    elseif check_file_extension(varargin{1},'xls') || check_file_extension(varargin{1},'xlsx')
+                        if isglobalinbase('options_')
+                            % Check that the object is instantiated within a dynare session so that options_ global structure exists.
+                            % Should provide latter a mechanism to pass range and sheet to dseries constructor...
+                            range = evalin('base','options_.xls_range');
+                            sheet = evalin('base','options_.xls_sheet');
+                        else
+                            % By default only the (whole) first sheet is loaded.
+                            range = [];
+                            sheet = [];
+                        end
+                        [freq,init,data,varlist] = load_xls_file_data(varargin{1}, sheet, range);
+                        tex = [];
+                    else
+                        error('dseries:WrongInputArguments', 'I''m not able to load data from %s!', varargin{1});
+                    end
+                    o.data = data;
+                    o.name = varlist;
+                    o.dates = init:init+(nobs(o)-1);
+                    if isempty(tex)
+                        o.tex = name2tex(varlist);
+                    else
+                        o.tex = tex;
+                    end
+                elseif isnumeric(varargin{1}) && isequal(ndims(varargin{1}),2)
+                    o.data = varargin{1};
+                    o.name = default_name(vobs(o));
+                    o.tex = name2tex(o.name);
+                    o.dates = dates(1,1):dates(1,1)+(nobs(o)-1); 
+                end
+              case  {2,3,4}
+                if isequal(nargin,2) && ischar(varargin{1}) && isdates(varargin{2})
+                    % Instantiate dseries object with a data file and force the initial date to be as given by the second input argument.
+                    p = dseries(varargin{1});
+                    o = dseries(p.data, varargin{2}, p.name, p.tex);
+                    return
+                end
+                if isequal(nargin,2) && ischar(varargin{1}) && ischar(varargin{2}) && isdate(varargin{2})
+                    % Instantiate dseries object with a data file and force the initial date to be as given by the second input argument.
+                    p = dseries(varargin{1});
+                    o = dseries(p.data, dates(varargin{2}), p.name, p.tex);
+                    return
+                end
+                a = varargin{1};
+                b = varargin{2};
+                if nargin<4
+                    d = {};
+                else
+                    d = varargin{4};
+                    if ~iscell(d) && ~isempty(d)
+                        d = cellstr(d);
+                    end
+                end
+                if nargin<3
+                    c = {};
+                else
+                    c = varargin{3};
+                    if ~iscell(c) && ~isempty(c)
+                        c = cellstr(c);
+                    end
+                end
+                % Get data, number of observations and number of variables.
+                o.data = a;
+                % Get the first date and set the frequency.
+                if isempty(b)
+                    init = dates(1,1);
+                elseif (isdates(b) && isequal(length(b),1))
+                    init = b;
+                elseif ischar(b) && isdate(b)% Weekly, Monthly, Quaterly or Annual data (string).
+                    init = dates(b);
+                elseif (isnumeric(b) && isscalar(b) && isint(b)) % Yearly data.
+                    init = dates([num2str(b) 'Y']);
+                elseif isdates(b) % Range of dates
+                    init = b(1);
+                    if nobs(o)>1 && ~isequal(b.ndat(),nobs(o))
+                        error('dseries:WrongInputArguments', ['If second input is a range, its number ' ...
+                                            'of elements must match\nthe number of rows in the ' ...
+                                            'first input, unless the first input\nhas only one row.']);
+                    elseif isequal(nobs(o), 1)
+                        o.data = repmat(o.data,b.ndat(),1);
+                    end
+                    o.dates = b;
+                elseif (isnumeric(b) && isint(b)) % Range of yearly dates.
+                    error('dseries:WrongInputArguments', ['Not implemented! If you need to define ' ...
+                                        'a range of years, you have to pass a dates object as the ' ...
+                                        'second input argument']);
+                else
+                    error('dseries:WrongInputArguments', 'Wrong calling sequence! Please check the manual.');
+                end
+                % Get the names of the variables.
+                if ~isempty(c)
+                    if vobs(o)==length(c)
+                        for i=1:vobs(o)
+                            o.name = vertcat(o.name, c(i));
+                        end
+                    else
+                        error('dseries:WrongInputArguments', 'The number of declared names does not match the number of variables!')
+                    end
+                else
+                    o.name = default_name(vobs(o));
+                end
+                if ~isempty(d)
+                    if vobs(o)==length(d)
+                        for i=1:vobs(o)
+                            o.tex = vertcat(o.tex, d(i));
+                        end
+                    else
+                        error('dseries:WrongInputArguments', 'The number of declared tex names does not match the number of variables!')
+                    end
+                else
+                    o.tex = name2tex(o.name);
+                end 
+              otherwise
+                error('dseries:WrongInputArguments', 'Wrong calling sequence! Please check the manual.')
             end
-            [freq,init,data,varlist] = load_xls_file_data(varargin{1}, sheet, range);
-            tex = [];
-        else
-            error(['dseries:: I''m not able to load data from ' varargin{1} '!'])
-        end
-        ts.data = data;
-        ts.name = varlist;
-        ts.dates = init:init+(nobs(ts)-1);
-        if isempty(tex)
-            ts.tex = name2tex(varlist);
-        else
-            ts.tex = tex;
-        end
-    elseif isnumeric(varargin{1}) && isequal(ndims(varargin{1}),2)
-        ts.data = varargin{1};
-        ts.name = default_name(vobs(ts));
-        ts.tex = name2tex(ts.name);
-        ts.dates = dates(1,1):dates(1,1)+(nobs(ts)-1);
-    elseif isa(varargin{1},'dseries')
-		source_ts = struct( varargin{1} );
-		ts.data = source_ts.data;
-		ts.name = source_ts.name;
-		ts.tex = source_ts.tex;
-		ts.dates = source_ts.dates;
-    elseif isstruct(varargin{1})
-		source_ts = varargin{1};
-		ts.data = source_ts.data;
-		ts.name = source_ts.name;
-		ts.tex = source_ts.tex;
-		ts.dates = source_ts.dates;
-	end
-  case {2,3,4}
-    if isequal(nargin,2) && ischar(varargin{1}) && isdates(varargin{2})
-        % Instantiate dseries object with a data file and force the initial date to be as given by the second input argument.
-        ds = dseries(varargin{1});
-        ts = dseries(ds.data, varargin{2}, ds.name, ds.tex);
-        return
-    end
-    if isequal(nargin,2) && ischar(varargin{1}) && ischar(varargin{2}) && isdate(varargin{2})
-        % Instantiate dseries object with a data file and force the initial date to be as given by the second input argument.
-        ds = dseries(varargin{1});
-        ts = dseries(ds.data, dates(varargin{2}), ds.name, ds.tex);
-        return
-    end
-    a = varargin{1};
-    b = varargin{2};
-    if nargin<4
-        d = {};
-    else
-        d = varargin{4};
-        if ~iscell(d) && ~isempty(d)
-            d = cellstr(d);
-        end
-    end
-    if nargin<3
-        c = {};
-    else
-        c = varargin{3};
-        if ~iscell(c) && ~isempty(c)
-            c = cellstr(c);
-        end
-    end
-    % Get data, number of observations and number of variables.
-    ts.data = a;
-    % Get the first date and set the frequency.
-    if isempty(b)
-        init = dates(1,1);
-    elseif (isdates(b) && isequal(length(b),1))
-        init = b;
-    elseif ischar(b) && isdate(b)% Weekly, Monthly, Quaterly or Annual data (string).
-        init = dates(b);
-    elseif (isnumeric(b) && isscalar(b) && isint(b)) % Yearly data.
-        init = dates([num2str(b) 'Y']);
-    elseif isdates(b) % Range of dates
-        init = b(1);
-        if nobs(ts)>1 && ~isequal(b.ndat,nobs(ts))
-            message =   'dseries::dseries: If second input is a range, its number of elements must match ';
-            message = char(message, '                  the number of rows in the first input, unless the first input');
-            message = char(message, '                  has only one row.');
-            skipline()
-            disp(message);
-            error(' ');
-        elseif isequal(nobs(ts), 1)
-            ts.data = repmat(ts.data,b.ndat,1);
-        end
-        ts.dates = b;
-    elseif (isnumeric(b) && isint(b)) % Range of yearly dates.
-        message = 'dseries::dseries: Not implemented! If you need to define a range of years';
-        message = char(message, '                  you have to pass a dates object as the second input argument.');
-        disp(message)
-        error(' ')
-    else
-        error('dseries::dseries: Wrong calling sequence!');
-    end
-    % Get the names of the variables.
-    if ~isempty(c)
-        if vobs(ts)==length(c)
-            for i=1:vobs(ts)
-                ts.name = vertcat(ts.name, c(i));
+            if isempty(o.dates)
+                o.dates = init:init+(nobs(o)-1);
             end
-        else
-            error('dseries::dseries: The number of declared names does not match the number of variables!')
-        end
-    else
-        ts.name = default_name(vobs(ts));
-    end
-    if ~isempty(d)
-        if vobs(ts)==length(d)
-            for i=1:vobs(ts)
-                ts.tex = vertcat(ts.tex, d(i));
-            end
+<<<<<<< HEAD
         else
             error('dseries::dseries: The number of declared tex names does not match the number of variables!')
         end
@@ -255,6 +214,11 @@ if isempty(ts.dates)
     end
     ts.dates = init:init+(nobs(ts)-1);
 end
+=======
+        end % dseries
+    end % methods
+end % classdef
+>>>>>>> DynareTeam/master
 
 %@test:1
 %$ % Test if we can instantiate an empty dseries object.
@@ -439,12 +403,12 @@ end
 
 %@test:9
 %$ try
-%$     [strfile, status] = urlwrite('http://www.dynare.org/Datasets/dseries/dynseries_test_data-1.xls','dynseries_test_data-1.xls');
+%$     [strfile, status] = urlwrite('http://www.dynare.org/Datasets/dseries/dynseries_test_data-1.xlsx','dynseries_test_data-1.xlsx');
 %$     if ~status
 %$         error()
 %$     end
-%$     ts = dseries('dynseries_test_data-1.xls');
-%$     delete('dynseries_test_data-1.xls');
+%$     ts = dseries('dynseries_test_data-1.xlsx');
+%$     delete('dynseries_test_data-1.xlsx');
 %$     t(1) = 1;
 %$ catch
 %$     t(1) = 0;
@@ -465,12 +429,12 @@ end
 
 %@test:10
 %$ try
-%$     [strfile, status] = urlwrite('http://www.dynare.org/Datasets/dseries/dynseries_test_data-2.xls','dynseries_test_data-2.xls');
+%$     [strfile, status] = urlwrite('http://www.dynare.org/Datasets/dseries/dynseries_test_data-2.xlsx','dynseries_test_data-2.xlsx');
 %$     if ~status
 %$         error()
 %$     end
-%$     ts = dseries('dynseries_test_data-2.xls');
-%$     delete('dynseries_test_data-2.xls');
+%$     ts = dseries('dynseries_test_data-2.xlsx');
+%$     delete('dynseries_test_data-2.xlsx');
 %$     t(1) = 1;
 %$ catch
 %$     t(1) = 0;
@@ -491,12 +455,12 @@ end
 
 %@test:11
 %$ try
-%$     [strfile, status] = urlwrite('http://www.dynare.org/Datasets/dseries/dynseries_test_data-3.xls','dynseries_test_data-3.xls');
+%$     [strfile, status] = urlwrite('http://www.dynare.org/Datasets/dseries/dynseries_test_data-3.xlsx','dynseries_test_data-3.xlsx');
 %$     if ~status
 %$         error()
 %$     end
-%$     ts = dseries('dynseries_test_data-3.xls');
-%$     delete('dynseries_test_data-3.xls');
+%$     ts = dseries('dynseries_test_data-3.xlsx');
+%$     delete('dynseries_test_data-3.xlsx');
 %$     t(1) = 1;
 %$ catch
 %$     t(1) = 0;
@@ -517,12 +481,12 @@ end
 
 %@test:12
 %$ try
-%$     [strfile, status] = urlwrite('http://www.dynare.org/Datasets/dseries/dynseries_test_data-4.xls','dynseries_test_data-4.xls');
+%$     [strfile, status] = urlwrite('http://www.dynare.org/Datasets/dseries/dynseries_test_data-4.xlsx','dynseries_test_data-4.xlsx');
 %$     if ~status
 %$         error()
 %$     end
-%$     ts = dseries('dynseries_test_data-4.xls');
-%$     delete('dynseries_test_data-4.xls');
+%$     ts = dseries('dynseries_test_data-4.xlsx');
+%$     delete('dynseries_test_data-4.xlsx');
 %$     t(1) = 1;
 %$ catch
 %$     t(1) = 0;
@@ -586,7 +550,7 @@ end
 
 %@test:15
 %$ try
-%$     ts = dseries([1; 2],dates('1990Q1'):dates('1990Q4'));
+%$     evalc('dseries([1; 2],dates(''1990Q1''):dates(''1990Q4''));');
 %$     t = 0;
 %$ catch
 %$     t = 1;

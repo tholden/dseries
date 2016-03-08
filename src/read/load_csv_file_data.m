@@ -1,4 +1,4 @@
-function [freq, init, data, varlist] = load_csv_file_data(file)
+function [freq, init, data, varlist] = load_csv_file_data(file) % --*-- Unitary tests --*--
 %function [freq, init, data, varlist] = load_csv_file_data(file)
 % Loads data in a csv file.
 %
@@ -121,6 +121,8 @@ if isoctave
             end
             varlist = strtrim(varlist);
             linea = linea+1;
+            % Remove double quotes if any
+            varlist = strrep(varlist,'"','');
         end
 
         % Get following line (number 1 or 2 depending on withnames flag)
@@ -162,8 +164,8 @@ if isoctave
 
         % Remove first line if withnames
         data = data(1+withnames:ndx, :);
+        return
     end
-    return
 else
     A = importdata(file, ',');
     if ~isstruct(A)
@@ -182,7 +184,7 @@ else
 end
 
 if withvars
-    varlist = T(1, 2:end);
+    varlist = T(1, 1+withtime:end);
     T = T(2:end, :);
 end
 if withtime
@@ -191,3 +193,25 @@ if withtime
 end
 
 varlist = transpose(varlist);
+
+% Remove double quotes if any
+varlist = strrep(varlist,'"','');
+
+%@test:1
+%$ % Download csv file with data.
+%$ urlwrite('http://www.dynare.org/Datasets/data_ca1_csv.csv','data_ca1_csv.csv');
+%$
+%$ % Instantiate a dseries from the data in the csv file.
+%$ try
+%$   d = dseries('data_ca1_csv.csv');
+%$   t(1) = true;
+%$ catch
+%$   t(1) = false;
+%$ end
+%$
+%$ if t(1)
+%$   t(2) = dassert(d.name,{'y_obs'; 'pie_obs'; 'R_obs'; 'de'; 'dq'});
+%$ end
+%$
+%$ T = all(t);
+%@eof:1

@@ -22,7 +22,7 @@ function us = qgrowth(ts) % --*-- Unitary tests --*--
 %! @end deftypefn
 %@eod:
 
-% Copyright (C) 2012-2013 Dynare Team
+% Copyright (C) 2012-2015 Dynare Team
 %
 % This file is part of Dynare.
 %
@@ -61,7 +61,7 @@ switch frequency(ts)
   case 52
     error('dseries::qgrowth: I do not know yet how to compute quaterly growth rates from weekly data!')
   otherwise
-    error(['dseries::ygrowth: object ' inputname(1) ' has unknown frequency']);
+    error(['dseries::qgrowth: object ' inputname(1) ' has unknown frequency']);
 end
 
 %@test:1

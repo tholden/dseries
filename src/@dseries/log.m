@@ -1,32 +1,14 @@
-function ts = log(ts)
+function o = log(o) % --*-- Unitary tests --*--
 
-%@info:
-%! @deftypefn {Function File} {@var{ts} =} log(@var{ts})
-%! @anchor{log}
-%! Apply the logarithm function to a Dynare time series object.
-%!
-%! @strong{Inputs}
-%! @table @var
-%! @item ts
-%! Dynare time series object, instantiated by @ref{dseries}
-%! @end table
-%!
-%! @strong{Outputs}
-%! @table @var
-%! @item ts
-%! Dynare time series object with transformed data field.
-%! @end table
-%!
-%! @strong{This function is called by:}
-%! None.
-%!
-%! @strong{This function calls:}
-%! None.
-%!
-%! @end deftypefn
-%@eod:
+% Apply the logarithm to all the variables in a dseries object (without in place modification).
+%
+% INPUTS 
+% - o [dseries]
+%
+% OUTPUTS 
+% - o [dseries]
 
-% Copyright (C) 2011-2013 Dynare Team
+% Copyright (C) 2011-2015 Dynare Team
 %
 % This file is part of Dynare.
 %
@@ -43,13 +25,56 @@ function ts = log(ts)
 % You should have received a copy of the GNU General Public License
 % along with Dynare.  If not, see <http://www.gnu.org/licenses/>.
 
-if any(ts.data<eps)
-    error('dseries::log: Input argument has to be strictly positive!')
+if any(o.data<eps)
+    error('dseries:WrongInputArguments', 'Variables in %s have be strictly positive!', inputname(1))
 end
 
-for i=1:vobs(ts)
-    ts.name(i) = {['log(' ts.name{i} ')']};
-    ts.tex(i) = {['\log(' ts.tex{i} ')']};
-end
+o = copy(o);
+o.log_;
 
-ts.data = log(ts.data);
+%@test:1
+%$ % Define a dates object
+%$ data = ones(10,2);
+%$ o = dseries(data);
+%$ q = dseries(data);
+%$
+%$ % Call the tested routine.
+%$ try
+%$     p = o.log();
+%$     t(1) = true;
+%$ catch
+%$     t(1) = false;
+%$ end
+%$ 
+%$ if t(1)
+%$      t(2) = dassert(o, q);
+%$      t(3) = dassert(p.data, zeros(10, 2));
+%$ end
+%$
+%$ T = all(t);
+%@eof:1
+
+%@test:2
+%$ % Define a dates object
+%$ data = ones(10,2);
+%$ o = dseries(data);
+%$ q = dseries(data);
+%$
+%$ % Call the tested routine.
+%$ try
+%$     p = o.log();
+%$     t(1) = true;
+%$ catch
+%$     t(1) = false;
+%$ end
+%$ 
+%$ if t(1)
+%$      t(2) = dassert(length(p.name), 2);
+%$      t(3) = dassert(p.name{1},'log(Variable_1)');
+%$      t(4) = dassert(p.name{2},'log(Variable_2)');
+%$      t(5) = dassert(o.name{1},'Variable_1');
+%$      t(6) = dassert(o.name{2},'Variable_2');
+%$ end
+%$
+%$ T = all(t);
+%@eof:2

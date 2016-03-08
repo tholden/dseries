@@ -20,10 +20,13 @@ function A = merge(B,C) % --*-- Unitary tests --*--
 %! @table @ @var
 %! @item A
 %! Dynare time series object.
+%! @sp 1
+%! @strong{Remarks}
+%! If @var{B} and @var{C} have common variables, the variables in @var{C} take precedence.
 %! @end deftypefn
 %@eod:
 
-% Copyright (C) 2013 Dynare Team
+% Copyright (C) 2013-2015 Dynare Team
 %
 % This file is part of Dynare.
 %
@@ -86,7 +89,7 @@ else
     end;
     Z = [Z2 Z1];
     A.data = Z(:,IBC);
-    A_init = B.init;
+    A_init = firstdate(B);
 end
 
 A.dates = A_init:A_init+(nobs(A)-1);

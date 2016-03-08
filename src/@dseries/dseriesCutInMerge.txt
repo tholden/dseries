@@ -1,0 +1,105 @@
+if nargin>0 && ischar(varargin{1}) && isequal(varargin{1},'initialize')
+    ts = struct;
+    ts.data  = [];
+    ts.name  = {};
+    ts.tex   = {};
+    ts.dates = dates();
+    ts = class(ts,'dseries');
+    assignin('base','emptydseriesobject',ts);
+    return
+end
+
+ts = evalin('base','emptydseriesobject');
+
+switch nargin
+  case 0
+    %  Create an empty dseries object.
+    return
+  case 1
+    if isdates(varargin{1})
+        switch length(varargin{1})
+          case 0
+            error(['dseries::dseries: Input (identified as a dates object) must be non empty!'])
+          case 1
+            % Create an empty dseries object with an initial date.
+            ts.dates = varargin{1};
+          otherwise
+            % A range of dates is passed to the constructor
+            ts.dates = varargin{1};
+        end
+        return
+    elseif ischar(varargin{1})
+        % Create a dseries object loading data in a file (*.csv, *.m, *.mat).
+        if isempty(varargin{1})
+            error('dseries:: Wrong calling sequence! Input argument cannot be an empty string.')
+        elseif check_file_extension(varargin{1},'m')
+            [freq,init,data,varlist,tex] = load_m_file_data(varargin{1});
+        elseif check_file_extension(varargin{1},'mat')
+            [freq,init,data,varlist,tex] = load_mat_file_data(varargin{1});
+        elseif check_file_extension(varargin{1},'csv')
+            [freq,init,data,varlist] = load_csv_file_data(varargin{1});
+            tex = [];
+        elseif check_file_extension(varargin{1},'xls') || check_file_extension(varargin{1},'xlsx')
+            if isglobalinbase('options_')
+                % Check that the object is instantiated within a dynare session so that options_ global structure exists.
+                % Should provide latter a mechanism to pass range and sheet to dseries constructor...
+                range = evalin('base','options_.xls_range');
+                sheet = evalin('base','options_.xls_sheet');
+            else
+                % By default only the (whole) first sheet is loaded.
+                range = [];
+                sheet = [];
+            end
+            [freq,init,data,varlist] = load_xls_file_data(varargin{1}, sheet, range);
+            tex = [];
+        else
+            error(['dseries:: I''m not able to load data from ' varargin{1} '!'])
+        end
+        ts.data = data;
+        ts.name = varlist;
+        ts.dates = init:init+(nobs(ts)-1);
+        if isempty(tex)
+            ts.tex = name2tex(varlist);
+        else
+            ts.tex = tex;
+        end
+    elseif isnumeric(varargin{1}) && isequal(ndims(varargin{1}),2)
+        ts.data = varargin{1};
+        ts.name = default_name(vobs(ts));
+        ts.tex = name2tex(ts.name);
+        ts.dates = dates(1,1):dates(1,1)+(nobs(ts)-1);
+    elseif isa(varargin{1},'dseries')
+		source_ts = struct( varargin{1} );
+		ts.data = source_ts.data;
+		ts.name = source_ts.name;
+		ts.tex = source_ts.tex;
+		ts.dates = source_ts.dates;
+    elseif isstruct(varargin{1})
+		source_ts = varargin{1};
+		ts.data = source_ts.data;
+		ts.name = source_ts.name;
+		ts.tex = source_ts.tex;
+		ts.dates = source_ts.dates;
+	end
+  case {2,3,4}
+    if isequal(nargin,2) && ischar(varargin{1}) && isdates(varargin{2})
+        % Instantiate dseries object with a data file and force the initial date to be as given by the second input argument.
+        ds = dseries(varargin{1});
+        ts = dseries(ds.data, varargin{2}, ds.name, ds.tex);
+        return
+    end
+    if isequal(nargin,2) && ischar(varargin{1}) && ischar(varargin{2}) && isdate(varargin{2})
+        % Instantiate dseries object with a data file and force the initial date to be as given by the second input argument.
+        ds = dseries(varargin{1});
+        ts = dseries(ds.data, dates(varargin{2}), ds.name, ds.tex);
+        return
+    end
+    a = varargin{1};
+    b = varargin{2};
+    if nargin<4
+        d = {};
+    else
+        d = varargin{4};
+        if ~iscell(d) && ~isempty(d)
+            d = cellstr(d);
+        end

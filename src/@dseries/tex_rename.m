@@ -1,6 +1,6 @@
 function ts = tex_rename(ts, varargin) % --*-- Unitary tests --*--
 
-% Copyright (C) 2013 Dynare Team
+% Copyright (C) 2013-2015 Dynare Team
 %
 % This file is part of Dynare.
 %
@@ -21,14 +21,17 @@ assert(nargin <= 3, 'dseries::tex_rename: accepts at most three args');
 
 if nargin == 2
     newtexname = varargin{1};
-    assert(vobs(ts) == 1, ['dseries::tex_rename: with one argument, the dseries contain only one variable.']);
+    assert(vobs(ts) == 1 || vobs(ts) == length(newtexname), ...
+           'dseries::tex_rename: with one argument, the dseries contain only one variable.');
 else
     newtexname = varargin{2};
     name = varargin{1};
     assert(ischar(name), 'dseries::tex_rename: second input argument (name) must be a string');
 end
 
-assert(ischar(newtexname), 'dseries::tex_rename: third input argument (newtexname) name must be a string');
+assert(ischar(newtexname) || (iscellstr(newtexname) && length(newtexname) == vobs(ts)), ...
+       ['dseries::tex_rename: third input argument (newtexname) name must either be a string' ...
+            ' or a cell array of strings with the same number of entries as varibles in the dseries']);
 
 if nargin == 2
     idname = 1;
@@ -39,7 +42,11 @@ else
     end
 end
 
-ts.tex(idname) = {newtexname};
+if iscellstr(newtexname)
+    ts.tex = newtexname;
+else
+    ts.tex(idname) = {newtexname};
+end
 
 %@test:1
 %$ t = zeros(8,1);
@@ -86,3 +93,20 @@ ts.tex(idname) = {newtexname};
 %$
 %$ T = all(t);
 %@eof:2
+
+%@test:3
+%$ t = zeros(2,1);
+%$ ts = dseries(rand(3,3));
+%$ try
+%$     ts = ts.tex_rename({'Output','\\Delta Y_t','\\theta_{-1}'});
+%$     t(1) = 1;
+%$ catch
+%$     t = 0;
+%$ end
+%$
+%$ if length(t)>1
+%$     t(2) = dassert(ts.tex,{'Output','\\Delta Y_t','\\theta_{-1}'});
+%$ end
+%$
+%$ T = all(t);
+%@eof:3

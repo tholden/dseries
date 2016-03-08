@@ -36,45 +36,28 @@ switch length(S)
           end
           for i=1:numel(S(1).subs)
               element = S(1).subs{i};
+              % Implicit loop.
               idArobase = strfind(element,'@');
+              if mod(length(idArobase),2)
+                  error('dseries::subsasgn: (Implicit loops) The number of @ symbols must be even!')
+              end
+              % regular expression.
+              idBracket.open = strfind(element, '[');
+              idBracket.close = strfind(element, ']');
+              if ~isequal(length(idBracket.open),length(idBracket.open))
+                  error('dseries::subsasgn: (Matlab/Octave''s regular expressions) Check opening and closing square brackets!')
+              end
+              % Loops and regular expressions are not compatible
+              if length(idArobase) && length(idBracket.open)
+                  error(['dseries::subsasgn: You cannot use implicit loops and regular expressions in the same rule!'])
+              end
               if ~isempty(idArobase)
-                  switch length(idArobase)
-                    case 2
-                      idComma = strfind(element(idArobase(1)+1:idArobase(2)-1),',');
-                      if ~isempty(idComma)
-                          elements = cell(1,numel(idComma)+1); j = 1;
-                          expression = element(idArobase(1)+1:idArobase(2)-1);
-                          while ~isempty(expression)
-                              [token, expression] = strtok(expression,',');
-                              elements(j) = {[element(1:idArobase(1)-1), token, element(idArobase(2)+1:end)]};
-                              j = j + 1;
-                          end
-                          S(1).subs = replace_object_in_a_one_dimensional_cell_array(S(1).subs, elements(:), i);
-                      else
-                          error('dseries::subsasgn: Wrong syntax, matlab''s regular expressions cannot be used here!')
-                      end
-                    case 4
-                      idComma_1 = strfind(element(idArobase(1)+1:idArobase(2)-1),',');
-                      idComma_2 = strfind(element(idArobase(3)+1:idArobase(4)-1),',');
-                      if ~isempty(idComma_1)
-                          elements = cell(1,(numel(idComma_1)+1)*(numel(idComma_2)+1)); j = 1;
-                          expression_1 = element(idArobase(1)+1:idArobase(2)-1);
-                          while ~isempty(expression_1)
-                              [token_1, expression_1] = strtok(expression_1,',');
-                              expression_2 = element(idArobase(3)+1:idArobase(4)-1);
-                              while ~isempty(expression_2)
-                                  [token_2, expression_2] = strtok(expression_2,',');
-                                  elements(j) = {[element(1:idArobase(1)-1), token_1, element(idArobase(2)+1:idArobase(3)-1), token_2, element(idArobase(4)+1:end)]};
-                                  j = j+1;
-                              end
-                          end
-                          S(1).subs = replace_object_in_a_one_dimensional_cell_array(S(1).subs, elements(:), i);
-                      else
-                          error('dseries::subsasgn: Wrong syntax, matlab''s regular expressions cannot be used here!')
-                      end
-                    otherwise
-                      error('dseries::subsasgn: Wrong syntax!')
-                  end
+                  elements = build_list_of_variables_with_loops({}, idArobase, element, {});
+                  S(1).subs = replace_object_in_a_one_dimensional_cell_array(S(1).subs, elements(:), i);
+              end
+              if ~isempty(idBracket.open)
+                  elements = build_list_of_variables_with_regexp(A.name, idBracket, element, {});
+                  S(1).subs = replace_object_in_a_one_dimensional_cell_array(S(1).subs, elements(:), i);
               end
           end
           if isempty(B)
@@ -164,29 +147,24 @@ switch length(S)
               end
           elseif ischar(S(1).subs{1}) && isequal(S(1).subs{1},':') && isempty(A)
               if isnumeric(B)
-                  if isequal(rows(B),1)
-                      A.data = repmat(B,A.dates.ndat,1);
-                  elseif isequal(rows(B),A.dates.ndat)
-                      A.data = B;
+                  A.data = B;
+                  A.name = default_name(vobs(A));
+                  A.tex = name2tex(A.name);
+                  if isempty(A.dates)
+                      if isempty(A.dates.freq)
+                          init = dates('1Y')
+                      else
+                          init = dates(A.dates.freq, 1, 1);
+                      end
                   else
-                      error('dseries::subsasgn: Wrong syntax!')
+                      init = A.dates(1);
                   end
-                  if isempty(A.name)
-                      A.name = default_name(vobs(A));
-                      A.tex = name2tex(A.name);
-                  end
+                  A.dates = init:(init+rows(B)-1);
               elseif isdseries(B)
-                  if isequal(nobs(B), 1)
-                      A.data = repmat(B.data,A.dates.ndat,1);
-                  elseif isequal(nobs(B), A.dates.ndat)
-                      A.data = B;
-                  else
-                      error('dseries::subsasgn: Wrong syntax!')
-                  end
-                  if isempty(A.name)
-                      A.name = B.name;
-                      A.tex = B.tex;
-                  end
+                  A.data = B.data;
+                  A.name = B.name;
+                  A.tex = N.tex;
+                  A.dates = B.dates;
               end
               return
           else
@@ -818,7 +796,7 @@ end
 %$ A = rand(4,3);
 %$
 %$ % Instantiate an empty dseries object.
-%$ ts = dseries(dates('1950Q1'):dates('1950Q4'));
+%$ ts = dseries(dates('1950Q1'));
 %$
 %$ % Populate ts
 %$ try
@@ -838,30 +816,6 @@ end
 %@eof:21
 
 %@test:22
-%$ % Define a datasets.
-%$ A = rand(1,3);
-%$
-%$ % Instantiate an empty dseries object.
-%$ ts = dseries(dates('1950Q1'):dates('1950Q4'));
-%$
-%$ % Populate ts
-%$ try
-%$     ts(:) = A;
-%$     t(1) = 1;
-%$ catch
-%$     t(1) = 0;
-%$ end
-%$
-%$ % Instantiate a time series object.
-%$ if t(1)
-%$    t(2) = dassert(ts.vobs,3);
-%$    t(3) = dassert(ts.nobs,4);
-%$    t(4) = dassert(ts.data,repmat(A,4,1),1e-15);
-%$ end
-%$ T = all(t);
-%@eof:22
-
-%@test:23
 %$ % Instantiate a dseries object.
 %$ ts0 = dseries(randn(10,6), '1999y');
 %$
@@ -883,4 +837,4 @@ end
 %$    end
 %$ end
 %$ T = all(t);
-%@eof:23
+%@eof:22

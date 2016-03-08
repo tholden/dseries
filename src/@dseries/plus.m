@@ -1,29 +1,15 @@
-function A = plus(B,C) % --*-- Unitary tests --*--
+function q = plus(o, p) % --*-- Unitary tests --*--
 
-%@info:
-%! @deftypefn {Function File} {@var{A} =} plus (@var{B},@var{C})
-%! @anchor{@dseries/plus}
-%! @sp 1
-%! Overloads the plus method for the Dynare time series class (@ref{dseries}).
-%! @sp 2
-%! @strong{Inputs}
-%! @sp 1
-%! @table @ @var
-%! @item B
-%! Dynare time series object instantiated by @ref{dseries}.
-%! @item C
-%! Dynare time series object instantiated by @ref{dseries}.
-%! @end table
-%! @sp 1
-%! @strong{Outputs}
-%! @sp 1
-%! @table @ @var
-%! @item A
-%! Dynare time series object.
-%! @end deftypefn
-%@eod:
+% Overloads the plus (+) operator for dseries objects.
+%
+% INPUTS 
+% - o [dseries, real]
+% - p [dseries, real]
+%
+% OUTPUTS 
+% - q [dseries]
 
-% Copyright (C) 2011-2014 Dynare Team
+% Copyright (C) 2011-2015 Dynare Team
 %
 % This file is part of Dynare.
 %
@@ -40,68 +26,68 @@ function A = plus(B,C) % --*-- Unitary tests --*--
 % You should have received a copy of the GNU General Public License
 % along with Dynare.  If not, see <http://www.gnu.org/licenses/>.
 
-if isnumeric(B) && (isscalar(B) ||  isvector(B))
-    if ~isdseries(C)
+if isnumeric(o) && (isscalar(o) ||  isvector(o))
+    if ~isdseries(p)
         error('dseries::plus: Second input argument must be a dseries object!')
     end
-    A = C;
-    A.data = bsxfun(@plus,C.data,B);
-    return;
-end
-
-if isnumeric(C) && (isscalar(C) || isvector(C))
-    if ~isdseries(B)
-        error('dseries::plus: First input argument must be a dseries object!')
-    end
-    A = B;
-    A.data = bsxfun(@plus,B.data,C);
+    q = copy(p);
+    q.data = bsxfun(@plus, q.data, o);
     return
 end
 
-if ~isequal(vobs(B), vobs(C)) && ~(isequal(vobs(B), 1) || isequal(vobs(C), 1))
+if isnumeric(p) && (isscalar(p) || isvector(p))
+    if ~isdseries(o)
+        error('dseries::plus: First input argument must be a dseries object!')
+    end
+    q = copy(o);
+    q.data = bsxfun(@plus,o.data,p);
+    return
+end
+
+if ~isequal(vobs(o), vobs(p)) && ~(isequal(vobs(o), 1) || isequal(vobs(p), 1))
     error(['dseries::plus: Cannot add ' inputname(1) ' and ' inputname(2) ' (wrong number of variables)!'])
 else
-    if vobs(B)>vobs(C)
-        idB = 1:vobs(B);
-        idC = ones(1,vobs(B));
-    elseif vobs(B)<vobs(C)
-        idB = ones(1,vobs(C));
-        idC = 1:vobs(C);
+    if vobs(o)>vobs(p)
+        ido = 1:vobs(o);
+        idp = ones(1,vobs(o));
+    elseif vobs(o)<vobs(p)
+        ido = ones(1,vobs(p));
+        idp = 1:vobs(p);
     else
-        idB = 1:vobs(B);
-        idC = 1:vobs(C);
+        ido = 1:vobs(o);
+        idp = ido;
     end
 end
 
-if ~isequal(frequency(B),frequency(C))
+if ~isequal(frequency(o),frequency(p))
     error(['dseries::plus: Cannot add ' inputname(1) ' and ' inputname(2) ' (frequencies are different)!'])
 end
 
-if ~isequal(nobs(B), nobs(C)) || ~isequal(firstdate(B),firstdate(C))
-    [B, C] = align(B, C);
+if ~isequal(nobs(o), nobs(p)) || ~isequal(firstdate(o),firstdate(p))
+    [o, p] = align(o, p);
 end
 
-if isempty(B)
-    A = C;
+if isempty(o)
+    q = p;
     return
 end
 
-if isempty(C)
-    A = B;
+if isempty(p)
+    q = o;
     return
 end
 
-A = dseries();
+q = dseries();
 
-A.data = bsxfun(@plus,B.data,C.data);
-A.dates = B.dates;
+q.data = bsxfun(@plus,o.data,p.data);
+q.dates = o.dates;
 
-A_vobs = max(vobs(B), vobs(C));
-A.name = cell(A_vobs,1);
-A.tex = cell(A_vobs,1);
-for i=1:A_vobs
-    A.name(i) = {['plus(' B.name{idB(i)} ';' C.name{idC(i)} ')']};
-    A.tex(i) = {['(' B.tex{idB(i)} '+' C.tex{idC(i)} ')']};
+q_vobs = max(vobs(o), vobs(p));
+q.name = cell(q_vobs,1);
+q.tex = cell(q_vobs,1);
+for i=1:q_vobs
+    q.name(i) = {['plus(' o.name{ido(i)} ';' p.name{idp(i)} ')']};
+    q.tex(i) = {['(' o.tex{ido(i)} '+' p.tex{idp(i)} ')']};
 end
 
 %@test:1
@@ -111,16 +97,14 @@ end
 %$ % Define names
 %$ A_name = {'A1';'A2'}; B_name = {'B1'};
 %$
-%$ t = zeros(5,1);
-%$
 %$ % Instantiate a time series object.
 %$ try
 %$    ts1 = dseries(A,[],A_name,[]);
 %$    ts2 = dseries(B,[],B_name,[]);
 %$    ts3 = ts1+ts2;
-%$    t(1) = 1;
+%$    t(1) = true;
 %$ catch
-%$    t = 0;
+%$    t = false;
 %$ end
 %$
 %$ if length(t)>1
@@ -139,17 +123,15 @@ end
 %$ % Define names
 %$ A_name = {'A1';'A2'}; B_name = {'B1'};
 %$
-%$ t = zeros(5,1);
-%$
 %$ % Instantiate a time series object.
 %$ try
 %$    ts1 = dseries(A,[],A_name,[]);
 %$    ts2 = dseries(B,[],B_name,[]);
 %$    ts3 = ts1+ts2;
 %$    ts4 = ts3+ts1; 
-%$    t(1) = 1;
+%$    t(1) = true;
 %$ catch
-%$    t = 0;
+%$    t = false;
 %$ end
 %$
 %$ if length(t)>1
@@ -169,16 +151,14 @@ end
 %$ % Define names
 %$ A_name = {'A1';'A2'}; B_name = {'B1'};
 %$
-%$ t = zeros(5,1);
-%$
 %$ % Instantiate a time series object.
 %$ try
 %$    ts1 = dseries(A,[],A_name,[]);
 %$    ts2 = dseries(B,[],B_name,[]);
 %$    ts3 = ts1+ts2;
-%$    t(1) = 1;
+%$    t(1) = true;
 %$ catch
-%$    t = 0;
+%$    t = false;
 %$ end
 %$
 %$ if length(t)>1
@@ -191,15 +171,13 @@ end
 %@eof:3
 
 %@test:4
-%$ t = zeros(7,1);
-%$
 %$ try
 %$     ts = dseries(transpose(1:5),'1950q1',{'Output'}, {'Y_t'});
 %$     us = dseries(transpose(1:5),'1949q4',{'Consumption'}, {'C_t'});
 %$     vs = ts+us;
-%$     t(1) = 1;
+%$     t(1) = true;
 %$ catch
-%$     t = 0;
+%$     t = false;
 %$ end
 %$
 %$ if length(t)>1
@@ -215,15 +193,13 @@ end
 %@eof:4
 
 %@test:5
-%$ t = zeros(7,1);
-%$
 %$ try
 %$     ts = dseries(transpose(1:5),'1950q1',{'Output'}, {'Y_t'});
 %$     us = dseries(transpose(1:7),'1950q1',{'Consumption'}, {'C_t'});
 %$     vs = ts+us;
-%$     t(1) = 1;
+%$     t(1) = true;
 %$ catch
-%$     t = 0;
+%$     t = false;
 %$ end
 %$
 %$ if length(t)>1
@@ -239,15 +215,13 @@ end
 %@eof:5
 
 %@test:6
-%$ t = zeros(8,1);
-%$
 %$ try
 %$     ts = dseries(transpose(1:5),'1950q1',{'Output'}, {'Y_t'});
 %$     us = dseries(transpose(1:7),'1950q1',{'Consumption'}, {'C_t'});
 %$     vs = ts+us('1950q1').data;
-%$     t(1) = 1;
+%$     t(1) = true;
 %$ catch
-%$     t = 0;
+%$     t = false;
 %$ end
 %$
 %$ if length(t)>1
@@ -264,15 +238,13 @@ end
 %@eof:6
 
 %@test:7
-%$ t = zeros(8,1);
-%$
 %$ try
 %$     ts = dseries([transpose(1:5), transpose(1:5)],'1950q1');
 %$     us = dseries([transpose(1:7),2*transpose(1:7)],'1950q1');
 %$     vs = ts+us('1950q1').data;
-%$     t(1) = 1;
+%$     t(1) = true;
 %$ catch
-%$     t = 0;
+%$     t = false;
 %$ end
 %$
 %$ if length(t)>1

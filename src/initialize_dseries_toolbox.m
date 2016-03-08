@@ -22,6 +22,7 @@ addpath([dseries_src_root '/utilities/str'])
 addpath([dseries_src_root '/utilities/insert'])
 addpath([dseries_src_root '/utilities/file'])
 addpath([dseries_src_root '/utilities/from'])
+addpath([dseries_src_root '/utilities/variables'])
 
 % Add missing routines if dynare is not in the path
 if ~exist('demean','file')
@@ -36,4 +37,10 @@ if ~exist('sample_hp_filter','file')
     addpath([dseries_src_root '/utilities/missing/sample_hp_filter'])
 end
 
-dseries('initialize');
+if ~exist('get_file_extension','file')
+    addpath([dseries_src_root '/utilities/missing/get_file_extension'])
+end
+
+if isoctave && ~exist('user_has_octave_forge_package','file')
+    addpath([dseries_src_root '/utilities/missing/user_has_octave_forge_package'])
+end
