@@ -69,6 +69,14 @@ classdef dseries<handle % --*-- Unitary tests --*--
                     end
                     return
                 elseif ischar(varargin{1})
+                    if strcmp( varargin{1}, 'initialize' )
+                        % Return empty object.
+                        o.data  = [];
+                        o.name  = {};
+                        o.tex   = {};
+                        o.dates = dates(); 
+                        return
+                    end
                     % Create a dseries object loading data in a file (*.csv, *.m, *.mat).
                     if isempty(varargin{1})
                         error('dseries:WrongInputArguments', 'Input argument cannot be an empty string!')
