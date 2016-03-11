@@ -45,7 +45,7 @@ function B = subsref(A, S) % --*-- Unitary tests --*--
 %! @end deftypefn
 %@eod:
 
-% Copyright (C) 2011-2014 Dynare Team
+% Copyright (C) 2011-2016 Dynare Team
 %
 % This file is part of Dynare.
 %
