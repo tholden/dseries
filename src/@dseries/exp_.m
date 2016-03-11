@@ -8,7 +8,7 @@ function o = exp_(o) % --*-- Unitary tests --*--
 % OUTPUTS 
 % - o [dseries]
 
-% Copyright (C) 2015 Dynare Team
+% Copyright (C) 2015-2016 Dynare Team
 %
 % This file is part of Dynare.
 %
