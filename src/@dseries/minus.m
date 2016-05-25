@@ -27,7 +27,7 @@ function q = minus(o, p) % --*-- Unitary tests --*--
 %  4Y | 0                           
 %  5Y | 0       
 
-% Copyright (C) 2012-2015, Dynare Team
+% Copyright (C) 2012-2016 Dynare Team
 %
 % This file is part of Dynare.
 %

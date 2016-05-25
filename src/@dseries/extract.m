@@ -2,7 +2,7 @@ function A = extract(B,varargin) % --*-- Unitary tests --*--
 
 % Extract some variables from a database.
     
-% Copyright (C) 2012-2013 Dynare Team
+% Copyright (C) 2012-2016 Dynare Team
 %
 % This file is part of Dynare.
 %

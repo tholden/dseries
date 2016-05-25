@@ -23,7 +23,7 @@ function q = lead(o, p) % --*-- Unitary tests --*--
 %    4Y | 5                 
 %    5Y | NaN       
 
-% Copyright (C) 2013-2015 Dynare Team
+% Copyright (C) 2013-2016 Dynare Team
 %
 % This file is part of Dynare.
 %

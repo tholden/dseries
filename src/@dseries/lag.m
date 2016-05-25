@@ -23,7 +23,7 @@ function q = lag(o, p) % --*-- Unitary tests --*--
 %    4Y | 3                
 %    5Y | 4         
 
-% Copyright (C) 2013-2015 Dynare Team
+% Copyright (C) 2013-2016 Dynare Team
 %
 % This file is part of Dynare.
 %

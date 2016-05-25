@@ -16,7 +16,7 @@ function [freq, init, data, varlist] = load_xls_file_data(file, sheet, range)
 % REMARKS 
 %  The range argument is only available on windows platform (with Excel installed).
 
-% Copyright (C) 2013-2015 Dynare Team
+% Copyright (C) 2013-2016 Dynare Team
 %
 % This file is part of Dynare.
 %
