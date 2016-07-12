@@ -182,7 +182,6 @@ switch S(1).type
             B.data = A.data(:,ndx);
             B.name = A.name(ndx);
             B.tex = A.tex(ndx);
-            B.tex  = deblank(A.tex(ndx,:));
             B.dates = A.dates;
         else
             error('dseries::subsref: Unknown public method, public member or variable!')
