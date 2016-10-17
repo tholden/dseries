@@ -137,10 +137,10 @@ switch S(1).type
         if isequal(length(S),2)
             if strcmp(S(2).type,'()')
                 if isempty(S(2).subs)
-                    save(A,inputname(1));
+                    save(A);
                 else
                     if isempty(S(2).subs{1})
-                        save(A,inputname(1),S(2).subs{2});
+                        save(A,'',S(2).subs{2});
                     else
                         save(A,S(2).subs{:});
                     end
@@ -194,7 +194,7 @@ switch S(1).type
         if isempty(A)
             B = dseries(S(1).subs{1});
         else
-            error(['dseries::subsref: dseries object ''' inputname(1) '''  is not empty!'])
+            error('dseries::subsref: dseries object is not empty!')
         end
     elseif isa(S(1).subs{1},'dynTimeIndex')
         % shift backward/forward (lag/lead) dseries object
