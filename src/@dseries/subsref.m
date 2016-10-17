@@ -150,7 +150,7 @@ switch S(1).type
                 error('dseries::subsref: Wrong syntax.')
             end
         elseif isequal(length(S),1)
-            save(A,inputname(1));
+            save(A);
         else
             error('dseries::subsref: Call to save method must come in last position!')
         end
@@ -587,17 +587,13 @@ end
 %$ % Instantiate a time series object.
 %$ try
 %$    ts1 = dseries(A,[],A_name,[]);
-%$    if isoctave
-%$        ts1.save('ts1');
-%$    else
-%$        ts1.save();
-%$    end
+%$    ts1.save();
 %$    t = 1;
 %$ catch
 %$    t = 0;
 %$ end
 %$
-%$ delete('ts1.csv')
+%$ delete('dynare_series.csv')
 %$
 %$ T = all(t);
 %@eof:12

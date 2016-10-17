@@ -2,7 +2,7 @@ function save(A,basename,format) % --*-- Unitary tests --*--
 
 % Saves a dseries object on disk.
 
-% Copyright (C) 2013 Dynare Team
+% Copyright (C) 2013-2016 Dynare Team
 %
 % This file is part of Dynare.
 %
@@ -24,7 +24,7 @@ if nargin<3 || isempty(format)
 end
 
 if nargin<2 || isempty(basename)
-    basename = inputname(1);
+    basename = 'dynare_series';
 end
 
 switch format
@@ -163,20 +163,16 @@ end
 %$ % Define names
 %$ A_name = {'A1';'A2'};
 %$
-%$ % Instantiate a time series object.
+%$ % Instantiate and save a time series object.
 %$ try
 %$    ts1 = dseries(A,[],A_name,[]);
-%$    if isoctave
-%$        ts1.save('A');
-%$    else
-%$        ts1.save;
-%$    end
+%$    ts1.save;
 %$    t = 1;
 %$ catch
 %$    t = 0;
 %$ end
 %$
-%$ delete('ts1.csv');
+%$ delete('dynare_series.csv');
 %$
 %$ T = all(t);
 %@eof:4
