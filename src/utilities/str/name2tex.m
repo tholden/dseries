@@ -11,7 +11,7 @@ function tex = name2tex(name, info) % --*-- Unitary tests --*--
 % OUTPUTS 
 % - tex  [string or cell of strings]
 
-% Copyright (C) 2012-2015 Dynare Team
+% Copyright (C) 2012-2016 Dynare Team
 %
 % This code is free software: you can redistribute it and/or modify
 % it under the terms of the GNU General Public License as published by
@@ -38,11 +38,7 @@ if info
     end
 end
 
-if isoctave
-    tex = regexprep(name, '_', '\_');
-else
-    tex = regexprep(name, '_', '\\_');
-end
+tex = regexprep(name, '_', '\\_');
 
 if info
     for i=1:nn
