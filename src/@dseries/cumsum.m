@@ -27,12 +27,24 @@ function B = cumsum(varargin) % --*-- Unitary tests --*--
 % You should have received a copy of the GNU General Public License
 % along with Dynare.  If not, see <http://www.gnu.org/licenses/>.
 
-% Get indices of the columns without NaNs
-idx = find(~any(isnan(varargin{1}.data)));
+% Get the firt observation number where all the variables are observed (ie without NaNs)
+idx = find(all(~isnan(varargin{1}.data), 2),1);
+if isempty(idx)
+    idx = 0;
+end
 
-
-if ~isequal(idx(:),transpose(1:vobs(varargin{1})))
-    warning('dseries::cumsum: The cumulated sum is not computed for some variables because they have NaNs!')
+% Is the first period where variables are observed common?
+common_first_period_witout_nan = true;
+if ~idx
+    if any(~isnan(varargin{1}.data(:)))
+        common_first_period_witout_nan = false;
+    end
+else
+    if idx>1
+        if any(any(~isnan(varargin{1}.data(1:idx-1,:))))
+            common_first_period_witout_nan = false;
+        end
+    end
 end
 
 switch nargin
@@ -40,7 +52,15 @@ switch nargin
       % Initialize the output.
       B = varargin{1};
       % Perform the cumulated sum
-      B.data(:,idx) = cumsum(B.data(:,idx));
+      if isequal(idx, 1)
+          B.data = cumsum(B.data);
+      else
+          if common_first_period_witout_nan
+              B.data(idx:end,:) = cumsum(B.data(idx:end,:));
+          else
+              B.data = cumsumnan(B.data);
+          end
+      end
       % Change the name of the variables
       for i=1:vobs(B)
           B.name(i) = {['cumsum(' B.name{i} ')']};
@@ -210,3 +230,21 @@ end
 %$ t(1) = dassert(ts3.data,ts4.data);
 %$ T = all(t);
 %@eof:5
+
+%@test:6
+%$ % Define a data set.
+%$ A = [NaN, NaN; 1 NaN; 1 1; 1 1; 1 NaN];
+%$
+%$ % Instantiate a time series object.
+%$ ts0 = dseries(A);
+%$
+%$ % Call the tested method.
+%$ ts0.cumsum();
+%$
+%$ % Expected results.
+%$ A = [NaN   NaN; 1   NaN; 2     1; 3     2; 4   NaN];
+%$
+%$ % Check the results.
+%$ t(1) = dassert(ts0.data, A);
+%$ T = all(t);
+%@eof:6
