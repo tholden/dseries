@@ -252,7 +252,7 @@ end
 %$ ts0 = dseries(A);
 %$
 %$ % Call the tested method.
-%$ ts0.cumprod();
+%$ ts0 = ts0.cumprod();
 %$
 %$ % Check the results.
 %$ t(1) = dassert(ts0.data, A);

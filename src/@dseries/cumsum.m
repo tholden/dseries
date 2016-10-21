@@ -239,7 +239,7 @@ end
 %$ ts0 = dseries(A);
 %$
 %$ % Call the tested method.
-%$ ts0.cumsum();
+%$ ts0 = ts0.cumsum();
 %$
 %$ % Expected results.
 %$ A = [NaN   NaN; 1   NaN; 2     1; 3     2; 4   NaN];
