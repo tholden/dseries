@@ -36,4 +36,12 @@ delete('*.log');
 if install_unit_test_toolbox
     rmdir('../externals/m-unit-tests-master','s');
 end
+
+if any(~[report{:,3}])
+    system('touch failed');
+end
+
+warning on
 path(opath);
+
+delete('data_ca1_csv.csv', 'dynare_series.m', 'dynare_series.mat', 'dynare_series.m.csv', 'dynare_series.old.csv', 'dynare_series.old.mat')
