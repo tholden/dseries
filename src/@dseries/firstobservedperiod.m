@@ -27,7 +27,7 @@ function d = firstobservedperiod(o) % --*-- Unitary tests --*--
 
 b = ~isnan(o);
 c = find(prod(b, 2));
-d = o.firstdate+(c(1)-1);
+d = firstdate(o)+(c(1)-1);
 
 %@test:1
 %$ try
