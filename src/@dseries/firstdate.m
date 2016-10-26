@@ -1,6 +1,6 @@
 function f = firstdate(o) % --*-- Unitary tests --*--
 
-% Copyright (C) 2016 Dynare Team
+% Copyright (C) 2014-2016 Dynare Team
 %
 % This file is part of Dynare.
 %
