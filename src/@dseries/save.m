@@ -103,7 +103,7 @@ end
 %$ % Instantiate a time series object.
 %$ try
 %$    ts1 = dseries(A,[],A_name,[]);
-%$    save(ts1,[],'csv');
+%$    save(ts1,'ts1','csv');
 %$    t = 1;
 %$ catch
 %$    t = 0;
@@ -124,7 +124,7 @@ end
 %$ % Instantiate a time series object.
 %$ try
 %$    ts1 = dseries(A,[],A_name,[]);
-%$    save(ts1,[],'m');
+%$    save(ts1,'ts1','m');
 %$    t = 1;
 %$ catch
 %$    t = 0;
@@ -145,7 +145,7 @@ end
 %$ % Instantiate a time series object.
 %$ try
 %$    ts1 = dseries(A,[],A_name,[]);
-%$    save(ts1,[],'mat');
+%$    save(ts1,'ts1','mat');
 %$    t = 1;
 %$ catch
 %$    t = 0;
