@@ -45,3 +45,7 @@ end
 if isoctave && ~exist('user_has_octave_forge_package','file')
     addpath([dseries_src_root '/utilities/missing/user_has_octave_forge_package'])
 end
+
+if ~exist('get_cells_id','file')
+    addpath([dseries_src_root '/utilities/missing/get_cells_id'])
+end

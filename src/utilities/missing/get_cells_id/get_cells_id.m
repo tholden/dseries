@@ -1,5 +1,4 @@
-function [hasPackage] = user_has_octave_forge_package(package)
-% Checks for the availability of a given Octave Forge package
+function [B,C] = get_cells_id(str,sep)
 
 % Copyright (C) 2012-2017 Dynare Team
 %
@@ -18,6 +17,6 @@ function [hasPackage] = user_has_octave_forge_package(package)
 % You should have received a copy of the GNU General Public License
 % along with Dynare.  If not, see <http://www.gnu.org/licenses/>.
 
-[desc,flag] = pkg('describe', package);
-
-hasPackage = isequal(flag{1,1}, 'Loaded');
+sep_locations = transpose(strfind(str,sep));
+B = [1; sep_locations+1];
+C = [sep_locations-1; length(str)];
