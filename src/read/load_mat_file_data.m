@@ -93,7 +93,7 @@ end
 %$ TEX__ = NAMES__;
 %$ hagop  = [1; 2; 3; 4; 5];
 %$ bedros = [2; 3; 4; 5; 6];
-%$ save('datafile_for_test');
+%$ save('datafile_for_test.mat');
 %$
 %$ % Try to read the data mat-file
 %$ t = zeros(8,1);
@@ -129,7 +129,7 @@ end
 %$ TEX__ = NAMES__;
 %$ hagop  = [1, 2, 3, 4, 5];
 %$ bedros = [2, 3, 4, 5, 6];
-%$ save('datafile_for_test');
+%$ save('datafile_for_test.mat');
 %$
 %$ % Try to read the data mat-file
 %$ t = zeros(8,1);
