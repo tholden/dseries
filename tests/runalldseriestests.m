@@ -29,7 +29,7 @@ end
 
 tmp = dseries_src_root;
 tmp = tmp(1:end-1); % Remove trailing slash.
-run_unitary_tests_in_directory(tmp);
+report = run_unitary_tests_in_directory(tmp);
 
 delete('*.log');
 
