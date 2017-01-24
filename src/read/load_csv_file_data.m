@@ -204,6 +204,7 @@ varlist = strrep(varlist,'"','');
 %$ % Instantiate a dseries from the data in the csv file.
 %$ try
 %$   d = dseries('data_ca1_csv.csv');
+%$   delete('data_ca1_csv.csv');
 %$   t(1) = true;
 %$ catch
 %$   t(1) = false;

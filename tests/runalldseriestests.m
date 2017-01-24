@@ -43,5 +43,3 @@ end
 
 warning on
 path(opath);
-
-delete('data_ca1_csv.csv', 'dynare_series.m', 'dynare_series.mat', 'dynare_series.m.csv', 'dynare_series.old.csv', 'dynare_series.old.mat')
