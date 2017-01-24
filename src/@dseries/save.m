@@ -70,7 +70,7 @@ switch format
     TEX__ = A.tex;
     str = [];
     for v=1:vobs(A)
-        str = [str, A.name{v} ' = A.data(:,' num2str(v) ');' ];
+        str = sprintf('%s %s = A.data(:,%s);', str, A.name{v}, num2str(v));
     end
     eval(str);
     currentdirectorycontent = dir();
