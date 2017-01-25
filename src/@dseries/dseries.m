@@ -103,7 +103,7 @@ classdef dseries<handle % --*-- Unitary tests --*--
                     else
                         o.tex = tex;
                     end
-                elseif istable(varargin{1})
+                elseif ~isoctave() && istable(varargin{1})
                     % It is assumed that the dates are in the first column.
                     thistable = varargin{1};
                     o.name = varargin{1}.Properties.VariableNames(2:end);
