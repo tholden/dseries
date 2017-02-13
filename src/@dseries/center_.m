@@ -1,14 +1,15 @@
-function o = uminus(o) % --*-- Unitary tests --*--
+function o = center_(o, geometric) % --*-- Unitary tests --*--
 
-% Overloads the uminus method for dseries objects.
+% Centers dseries object o around its mean (arithmetic or geometric).
 %
 % INPUTS 
-% - o   [dseries]
+%  - o             dseries object [mandatory].
+%  - geometric     logical [default is false], if true returns the geometric mean.
 %
 % OUTPUTS 
-% - o   [dseries]
+%  - o             dseries object.
 
-% Copyright (C) 2012-2017 Dynare Team
+% Copyright (C) 2016-2017 Dynare Team
 %
 % This file is part of Dynare.
 %
@@ -25,39 +26,31 @@ function o = uminus(o) % --*-- Unitary tests --*--
 % You should have received a copy of the GNU General Public License
 % along with Dynare.  If not, see <http://www.gnu.org/licenses/>.
 
-o = copy(o);
+if nargin<2
+    geometric = false;
+end
 
-o.data = -(o.data);
-
-for i = 1:vobs(o)
-    o.name(i) = {[ '-' o.name{i}]};
-    o.tex(i) = {[ '-' o.tex{i}]};
+if geometric
+    o = o/mean(o, true); 
+else
+    o = o-mean(o, false);
 end
 
 %@test:1
-%$ % Define a datasets.
-%$ A = rand(10,2);
+%$ % Define a dataset.
+%$ A = repmat([1.005, 1.05], 10, 1);
 %$
-%$ % Define names
-%$ A_name = {'A1';'A2'};
-%$ A_tex = {'A_1';'A_2'};
-%$ t = zeros(6,1);
-%$
-%$ % Instantiate a time series object.
+%$ % Instantiate a time series object and compute the mean.
 %$ try
-%$    ts1 = dseries(A,[],A_name,A_tex);
-%$    ts2 = -ts1;
+%$    ts = dseries(A);
+%$    ts.center_(true);
 %$    t(1) = 1;
 %$ catch
 %$    t = 0;
 %$ end
 %$
-%$ if length(t)>1
-%$    t(2) = dassert(ts2.vobs,2);
-%$    t(3) = dassert(ts2.nobs,10);
-%$    t(4) = dassert(ts2.data,-A,1e-15);
-%$    t(5) = dassert(ts2.name,{'-A1';'-A2'});
-%$    t(6) = dassert(ts2.tex,{'-A_1';'-A_2'});
+%$ if t(1)
+%$    t(2) = all(all(abs(ts.data-ones(10,2))<1e-12));
 %$ end
 %$ T = all(t);
 %@eof:1

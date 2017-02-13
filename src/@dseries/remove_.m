@@ -1,6 +1,8 @@
-function n = numel(o, varargin)
+function o = remove_(o, a) % --*-- Unitary tests --*--
 
-% Copyright (C) 2012-2017 Dynare Team
+% Removes a variable from a dseries object (alias for the pop_ method).
+
+% Copyright (C) 2017 Dynare Team
 %
 % This file is part of Dynare.
 %
@@ -17,4 +19,4 @@ function n = numel(o, varargin)
 % You should have received a copy of the GNU General Public License
 % along with Dynare.  If not, see <http://www.gnu.org/licenses/>.
 
-n = 1;
+o = pop_(o, a);

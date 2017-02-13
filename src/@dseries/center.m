@@ -1,15 +1,15 @@
 function o = center(o, geometric) % --*-- Unitary tests --*--
 
-% Centers @dseries object o around its mean (arithmetic or geometric).
+% Centers dseries object o around its mean (arithmetic or geometric).
 %
-% INPUTS
-%  o o             dseries object [mandatory].
-%  o geometric     logical [default is false], if true returns the geometric mean.
+% INPUTS 
+%  - o             dseries object [mandatory].
+%  - geometric     logical [default is false], if true returns the geometric mean.
 %
-% OUTPUTS
-%  o o             o
+% OUTPUTS 
+%  - o             dseries object.
 
-% Copyright (C) 2016 Dynare Team
+% Copyright (C) 2016-2017 Dynare Team
 %
 % This file is part of Dynare.
 %
@@ -30,11 +30,8 @@ if nargin<2
     geometric = false;
 end
 
-if geometric
-    o = o/mean(o, true); 
-else
-    o = o-mean(o, false);
-end
+o = copy(o);
+o.center_(geometric);
 
 %@test:1
 %$ % Define a dataset.
@@ -43,14 +40,15 @@ end
 %$ % Instantiate a time series object and compute the mean.
 %$ try
 %$    ts = dseries(A);
-%$    ts.center(true);
+%$    ds = ts.center(true);
 %$    t(1) = 1;
 %$ catch
 %$    t = 0;
 %$ end
 %$
 %$ if t(1)
-%$    t(2) = all(all(abs(ts.data-ones(10,2))<1e-12));
+%$    t(2) = all(all(abs(ds.data-ones(10,2))<1e-12));
+%$    t(3) = all(all(abs(ts.data-A)<1e-12));
 %$ end
 %$ T = all(t);
 %@eof:1

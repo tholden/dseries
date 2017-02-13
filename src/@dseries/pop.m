@@ -1,34 +1,15 @@
-function [ts,id] = pop(ts,a) % --*-- Unitary tests --*--
+function [o, id] = pop(o, a) % --*-- Unitary tests --*--
 
 % Removes a variable from a dseries object.
+%
+% INPUTS 
+% - o   [dseries]  T observations and N variables.
+% - a   [string]   Name of the variable to be removed.
+%
+% OUTPUTS 
+% - o   [dseries]  T observations and N-1 variables.
 
-%@info:
-%! @deftypefn {Function File} {@var{ts} =} pop (@var{ts}, @var{a})
-%! @anchor{dseries/pop}
-%! @sp 1
-%! Pop method for the dseries class. Removes a variable from a dseries object.
-%! @sp 2
-%! @strong{Inputs}
-%! @sp 1
-%! @table @ @var
-%! @item ts
-%! Object instantiated by @ref{dseries}.
-%! @item a
-%! String, name of the variable to be removed.
-%! @end table
-%! @sp 2
-%! @strong{Outputs}
-%! @sp 1
-%! @table @ @var
-%! @item ts
-%! Object instantiated by @ref{dseries}, without variable (@var{a}).
-%! @item id
-%! Scalar integer, position of variable (@var{a}) in the original dseries object @var{ts}.
-%! @end table
-%! @end deftypefn
-%@eod:
-
-% Copyright (C) 2013 Dynare Team
+% Copyright (C) 2013-2017 Dynare Team
 %
 % This file is part of Dynare.
 %
@@ -45,21 +26,13 @@ function [ts,id] = pop(ts,a) % --*-- Unitary tests --*--
 % You should have received a copy of the GNU General Public License
 % along with Dynare.  If not, see <http://www.gnu.org/licenses/>.
 
+o = copy(o);
+
 if nargin<2
-    % Removes the last variable
-    id = vobs(ts);
+    [o, id] = pop_(o);
 else
-    id = find(strcmp(a,ts.name));
+    [o, id] = pop_(o, a);
 end
-
-if isempty(id)
-    id = 0;
-    return
-end
-
-ts.data(:,id) = [];
-ts.name(id) = [];
-ts.tex(id) = [];
 
 %@test:1
 %$ % Define a datasets.
@@ -73,7 +46,7 @@ ts.tex(id) = [];
 %$ % Instantiate a time series object.
 %$ try
 %$    ts1 = dseries(A,[],A_name,[]);
-%$    ts2 = pop(ts1,'A2');
+%$    ts2 = ts1.pop('A2');
 %$    t(1) = 1;
 %$ catch
 %$    t = 0;
@@ -83,6 +56,10 @@ ts.tex(id) = [];
 %$    t(2) = dassert(ts2.vobs,2);
 %$    t(3) = dassert(ts2.nobs,10);
 %$    t(4) = dassert(ts2.data,[A(:,1), A(:,3)],1e-15);
+%$    t(5) = dassert(ts1.vobs,3);
+%$    if t(5)
+%$      t(6) = dassert(ts1.data,A,1e-15);
+%$    end
 %$ end
 %$ T = all(t);
 %@eof:1

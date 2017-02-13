@@ -1,8 +1,8 @@
-function s = nobs(ts)
+function s = nobs(o)
 
 % Returns the number of observations in a @dseries object.
 
-% Copyright (C) 2014 Dynare Team
+% Copyright (C) 2014-2017 Dynare Team
 %
 % This file is part of Dynare.
 %
@@ -19,4 +19,4 @@ function s = nobs(ts)
 % You should have received a copy of the GNU General Public License
 % along with Dynare.  If not, see <http://www.gnu.org/licenses/>.
 
-s = rows(ts.data);
+s = rows(o.data);

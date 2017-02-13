@@ -1,32 +1,18 @@
-function A = merge(B,C) % --*-- Unitary tests --*--
+function q = merge(o, p) % --*-- Unitary tests --*--
 
-%@info:
-%! @deftypefn {Function File} {@var{A} =} merge (@var{B},@var{C})
-%! @anchor{@dseries/plus}
-%! @sp 1
-%! Overloads the merge method for the Dynare time series class (@ref{dseries}).
-%! @sp 2
-%! @strong{Inputs}
-%! @sp 1
-%! @table @ @var
-%! @item B
-%! Dynare time series object instantiated by @ref{dseries}.
-%! @item C
-%! Dynare time series object instantiated by @ref{dseries}.
-%! @end table
-%! @sp 1
-%! @strong{Outputs}
-%! @sp 1
-%! @table @ @var
-%! @item A
-%! Dynare time series object.
-%! @sp 1
-%! @strong{Remarks}
-%! If @var{B} and @var{C} have common variables, the variables in @var{C} take precedence.
-%! @end deftypefn
-%@eod:
+% Merge method for dseries objects.
+%
+% INPUTS 
+% - o  [dseries]
+% - p  [dseries]
+%
+% OUTPUTS 
+% - q  [dseries]
+%
+% REMARKS 
+% If dseries objects o and p have common variables, the variables in p take precedence.
 
-% Copyright (C) 2013-2015 Dynare Team
+% Copyright (C) 2013-2017 Dynare Team
 %
 % This file is part of Dynare.
 %
@@ -43,56 +29,56 @@ function A = merge(B,C) % --*-- Unitary tests --*--
 % You should have received a copy of the GNU General Public License
 % along with Dynare.  If not, see <http://www.gnu.org/licenses/>.
 
-if ~isdseries(C)
+if ~isdseries(p)
     error('dseries::merge: Both inputs must be dseries objects!')
 end
 
-if ~isequal(frequency(B),frequency(C))
+if ~isequal(frequency(o), frequency(p))
     error(['dseries::merge: Cannot merge ' inputname(1) ' and ' inputname(2) ' (frequencies are different)!'])
 end
 
-A = dseries();
-[A.name, IBC, junk] = unique([B.name; C.name], 'last');
-tex = [B.tex; C.tex];
-A.tex = tex(IBC);
+q = dseries();
+[q.name, IBC, junk] = unique([o.name; p.name], 'last');
+tex = [o.tex; p.tex];
+q.tex = tex(IBC);
 
-if nobs(B) == 0
-    A = C;
-elseif nobs(C) == 0
-    A = B;
-elseif firstdate(B) >= firstdate(C)
-    diff = firstdate(B) - firstdate(C);
-    A_nobs = max(nobs(B) + diff, nobs(C));
-    A.data = NaN(A_nobs, vobs(A));
-    Z1 = [NaN(diff, vobs(B));B.data];
-    if nobs(A) > nobs(B) + diff
-        Z1 = [Z1; NaN(nobs(A)-(nobs(B) + diff), vobs(B))];
+if nobs(o) == 0
+    q = copy(p);
+elseif nobs(p) == 0
+    q = copy(o);
+elseif firstdate(o) >= firstdate(p)
+    diff = firstdate(o) - firstdate(p);
+    q_nobs = max(nobs(o) + diff, nobs(p));
+    q.data = NaN(q_nobs, vobs(q));
+    Z1 = [NaN(diff, vobs(o));o.data];
+    if nobs(q) > nobs(o) + diff
+        Z1 = [Z1; NaN(nobs(q)-(nobs(o) + diff), vobs(o))];
     end;
-    Z2 = C.data;
-    if nobs(A) > nobs(C)
-        Z2 = [Z2; NaN(nobs(A) - nobs(C), vobs(C))];
+    Z2 = p.data;
+    if nobs(q) > nobs(p)
+        Z2 = [Z2; NaN(nobs(q) - nobs(p), vobs(p))];
     end;
     Z = [Z1 Z2];
-    A.data = Z(:,IBC);
-    A_init = firstdate(C);
+    q.data = Z(:,IBC);
+    q_init = firstdate(p);
 else
-    diff = firstdate(C) - firstdate(B);
-    A_nobs = max(nobs(C) + diff, nobs(B));
-    A.data = NaN(A_nobs, vobs(A));
-    Z1 = [NaN(diff, vobs(C)); C.data];
-    if nobs(A) > nobs(C) + diff
-        Z1 = [Z1; NaN(nobs(A)-(nobs(C) + diff), vobs(C))];
+    diff = firstdate(p) - firstdate(o);
+    q_nobs = max(nobs(p) + diff, nobs(o));
+    q.data = NaN(q_nobs, vobs(q));
+    Z1 = [NaN(diff, vobs(p)); p.data];
+    if nobs(q) > nobs(p) + diff
+        Z1 = [Z1; NaN(nobs(q)-(nobs(p) + diff), vobs(p))];
     end
-    Z2 = B.data;
-    if nobs(A) > nobs(B)
-        Z2 = [Z2; NaN(nobs(A) - nobs(B), vobs(B))];
+    Z2 = o.data;
+    if nobs(q) > nobs(o)
+        Z2 = [Z2; NaN(nobs(q) - nobs(o), vobs(o))];
     end;
     Z = [Z2 Z1];
-    A.data = Z(:,IBC);
-    A_init = firstdate(B);
+    q.data = Z(:,IBC);
+    q_init = firstdate(o);
 end
 
-A.dates = A_init:A_init+(nobs(A)-1);
+q.dates = q_init:q_init+(nobs(q)-1);
 
 %@test:1
 %$ % Define a datasets.

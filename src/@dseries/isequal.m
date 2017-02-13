@@ -1,16 +1,16 @@
-function C = isequal(A, B, tol)
+function b = isequal(o, p, tol)
 
 % Overloads the isequal Matlab/Octave's function.
 %
 % INPUTS 
-%  o A      dseries object (T periods, N variables).
-%  o B      dseries object (T periods, N variables).
-%  o tol    tolerance parameter.
+% - o      [dseries]  T periods, N variables.
+% - p      [dseries]  T periods, N variables.
+% - tol    [double]   tolerance parameter.
 %
 % OUTPUTS 
-%  o C      Integer scalar equal to zero or one.
+%  o b     [logical]
 
-% Copyright (C) 2013 Dynare Team
+% Copyright (C) 2013-2017 Dynare Team
 %
 % This file is part of Dynare.
 %
@@ -31,40 +31,40 @@ if nargin~=2
     error('dseries::isequal: I need exactly two input arguments!')
 end
 
-if ~isdseries(B)
+if ~isdseries(p)
     error('dseries::isequal: Both input arguments must be dseries objects!')
 end
 
-if ~isequal(nobs(A), nobs(B))
-    C = 0;
+if ~isequal(nobs(o), nobs(p))
+    b = 0;
     return
 end
 
-if ~isequal(vobs(A), vobs(B))
-    C = 0;
+if ~isequal(vobs(o), vobs(p))
+    b = 0;
     return
 end
 
-if ~isequal(frequency(A),frequency(B))
-    C = 0;
+if ~isequal(frequency(o), frequency(p))
+    b = 0;
     return
 end
 
-if ~isequal(A.dates,B.dates)
-    C = 0;
+if ~isequal(o.dates, p.dates)
+    b = 0;
     return
 end
 
-if ~isequal(A.name,B.name)
+if ~isequal(o.name, p.name)
     warning('dseries::isequal: Both input arguments do not have the same variables!')
 end
 
-if ~isequal(A.tex,B.tex)
+if ~isequal(o.tex, p.tex)
     warning('dseries::isequal: Both input arguments do not have the same tex names!')
 end
 
 if nargin<3
-    C = isequal(A.data, B.data);
+    b = isequal(o.data, p.data);
 else
-    C = ~(max(abs(A.data(:)-B.data(:)))>tol);
+    b = ~(max(abs(o.data(:)-p.data(:)))>tol);
 end

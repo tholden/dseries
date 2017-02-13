@@ -1,6 +1,14 @@
 function l = lastdate(o)
 
-% Copyright (C) 2014 Dynare Team
+% Returns last period of teh sample.
+%
+% INPUTS 
+% - o  [dseries]
+%
+% OUTPUTS 
+% - l  [dates]
+
+% Copyright (C) 2014-2017 Dynare Team
 %
 % This file is part of Dynare.
 %

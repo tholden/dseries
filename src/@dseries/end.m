@@ -1,6 +1,16 @@
 function lastIndex = end(o, k, n)
 
-% Copyright (C) 2014 Dynare Team
+% Overloads the end method.
+%
+% INPUTS 
+% - o   [dseries]
+% - k   [integer]
+% - n   [integer]
+%
+% OUTPUTS 
+% - lastIndex   [integer]
+
+% Copyright (C) 2014-2017 Dynare Team
 %
 % This file is part of Dynare.
 %

@@ -70,7 +70,7 @@ switch S(1).type
             error(['dseries::subsref: ' S(1).subs ' is not a method but a member!'])
         end
         B = builtin('subsref', A, S(1));
-      case {'log','log_','exp','exp_','ygrowth','qgrowth','ydiff','qdiff','abs','isnan','firstdate','firstobservedperiod'}  % Give "dot access" to public methods without args.
+      case {'log','log_','exp','exp_','ygrowth','ygrowth_','qgrowth','qgrowth_','ydiff','ydiff_','qdiff','qdiff_','abs','abs_','isnan','firstdate','firstobservedperiod'}  % Give "dot access" to public methods without args.
         B = feval(S(1).subs,A);
         if length(S)>1 && isequal(S(2).type,'()') && isempty(S(2).subs)
             S = shiftS(S,1);
@@ -90,7 +90,7 @@ switch S(1).type
       case 'freq'
         % Returns an integer characterizing the data frequency (1, 4, 12 or 52)
         B = A.dates.freq;
-      case {'lag','lead','hptrend','hpcycle','chain','detrend','exist','mean','std','center'} % Methods with less than two arguments.
+      case {'lag','lag_','lead','lead_','hptrend','hptrend_','hpcycle','hpcycle_','chain','chain_','detrend','detrend_','exist','mean','std','center','center_'} % Methods with less than two arguments.
         if length(S)>1 && isequal(S(2).type,'()')
             if isempty(S(2).subs)
                 B = feval(S(1).subs,A);
@@ -105,7 +105,7 @@ switch S(1).type
         else
             B = feval(S(1).subs,A);
         end
-      case {'cumsum','insert','pop','cumprod','remove'} % Methods with less than three argument.
+      case {'cumsum','cumsum_','insert','pop','pop_','cumprod','cumprod_','remove','remove_'} % Methods with less than three argument.
         if length(S)>1 && isequal(S(2).type,'()')
             if isempty(S(2).subs)
                 B = feval(S(1).subs,A);
@@ -120,7 +120,7 @@ switch S(1).type
         else
             B = feval(S(1).subs,A);
         end
-      case 'baxter_king_filter'
+      case {'baxter_king_filter', 'baxter_king_filter_'}
         if length(S)>1 && isequal(S(2).type,'()')
             if isempty(S(2).subs)
                 B = feval(S(1).subs,A);
@@ -169,7 +169,7 @@ switch S(1).type
         else
             error('dseries::subsref: Call to size method must come in last position!')
         end
-      case {'set_names','rename','tex_rename'}
+      case {'set_names','rename','rename_','tex_rename','tex_rename_'}
         B = feval(S(1).subs,A,S(2).subs{:});
         S = shiftS(S,1);
       case {'disp'}

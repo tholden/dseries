@@ -1,10 +1,10 @@
-function o = lead(o, p) % --*-- Unitary tests --*--
+function o = lead_(o, p) % --*-- Unitary tests --*--
 
-% Returns a lagged time series
+% Returns a leaded time series
 %
 % INPUTS 
 % - o [dseries]
-% - p [integer] Number of leads
+% - p [integer]   Number of leads
 %
 % OUTPUTS 
 % - o [dseries]
@@ -45,29 +45,54 @@ if nargin<2
     p = 1;
 end
 
-o = copy(o);
-o.lead_(p);
+% Check second input argument
+if p<=0
+    error('dseries:WrongInputArguments','Second input argument must be strictly positive! Use lag method instead.')
+end
+
+if ~isint(p)
+    error('dseries:WrongInputArguments','Second input argument must be an integer!')
+end
+
+% Update data member
+o.data = [  o.data(p+1:end,:); NaN(p, vobs(o));];
+
+for i=1:vobs(o)
+    o.name(i) = {[ 'lead(' o.name{i} ',' int2str(p) ')']};
+    o.tex(i) = {[ o.tex{i} '_{+' int2str(p) '}']};
+end
 
 %@test:1
 %$ try
 %$     data = transpose(1:50);
 %$     ts = dseries(data,'1950Q1');
-%$     a = ts.lead;
-%$     b = ts.lead.lead;
-%$     c = lead(ts,2);
+%$     ts.lead_;
 %$     t(1) = true;
 %$ catch
 %$     t(1) = false;
 %$ end
 %$
 %$ if t(1)
-%$
 %$     DATA = [data(2:end); NaN(1)];
-%$     t(2) = dassert(a.data, DATA, 1e-15);
-%$     DATA = [data(3:end); NaN(2,1)];
-%$     t(3) = dassert(b.data, DATA, 1e-15);
-%$     t(4) = dassert(c.data, DATA, 1e-15);
+%$     t(2) = dassert(ts.data, DATA, 1e-15);
 %$ end
 %$
 %$ T = all(t);
 %@eof:1
+
+%@test:2
+%$ try
+%$     data = transpose(1:50);
+%$     ts = dseries(data,'1950Q1');
+%$     ts.lead_.lead_;
+%$     t(1) = true;
+%$ catch
+%$     t(1) = false;
+%$ end
+%$
+%$ if t(1)
+%$     t(2) = all(isnan(ts.data(end-1:end))) && isequal(ts.data(1:end-2), data(3:end));
+%$ end
+%$
+%$ T = all(t);
+%@eof:2

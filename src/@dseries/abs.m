@@ -1,27 +1,14 @@
-function A = abs(B) % --*-- Unitary tests --*--
+function o = abs(o) % --*-- Unitary tests --*--
 
-%@info:
-%! @deftypefn {Function File} {@var{A} =} abs (@var{B})
-%! @anchor{@dseries/uminus}
-%! @sp 1
-%! Overloads the abs method for the Dynare time series class (@ref{dseries}).
-%! @sp 2
-%! @strong{Inputs}
-%! @sp 1
-%! @table @ @var
-%! @item B
-%! Dynare time series object instantiated by @ref{dseries}.
-%! @end table
-%! @sp 1
-%! @strong{Outputs}
-%! @sp 1
-%! @table @ @var
-%! @item A
-%! Dynare time series object.
-%! @end deftypefn
-%@eod:
+% Apply the absolute value to all the variables in a dseries object (without in place modification).
+%
+% INPUTS 
+% - o [dseries]
+%
+% OUTPUTS 
+% - o [dseries]
 
-% Copyright (C) 2013 Dynare Team
+% Copyright (C) 2011-2017 Dynare Team
 %
 % This file is part of Dynare.
 %
@@ -38,26 +25,63 @@ function A = abs(B) % --*-- Unitary tests --*--
 % You should have received a copy of the GNU General Public License
 % along with Dynare.  If not, see <http://www.gnu.org/licenses/>.
 
-A = dseries();
-
-A.data = abs(B.data);
-A.dates = B.dates;
-
-A.name = cell(vobs(A), 1);
-A.tex = cell(vobs(A), 1);
-for i = 1:vobs(A)
-    A.name(i) = {[ 'abs(' B.name{i} ')']};
-    A.tex(i) = {[ '|' B.tex{i} '|']};
-end
+o = copy(o);
+o.abs_;
 
 %@test:1
+%$ % Define a dates object
+%$ data = -ones(10,2);
+%$ o = dseries(data);
+%$ q = dseries(data);
+%$
+%$ % Call the tested routine.
+%$ try
+%$     p = o.abs();
+%$     t(1) = true;
+%$ catch
+%$     t(1) = false;
+%$ end
+%$ 
+%$ if t(1)
+%$      t(2) = dassert(o, q);
+%$      t(3) = dassert(p.data, ones(10, 2));
+%$ end
+%$
+%$ T = all(t);
+%@eof:1
+
+%@test:2
+%$ % Define a dates object
+%$ data = -ones(10,2);
+%$ o = dseries(data);
+%$ q = dseries(data);
+%$
+%$ % Call the tested routine.
+%$ try
+%$     p = o.abs();
+%$     t(1) = true;
+%$ catch
+%$     t(1) = false;
+%$ end
+%$ 
+%$ if t(1)
+%$      t(2) = dassert(length(p.name), 2);
+%$      t(3) = dassert(p.name{1},'abs(Variable_1)');
+%$      t(4) = dassert(p.name{2},'abs(Variable_2)');
+%$      t(5) = dassert(o.name{1},'Variable_1');
+%$      t(6) = dassert(o.name{2},'Variable_2');
+%$ end
+%$
+%$ T = all(t);
+%@eof:2
+
+%@test:3
 %$ % Define a datasets.
 %$ A = randn(10,2);
 %$
 %$ % Define names
 %$ A_name = {'A1';'A2'};
 %$ A_tex = {'A_1';'A_2'};
-%$ t = zeros(6,1);
 %$
 %$ % Instantiate a time series object and compute the absolute value.
 %$ try
@@ -74,18 +98,22 @@ end
 %$    t(4) = dassert(ts2.data,abs(A),1e-15);
 %$    t(5) = dassert(ts2.name,{'abs(A1)';'abs(A2)'});
 %$    t(6) = dassert(ts2.tex,{'|A_1|';'|A_2|'});
+%$    t(7) = dassert(ts1.vobs, 2);
+%$    t(8) = dassert(ts1.nobs, 10);
+%$    t(9) = dassert(ts1.data, A, 1e-15);
+%$    t(10) = dassert(ts1.name, {'A1';'A2'});
+%$    t(11) = dassert(ts1.tex, {'A_1';'A_2'});
 %$ end
 %$ T = all(t);
-%@eof:1
+%@eof:3
 
-%@test:2
+%@test:4
 %$ % Define a datasets.
 %$ A = randn(10,2);
 %$
 %$ % Define names
 %$ A_name = {'A1';'A2'};
 %$ A_tex = {'A_1';'A_2'};
-%$ t = zeros(6,1);
 %$
 %$ % Instantiate a time series object and compute the absolute value.
 %$ try
@@ -102,6 +130,11 @@ end
 %$    t(4) = dassert(ts2.data,abs(A),1e-15);
 %$    t(5) = dassert(ts2.name,{'abs(A1)';'abs(A2)'});
 %$    t(6) = dassert(ts2.tex,{'|A_1|';'|A_2|'});
+%$    t(7) = dassert(ts1.vobs, 2);
+%$    t(8) = dassert(ts1.nobs, 10);
+%$    t(9) = dassert(ts1.data, A, 1e-15);
+%$    t(10) = dassert(ts1.name, {'A1';'A2'});
+%$    t(11) = dassert(ts1.tex, {'A_1';'A_2'});
 %$ end
 %$ T = all(t);
-%@eof:2
+%@eof:4

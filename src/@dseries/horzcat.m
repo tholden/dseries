@@ -1,26 +1,26 @@
-function B = horzcat(varargin) % --*-- Unitary tests --*--
+function o = horzcat(varargin) % --*-- Unitary tests --*--
 
 % Overloads horzcat method for dseries objects.
 %
 % INPUTS 
-%  o A1    dseries object.
-%  o A2    dseries object.
+%  o o1    dseries object.
+%  o o2    dseries object.
 %  o ...
 %
 % OUTPUTS 
-%  o B     dseries object.
+%  o o     dseries object.
 %
 % EXAMPLE 1 
-%  If A, B and C are dseries objects the following syntax:
+%  If o1, o2 and o3 are dseries objects the following syntax:
 %    
-%    D = [A, B, C] ;
+%    o = [o1, o2, o3] ;
 %
-%  Defines a dseries object D containing the variables appearing in A, B and C.
+%  defines a dseries object o containing the variables appearing in o1, o2 and o3.
 %
 % REMARKS 
-%  o A1, A2, ... must not have common variables.
+%  o o1, o2, ... must not have common variables.
     
-% Copyright (C) 2011-2013 Dynare Team
+% Copyright (C) 2011-2017 Dynare Team
 %
 % This file is part of Dynare.
 %
@@ -39,18 +39,18 @@ function B = horzcat(varargin) % --*-- Unitary tests --*--
 
 switch nargin
   case 0
-    B = dseries();
+    o = dseries();
   case 1
-    B = varargin{1};
+    o = varargin{1};
   otherwise
-    B = concatenate(varargin{1}, varargin{2});
+    o = concatenate(varargin{1}, varargin{2});
     if nargin>2
-        B = horzcat(B, varargin{3:end});
+        o = horzcat(o, varargin{3:end});
     end
 end
 
 function a = concatenate(b,c)
-    [n,message] = common_strings_in_cell_arrays(b.name,c.name);
+    [n,message] = common_strings_in_cell_arrays(b.name, c.name);
     if isempty(b)
         a = c;
         return

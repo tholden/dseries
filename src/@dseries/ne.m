@@ -1,4 +1,4 @@
-function C = ne(A,B) % --*-- Unitary tests --*--
+function b = ne(o, p) % --*-- Unitary tests --*--
 
 % Overloads ne (~=) operator.
 %
@@ -33,43 +33,43 @@ if nargin~=2
     error('dseries::ne: I need exactly two input arguments!')
 end
 
-if ~(isdseries(A) && isdseries(B))
+if ~(isdseries(o) && isdseries(p))
     error('dseries::ne: Both input arguments must be dseries objects!')
 end
 
-if ~isequal(nobs(A), nobs(B))
+if ~isequal(nobs(o), nobs(p))
     warning('dseries::ne: Both input arguments should have the same number of observations!')
-    C = 1;
+    b = 1;
     return
 end
 
-if ~isequal(vobs(A), vobs(B))
+if ~isequal(vobs(o), vobs(p))
     warning('dseries::ne: Both input arguments should have the same number of observations!')
-    C = 1;
+    b = 1;
     return
 end
 
-if ~isequal(frequency(A),frequency(B))
+if ~isequal(frequency(o), frequency(p))
     warning('dseries::ne: Both input arguments should have the same frequencies!')
-    C = 1;
+    b = 1;
     return
 end
 
-if ~isequal(firstdate(A),firstdate(B))
+if ~isequal(firstdate(o), firstdate(p))
     warning('dseries::ne: Both input arguments should have the same initial period!')
-    C = 1;
+    b = 1;
     return
 end
 
-if ~isequal(A.name,B.name)
+if ~isequal(o.name, p.name)
     warning('dseries::ne: Both input arguments do not have the same variables!')
 end
 
-if ~isequal(A.tex,B.tex)
+if ~isequal(o.tex, p.tex)
     warning('dseries::ne: Both input arguments do not have the same tex names!')
 end
 
-C = ne(A.data, B.data);
+b = ne(o.data, p.data);
 
 %@test:1
 %$ % Define a datasets.

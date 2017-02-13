@@ -1,28 +1,14 @@
-function us = qdiff(ts) % --*-- Unitary tests --*--
+function o = qdiff(o) % --*-- Unitary tests --*--
 
-%@info:
-%! @deftypefn {Function File} {@var{us} =} qdiff (@var{ts})
-%! @anchor{qdiff}
-%! @sp 1
-%! Computes quaterly differences.
-%! @sp 2
-%! @strong{Inputs}
-%! @sp 1
-%! @table @var
-%! @item ts
-%! Dynare time series object, instantiated by @ref{dseries}
-%! @end table
-%! @sp 2
-%! @strong{Outputs}
-%! @sp 1
-%! @table @var
-%! @item us
-%! Dynare time series object with transformed data field.
-%! @end table
-%! @end deftypefn
-%@eod:
+% Computes quaterly differences.
+%
+% INPUTS 
+% - o   [dseries]
+%
+% OUTPUTS 
+% - o   [dseries]
 
-% Copyright (C) 2012-2015 Dynare Team
+% Copyright (C) 2012-2017 Dynare Team
 %
 % This file is part of Dynare.
 %
@@ -39,69 +25,25 @@ function us = qdiff(ts) % --*-- Unitary tests --*--
 % You should have received a copy of the GNU General Public License
 % along with Dynare.  If not, see <http://www.gnu.org/licenses/>.
 
-us = ts;
-
-switch frequency(ts)
-  case 1
-    error('dseries::qdiff: I cannot compute quaterly differences from yearly data!')
-  case 4
-    us.data(2:end,:) = ts.data(2:end,:)-ts.data(1:end-1,:);
-    us.data(1,:) = NaN;
-    for i = 1:vobs(ts)
-        us.name(i) = {['qdiff(' us.name{i} ')']};
-        us.tex(i) = {['\Delta ' us.tex{i}]};
-    end
-  case 12
-    us.data(4:end,:) = ts.data(4:end,:)-ts.data(1:end-3,:);
-    us.data(1:3,:) = NaN;
-    for i = 1:vobs(ts)
-        us.name(i) = {['qdiff(' us.name{i} ')']};
-        us.tex(i) = {['\Delta_3 ' us.tex{i}]};
-    end
-  case 52
-    error('dseries::qdiff: I do not know yet how to compute quaterly differences from weekly data!')
-  otherwise
-    error(['dseries::qdiff: object ' inputname(1) ' has unknown frequency']);
-end
+o = copy(o);
+o.qdiff_();
 
 %@test:1
-%$ t = zeros(2,1);
-%$
 %$ try
 %$     data = transpose(0:1:50);
 %$     ts = dseries(data,'1950Q1');
-%$     ts = ts.qdiff;
+%$     ds = ts.qdiff();
 %$     t(1) = 1;
 %$ catch
-%$     t = 0;
+%$     t(1) = 0;
 %$ end
 %$
-%$ if length(t)>1
-%$     DATA = NaN(1,ts.vobs);
-%$     DATA = [DATA; ones(ts.nobs-1,ts.vobs)];
-%$     t(2) = dassert(ts.data,DATA,1e-15);
+%$ if t(1)
+%$     DATA = NaN(1,ds.vobs);
+%$     DATA = [DATA; ones(ds.nobs-1,ds.vobs)];
+%$     t(2) = dassert(ds.data, DATA, 1e-15);
+%$     t(3) = dassert(ts.data, data, 1e-15);
 %$ end
 %$
 %$ T = all(t);
 %@eof:1
-
-%@test:2
-%$ t = zeros(2,1);
-%$
-%$ try
-%$     data = transpose(0:1:80);
-%$     ts = dseries(data,'1950M1');
-%$     ts = ts.qdiff;
-%$     t(1) = 1;
-%$ catch
-%$     t = 0;
-%$ end
-%$
-%$ if length(t)>1
-%$     DATA = NaN(3,ts.vobs);
-%$     DATA = [DATA; 3*ones(ts.nobs-3,ts.vobs)];
-%$     t(2) = dassert(ts.data,DATA,1e-15);
-%$ end
-%$
-%$ T = all(t);
-%@eof:2

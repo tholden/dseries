@@ -1,29 +1,15 @@
-function A = mtimes(B,C) % --*-- Unitary tests --*--
+function q = mtimes(o, p) % --*-- Unitary tests --*--
 
-%@info:
-%! @deftypefn {Function File} {@var{A} =} mtimes (@var{B},@var{C})
-%! @anchor{@dseries/mtimes}
-%! @sp 1
-%! Overloads the mtimes method for the Dynare time series class (@ref{dseries}).
-%! @sp 2
-%! @strong{Inputs}
-%! @sp 1
-%! @table @ @var
-%! @item B
-%! Dynare time series object instantiated by @ref{dseries}.
-%! @item C
-%! Dynare time series object instantiated by @ref{dseries}.
-%! @end table
-%! @sp 1
-%! @strong{Outputs}
-%! @sp 1
-%! @table @ @var
-%! @item A
-%! Dynare time series object.
-%! @end deftypefn
-%@eod:
+% Overloads the mtimes (*) operator for dseries objects.
+%
+% INPUTS 
+% - o [dseries]           T observations and N variables.
+% - p [dseries,double]    scalar, vector or dseries object.
+%
+% OUTPUTS 
+% - q [dseries]           T observations and N variables.
 
-% Copyright (C) 2012-2014 Dynare Team
+% Copyright (C) 2013-2017 Dynare Team
 %
 % This file is part of Dynare.
 %
@@ -40,56 +26,56 @@ function A = mtimes(B,C) % --*-- Unitary tests --*--
 % You should have received a copy of the GNU General Public License
 % along with Dynare.  If not, see <http://www.gnu.org/licenses/>.
 
-if isnumeric(B) && (isscalar(B) ||  isvector(B))
-    if ~isdseries(C)
+if isnumeric(o) && (isscalar(o) ||  isvector(o))
+    if ~isdseries(p)
         error('dseries::mtimes: Second input argument must be a dseries object!')
     end
-    A = C;
-    A.data = bsxfun(@times,C.data,B);
+    q = copy(p);
+    q.data = bsxfun(@times, p.data, o);
     return;
 end
 
-if isnumeric(C) && (isscalar(C) || isvector(C))
-    if ~isdseries(B)
+if isnumeric(p) && (isscalar(p) || isvector(p))
+    if ~isdseries(o)
         error('dseries::mtimes: First input argument must be a dseries object!')
     end
-    A = B;
-    A.data = bsxfun(@times,B.data,C);
+    q = copy(o);
+    q.data = bsxfun(@times, o.data, p);
     return
 end
 
-if isdseries(B) && isdseries(C)
+if isdseries(o) && isdseries(p)
     % Element by element multiplication of two dseries object
-    if ~isequal(vobs(B), vobs(C)) && ~(isequal(vobs(B),1) || isequal(vobs(C),1))
+    if ~isequal(vobs(o), vobs(p)) && ~(isequal(vobs(o),1) || isequal(vobs(p),1))
         error(['dseries::times: Cannot multiply ' inputname(1) ' and ' inputname(2) ' (wrong number of variables)!'])
     else
-        if vobs(B)>vobs(C)
-            idB = 1:vobs(B);
-            idC = ones(1:vobs(B));
-        elseif vobs(B)<vobs(C)
-            idB = ones(1,vobs(C));
-            idC = 1:vobs(C);
+        if vobs(o)>vobs(p)
+            idB = 1:vobs(o);
+            idC = ones(1:vobs(o));
+        elseif vobs(o)<vobs(p)
+            idB = ones(1,vobs(p));
+            idC = 1:vobs(p);
         else
-            idB = 1:vobs(B);
-            idC = 1:vobs(C);
+            idB = 1:vobs(o);
+            idC = 1:vobs(p);
         end
     end
-    if ~isequal(frequency(B),frequency(C))
+    if ~isequal(frequency(o),frequency(p))
         error(['dseries::times: Cannot multiply ' inputname(1) ' and ' inputname(2) ' (frequencies are different)!'])
     end
-    if ~isequal(nobs(B), nobs(C)) || ~isequal(firstdate(B),firstdate(C))
-        [B, C] = align(B, C);
+    if ~isequal(nobs(o), nobs(p)) || ~isequal(firstdate(o),firstdate(p))
+        [o, p] = align(o, p);
     end
-    A = dseries();
-    A.dates = B.dates;
-    A_vobs = max(vobs(B),vobs(C));
-    A.name = cell(A_vobs,1);
-    A.tex = cell(A_vobs,1);
-    for i=1:A_vobs
-        A.name(i) = {['multiply(' B.name{idB(i)} ';' C.name{idC(i)} ')']};
-        A.tex(i) = {['(' B.tex{idB(i)} '*' C.tex{idC(i)} ')']};
+    q = dseries();
+    q.dates = o.dates;
+    q_vobs = max(vobs(o),vobs(p));
+    q.name = cell(q_vobs,1);
+    q.tex = cell(q_vobs,1);
+    for i=1:q_vobs
+        q.name(i) = {['multiply(' o.name{idB(i)} ';' p.name{idC(i)} ')']};
+        q.tex(i) = {['(' o.tex{idB(i)} '*' p.tex{idC(i)} ')']};
     end
-    A.data = bsxfun(@times,B.data,C.data);
+    q.data = bsxfun(@times, o.data, p.data);
 else
     error()
 end

@@ -1,10 +1,10 @@
-function o = lead(o, p) % --*-- Unitary tests --*--
+function o = lag(o, p) % --*-- Unitary tests --*--
 
 % Returns a lagged time series
 %
 % INPUTS 
 % - o [dseries]
-% - p [integer] Number of leads
+% - p [integer] Number of lags
 %
 % OUTPUTS 
 % - o [dseries]
@@ -16,14 +16,14 @@ function o = lead(o, p) % --*-- Unitary tests --*--
 %
 % then o.lag(1) returns
 %
-%       | lead(Variable_1,1)
-%    1Y | 2                 
-%    2Y | 3                 
-%    3Y | 4                 
-%    4Y | 5                 
-%    5Y | NaN       
+%       | lag(Variable_1,1)
+%    1Y | NaN              
+%    2Y | 1                
+%    3Y | 2                
+%    4Y | 3                
+%    5Y | 4         
 
-% Copyright (C) 2013-2017 Dynare Team
+% Copyright (C) 2013-2016 Dynare Team
 %
 % This file is part of Dynare.
 %
@@ -40,33 +40,41 @@ function o = lead(o, p) % --*-- Unitary tests --*--
 % You should have received a copy of the GNU General Public License
 % along with Dynare.  If not, see <http://www.gnu.org/licenses/>.
 
-% Set default number of leads
+% Set default number of lags
 if nargin<2
     p = 1;
 end
 
-o = copy(o);
-o.lead_(p);
+% Check second input argument
+if p<=0
+    error('dseries:WrongInputArguments','Second input argument must be strictly positive! Use lead method instead.')
+end
+
+if ~isint(p)
+    error('dseries:WrongInputArguments','Second input argument must be an integer!')
+end
+
+% Update data member
+o.data = [NaN(p, vobs(o));  o.data(1:end-p,:)];
+
+for i=1:vobs(o)
+    o.name(i) = {[ 'lag(' o.name{i} ',' int2str(p) ')']};
+    o.tex(i) = {[ o.tex{i} '_{-' int2str(p) '}']};
+end
 
 %@test:1
 %$ try
-%$     data = transpose(1:50);
+%$     data = transpose(0:1:50);
 %$     ts = dseries(data,'1950Q1');
-%$     a = ts.lead;
-%$     b = ts.lead.lead;
-%$     c = lead(ts,2);
-%$     t(1) = true;
+%$     ts.lag_();
+%$     t(1) = 1;
 %$ catch
-%$     t(1) = false;
+%$     t(1) = 0;
 %$ end
 %$
 %$ if t(1)
-%$
-%$     DATA = [data(2:end); NaN(1)];
-%$     t(2) = dassert(a.data, DATA, 1e-15);
-%$     DATA = [data(3:end); NaN(2,1)];
-%$     t(3) = dassert(b.data, DATA, 1e-15);
-%$     t(4) = dassert(c.data, DATA, 1e-15);
+%$     DATA = [NaN(1,ts.vobs); transpose(0:1:49)];
+%$     t(2) = dassert(ts.data,DATA,1e-15);
 %$ end
 %$
 %$ T = all(t);

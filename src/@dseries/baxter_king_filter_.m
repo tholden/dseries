@@ -1,4 +1,4 @@
-function o = baxter_king_filter(o, high_frequency, low_frequency, K) % --*-- Unitary tests --*--
+function o = baxter_king_filter_(o, high_frequency, low_frequency, K) % --*-- Unitary tests --*--
 
 % Implementation of Baxter and King (1999) band pass filter for dseries objects. The code is adapted from
 % the one provided by Baxter and King. This filter isolates business cycle fluctuations with a period of length 
@@ -55,9 +55,44 @@ if nargin<4 || isempty(K)
         end
     end
 end
+       
+% translate periods into frequencies.
+hf=2.0*pi/high_frequency;
+lf=2.0*pi/low_frequency;
 
-o = copy(o);
-o.baxter_king_filter_(high_frequency, low_frequency, K);
+% Set weights for the band-pass filter's lag polynomial.
+weights = zeros(K+1,1); lpowers = transpose(1:K);
+weights(2:K+1) = (sin(lpowers*hf)-sin(lpowers*lf))./(lpowers*pi);
+weights(1) = (hf-lf)/pi;
+
+% Set the constraint on the sum of weights.
+if low_frequency>1000
+    % => low pass filter.
+    sum_of_weights_constraint = 1.0;
+else
+    sum_of_weights_constraint = 0.0;
+end
+
+% Compute the sum of weights.
+sum_of_weights = weights(1) + 2*sum(weights(2:K+1));
+
+% Correct the weights.
+weights = weights + (sum_of_weights_constraint - sum_of_weights)/(2*K+1);
+
+% Weights are symmetric!
+weights = [flipud(weights(2:K+1)); weights];
+
+tmp = zeros(size(o.data));
+
+% Filtering step.
+for t = K+1:nobs(o)-K
+    tmp(t,:)  = weights'*o.data(t-K:t+K,:);    
+end
+
+% Update dseries object.
+o.data = tmp(K+1:end-K,:);
+init = firstdate(o)+K;
+o.dates = init:init+(nobs(o)-1);
 
 %@test:1
 %$ plot_flag = false;
@@ -76,7 +111,7 @@ o.baxter_king_filter_(high_frequency, low_frequency, K);
 %$ % Test the routine.
 %$ try
 %$     ts = dseries(y,'1950Q1');
-%$     ds = ts.baxter_king_filter();
+%$     ts = ts.baxter_king_filter_();
 %$     xx = dseries(x,'1950Q1');
 %$     t(1) = 1;
 %$ catch
@@ -84,17 +119,11 @@ o.baxter_king_filter_(high_frequency, low_frequency, K);
 %$ end
 %$
 %$ if t(1)
-%$     t(2) = dassert(ds.freq, 4);
-%$     t(3) = dassert(ds.init.freq, 4);
-%$     t(4) = dassert(ds.init.time, [1953, 1]);
-%$     t(5) = dassert(ds.vobs, 1);
-%$     t(6) = dassert(ds.nobs, 176);
-%$     t(7) = dassert(ts.freq, 4);
-%$     t(8) = dassert(ts.init.freq, 4);
-%$     t(9) = dassert(ts.init.time, [1950, 1]);
-%$     t(10) = dassert(ts.vobs, 1);
-%$     t(11) = dassert(ts.nobs, length(y));
-%$     t(12) = dassert(ts.data, y);
+%$     t(2) = dassert(ts.freq,4);
+%$     t(3) = dassert(ts.init.freq,4);
+%$     t(4) = dassert(ts.init.time,[1953, 1]);
+%$     t(5) = dassert(ts.vobs,1);
+%$     t(6) = dassert(ts.nobs,176);
 %$ end
 %$
 %$ % Show results

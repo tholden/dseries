@@ -1,6 +1,8 @@
 function varargout = size(o, varargin)
 
-% Copyright (C) 2013-2014 Dynare Team
+% Overloads size function.    
+
+% Copyright (C) 2013-2017 Dynare Team
 %
 % This file is part of Dynare.
 %
@@ -32,3 +34,20 @@ switch nargout
   otherwise
     error('dseries::size: Wrong calling sequence! Cannot return more than two arguments.')
 end
+
+%@test:2
+%$ ts = dseries(randn(10,1));
+%$ try
+%$     dimension = ts.size();
+%$     t(1) = 1;
+%$ catch
+%$     t(1) = 0;
+%$ end
+%$
+%$ if t(1)
+%$     t(2) = dassert(dimension(1), 10);
+%$     t(3) = dassert(dimension(2), 1);
+%$ end
+%$
+%$ T = all(t);
+%@eof:2

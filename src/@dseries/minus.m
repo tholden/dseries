@@ -131,6 +131,7 @@ q.data = bsxfun(@minus, o.data, p.data);
 %$    t(3) = dassert(ts3.nobs,10);
 %$    t(4) = dassert(ts3.data,[A(:,1)-B, A(:,2)-B],1e-15);
 %$    t(5) = dassert(ts3.name,{'minus(A1;B1)';'minus(A2;B1)'});
+%$    t(6) = dassert(ts1.data, A, 1e-15);
 %$ end
 %$ T = all(t);
 %@eof:1

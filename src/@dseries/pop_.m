@@ -1,14 +1,15 @@
-function o = uminus(o) % --*-- Unitary tests --*--
+function [o, id] = pop_(o, a) % --*-- Unitary tests --*--
 
-% Overloads the uminus method for dseries objects.
+% Removes a variable from a dseries object.
 %
 % INPUTS 
-% - o   [dseries]
+% - o   [dseries]  T observations and N variables.
+% - a   [string]   Name of the variable to be removed.
 %
 % OUTPUTS 
-% - o   [dseries]
+% - o   [dseries]  T observations and N-1 variables.
 
-% Copyright (C) 2012-2017 Dynare Team
+% Copyright (C) 2013-2017 Dynare Team
 %
 % This file is part of Dynare.
 %
@@ -25,39 +26,42 @@ function o = uminus(o) % --*-- Unitary tests --*--
 % You should have received a copy of the GNU General Public License
 % along with Dynare.  If not, see <http://www.gnu.org/licenses/>.
 
-o = copy(o);
-
-o.data = -(o.data);
-
-for i = 1:vobs(o)
-    o.name(i) = {[ '-' o.name{i}]};
-    o.tex(i) = {[ '-' o.tex{i}]};
+if nargin<2
+    % Removes the last variable
+    id = vobs(o);
+else
+    id = find(strcmp(a, o.name));
 end
+
+if isempty(id)
+    id = 0;
+    return
+end
+
+o.data(:,id) = [];
+o.name(id) = [];
+o.tex(id) = [];
 
 %@test:1
 %$ % Define a datasets.
-%$ A = rand(10,2);
+%$ A = rand(10,3);
 %$
 %$ % Define names
-%$ A_name = {'A1';'A2'};
-%$ A_tex = {'A_1';'A_2'};
-%$ t = zeros(6,1);
+%$ A_name = {'A1';'A2';'A3'};
 %$
 %$ % Instantiate a time series object.
 %$ try
-%$    ts1 = dseries(A,[],A_name,A_tex);
-%$    ts2 = -ts1;
+%$    ts1 = dseries(A,[],A_name,[]);
+%$    ts1.pop_('A2');
 %$    t(1) = 1;
 %$ catch
-%$    t = 0;
+%$    t(1) = 0;
 %$ end
 %$
 %$ if length(t)>1
-%$    t(2) = dassert(ts2.vobs,2);
-%$    t(3) = dassert(ts2.nobs,10);
-%$    t(4) = dassert(ts2.data,-A,1e-15);
-%$    t(5) = dassert(ts2.name,{'-A1';'-A2'});
-%$    t(6) = dassert(ts2.tex,{'-A_1';'-A_2'});
+%$    t(2) = dassert(ts1.vobs,2);
+%$    t(3) = dassert(ts1.nobs,10); ts1
+%$    t(4) = dassert(ts1.data,[A(:,1), A(:,3)],1e-15);
 %$ end
 %$ T = all(t);
 %@eof:1
