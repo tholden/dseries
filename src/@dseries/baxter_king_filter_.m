@@ -93,6 +93,11 @@ end
 o.data = tmp(K+1:end-K,:);
 init = firstdate(o)+K;
 o.dates = init:init+(nobs(o)-1);
+for i=1:vobs(o)
+    o.name(i) = {['baxter_king_filter(' o.name{i} ')']};
+    o.tex(i) = {['\text{baxter_king_filter}(' o.tex{i} ')']};
+end
+
 
 %@test:1
 %$ plot_flag = false;
