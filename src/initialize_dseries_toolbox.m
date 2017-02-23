@@ -49,3 +49,9 @@ end
 if ~exist('get_cells_id','file')
     addpath([dseries_src_root '/utilities/missing/get_cells_id'])
 end
+
+% Install X13 binaries
+opath = pwd();
+cd([dseries_src_root '/../externals/x13'])
+installx13();
+cd(opath);
