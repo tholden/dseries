@@ -20,11 +20,13 @@ catch
     install_unit_test_toolbox = true;
 end
 
+% Get path to the current script
+unit_tests_root = strrep(which('runalltests'),'runalltests.m','');
+
 % Initialize the dseries module
 try
     initialize_dseries_toolbox;
 catch
-    unit_tests_root = strrep(which('runalltests'),'runalltests.m','');
     addpath([unit_tests_root '../src']);
     initialize_dseries_toolbox;
 end

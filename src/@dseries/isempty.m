@@ -1,26 +1,14 @@
-function b = isempty(A)
-%@info:
-%! @deftypefn {Function File} {@var{b} =} isempty (@var{A})
-%! @anchor{@dseries/isempty}
-%! @sp 1
-%! Overloads the isempty function for the Dynare time series class (@ref{dseries}).
-%! @sp 2
-%! @strong{Inputs}
-%! @sp 1
-%! @table @ @var
-%! @item 1
-%! Dynare time series object instantiated by @ref{dseries}.
-%! @end table
-%! @sp 1
-%! @strong{Outputs}
-%! @sp 1
-%! @table @ @var
-%! @item b
-%! Scalar integer (0 or 1).
-%! @end deftypefn
-%@eod:
+function b = isempty(o)
 
-% Copyright (C) 2011-2012 Dynare Team
+% Overloads isempty method.
+%
+% INPUTS 
+% - o  [dseries]
+%
+% OUTPUTS 
+% - b  [logical]
+
+% Copyright (C) 2011-2017 Dynare Team
 %
 % This file is part of Dynare.
 %
@@ -37,4 +25,4 @@ function b = isempty(A)
 % You should have received a copy of the GNU General Public License
 % along with Dynare.  If not, see <http://www.gnu.org/licenses/>.
 
-b = isempty(A.data);
+b = isempty(o.data);

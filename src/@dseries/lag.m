@@ -1,4 +1,4 @@
-function q = lag(o, p) % --*-- Unitary tests --*--
+function o = lag(o, p) % --*-- Unitary tests --*--
 
 % Returns a lagged time series
 %
@@ -45,29 +45,10 @@ if nargin<2
     p = 1;
 end
 
-% Check second input argument
-if p<=0
-    error('dseries:WrongInputArguments','Second input argument must be strictly positive! Use lead method instead.')
-end
-
-if ~isint(p)
-    error('dseries:WrongInputArguments','Second input argument must be an integer!')
-end
-
-% Copy of ts dseries object
-q = copy(o);
-
-% Update data member
-q.data = [NaN(p, vobs(o));  q.data(1:end-p,:)];
-
-for i=1:vobs(o)
-    q.name(i) = {[ 'lag(' o.name{i} ',' int2str(p) ')']};
-    q.tex(i) = {[ o.tex{i} '_{-' int2str(p) '}']};
-end
+o = copy(o);
+o.lag_(p);
 
 %@test:1
-%$ t = zeros(4,1);
-%$
 %$ try
 %$     data = transpose(0:1:50);
 %$     ts = dseries(data,'1950Q1');

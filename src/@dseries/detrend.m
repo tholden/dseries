@@ -1,6 +1,15 @@
 function o = detrend(o, model) % --*-- Unitary tests --*--
 
-% Copyright (C) 2014 Dynare Team
+% Detrends a dseries object with a polynomial of order model.
+%
+% INPUTS 
+% - o       [dseries]   time series to be detrended. 
+% - model   [integer]   scalar, order of the fitted polynomial.
+%
+% OUTPUTS 
+% - o       [dseries]   detrended time series.
+
+% Copyright (C) 2014-2017 Dynare Team
 %
 % This file is part of Dynare.
 %
@@ -22,89 +31,24 @@ if nargin<2
     model = 0;
 end
 
-data = o.data;
-
-if isnumeric(model)
-    if isscalar(model) && isint(model)
-        switch model
-          case 0
-            data = demean(data);
-          otherwise
-            x = NaN(nobs(o), model+1);
-            x(:,1) = ones(nobs(o), 1);
-            x(:,2) = transpose(1:nobs(o));
-            for c=3:model+1
-                x(:,c) = x(:,c-1).*x(:,2);
-            end
-            data = data - x*(x\data);
-        end
-    else
-        error('dseries::detrend: Second argument must be a positive integer scalar!')
-    end
-else
-    error('dseries::detrend: Second argument must be a positive integer scalar!')
-end
-
-o = dseries(data, o.dates, o.name, o.tex);
+o = copy(o);
+o.detrend_(model);
 
 %@test:1
 %$ % Define a dataset.
-%$ a = dseries(randn(1000,3));
+%$ A = ones(3,1);
+%$ a = dseries(A);
 %$
-%$ % detrend (default).
 %$ try
-%$    b1 = a.detrend();
-%$    t(1) = 1;
+%$   b = a.detrend();
+%$   t(1) = 1;
 %$ catch
-%$    t = 0;
+%$   t(1) = 0;
 %$ end
 %$
-%$ % detrend (constant).
 %$ if t(1)
-%$    try
-%$       b2 = a.detrend(0);
-%$       t(2) = 1;
-%$    catch
-%$       t(2) = 0;
-%$    end
+%$   t(2) = max(max(abs(a.data-A)))<1e-12;
 %$ end
 %$
-%$ % detrend (linear).
-%$ if t(2)
-%$    try
-%$       b3 = a.detrend(1);
-%$       t(3) = 1;
-%$    catch
-%$       t(3) = 0;
-%$    end
-%$ end
-%$
-%$ % detrend (quadratic).
-%$ if t(3)
-%$    try
-%$       b4 = a.detrend(2);
-%$       t(4) = 1;
-%$    catch
-%$       t(4) = 0;
-%$    end
-%$ end
-%$
-%$ % detrend (cubic).
-%$ if t(4)
-%$    try
-%$       b5 = a.detrend(3);
-%$       t(5) = 1;
-%$    catch
-%$       t(5) = 0;
-%$    end
-%$ end
-%$
-%$ if t(5)
-%$    t(6) = dassert(max(mean(b1.data)),0,1e-12);
-%$    t(7) = dassert(max(mean(b2.data)),0,1e-12);
-%$    t(8) = dassert(max(mean(b3.data)),0,1e-12);
-%$    t(9) = dassert(max(mean(b4.data)),0,1e-12);
-%$    t(10) = dassert(max(mean(b5.data)),0,1e-9);
-%$ end
 %$ T = all(t);
 %@eof:1

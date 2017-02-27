@@ -1,6 +1,16 @@
-function ts = rename(ts,old,new) % --*-- Unitary tests --*--
+function o = rename_(o, old, new) % --*-- Unitary tests --*--
 
-% Copyright (C) 2013-2015 Dynare Team
+% Renames variables in a dseries object.
+%
+% INPUTS 
+% - o     [dseries]
+% - old   [string, cell]
+% - new   [string, cell]
+%
+% OUTPUTS 
+% - o     [dseries]
+
+% Copyright (C) 2013-2017 Dynare Team
 %
 % This file is part of Dynare.
 %
@@ -17,114 +27,47 @@ function ts = rename(ts,old,new) % --*-- Unitary tests --*--
 % You should have received a copy of the GNU General Public License
 % along with Dynare.  If not, see <http://www.gnu.org/licenses/>.
 
-if isempty(ts)
-    error('dseries::rename: Cannot rename variable(s) because the object is empty!')
-end
-
+o = copy(o);
 if nargin<3
-    if isequal(vobs(ts), 1) || isequal(vobs(ts), length(old))
-        new = old;
-    else
-        error('dseries::rename: Missing argument!')
-    end
-    if ~ischar(new) && ~(iscellstr(new) && isequal(vobs(ts), length(new)))
-        error(['dseries::rename: Input argument ''' ...
-               inputname(2) ...
-               ''' has to be either a string or a cellstring that has the same number of entries as observed variables!'])
-    end
-    idname = 1;
+    o.rename_(old);
 else
-    if ~ischar(old) || ~ischar(new)
-        error(['dseries::rename: Input arguments ''' inputname(2) ''' and ''' inputname(3) '''  have to be strings!'])
-    end
-    idname = find(strcmp(old,ts.name));
-    if isempty(idname)
-        error(['dseries::rename: Variable ' old ' is unknown in dseries object ' inputname(1)  '!'])
-    end
-end
-
-if iscellstr(new)
-    ts.name = new;
-else
-    ts.name(idname) = {new};
+     o.rename_(old, new);
 end
 
 %@test:1
-%$ t = zeros(8,1);
 %$ ts = dseries([transpose(1:5), transpose(6:10)],'1950q1',{'Output'; 'Consumption'}, {'Y_t'; 'C_t'});
 %$ try
-%$     ts = rename(ts,'Output','Production');
+%$     ds = ts.rename('Output','Production');
 %$     t(1) = 1;
 %$ catch
-%$     t = 0;
+%$     t(1) = 0;
 %$ end
 %$
-%$ if length(t)>1
-%$     t(2) = dassert(ts.freq,4);
-%$     t(3) = dassert(ts.init.freq,4);
-%$     t(4) = dassert(ts.init.time,[1950, 1]);
-%$     t(5) = dassert(ts.vobs,2);
-%$     t(6) = dassert(ts.nobs,5);
-%$     t(7) = dassert(ts.name,{'Production'; 'Consumption'});
-%$     t(8) = dassert(ts.tex,{'Y_t'; 'C_t'});
+%$ if t(1)
+%$     t(2) = dassert(ds.freq,4);
+%$     t(3) = dassert(ds.init.freq,4);
+%$     t(4) = dassert(ds.init.time,[1950, 1]);
+%$     t(5) = dassert(ds.vobs,2);
+%$     t(6) = dassert(ds.nobs,5);
+%$     t(7) = dassert(ds.name,{'Production'; 'Consumption'});
+%$     t(8) = dassert(ds.tex,{'Y_t'; 'C_t'});
 %$ end
 %$
 %$ T = all(t);
 %@eof:1
 
 %@test:2
-%$ t = zeros(8,1);
-%$ ts = dseries([transpose(1:5), transpose(6:10)],'1950q1',{'Output'; 'Consumption'}, {'Y_t'; 'C_t'});
+%$ ts = dseries(randn(10,1));
 %$ try
-%$     ts = ts.rename('Output','Production');
+%$     ds = ts.rename('Dora');
 %$     t(1) = 1;
 %$ catch
-%$     t = 0;
+%$     t(1) = 0;
 %$ end
 %$
-%$ if length(t)>1
-%$     t(2) = dassert(ts.freq,4);
-%$     t(3) = dassert(ts.init.freq,4);
-%$     t(4) = dassert(ts.init.time,[1950, 1]);
-%$     t(5) = dassert(ts.vobs,2);
-%$     t(6) = dassert(ts.nobs,5);
-%$     t(7) = dassert(ts.name,{'Production'; 'Consumption'});
-%$     t(8) = dassert(ts.tex,{'Y_t'; 'C_t'});
+%$ if t(1)
+%$     t(2) = dassert(ds.name,{'Dora'});
 %$ end
 %$
 %$ T = all(t);
 %@eof:2
-
-%@test:3
-%$ t = zeros(2,1);
-%$ ts = dseries(randn(10,1));
-%$ try
-%$     ts = ts.rename('Dora');
-%$     t(1) = 1;
-%$ catch
-%$     t = 0;
-%$ end
-%$
-%$ if length(t)>1
-%$     t(2) = dassert(ts.name,{'Dora'});
-%$ end
-%$
-%$ T = all(t);
-%@eof:3
-
-%@test:4
-%$ t = zeros(2,1);
-%$ ts = dseries(randn(10,3));
-%$ try
-%$     ts = ts.rename({'Dora', 'The', 'Explorer'});
-%$     t(1) = 1;
-%$ catch
-%$     t = 0;
-%$ end
-%$
-%$ if length(t)>1
-%$     t(2) = dassert(ts.name, {'Dora', 'The', 'Explorer'});
-%$ end
-%$
-%$ T = all(t);
-%@eof:4

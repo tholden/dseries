@@ -1,29 +1,14 @@
-function A = uminus(B) % --*-- Unitary tests --*--
+function o = uminus(o) % --*-- Unitary tests --*--
 
-%@info:
-%! @deftypefn {Function File} {@var{A} =} plus (@var{B},@var{C})
-%! @anchor{@dseries/uminus}
-%! @sp 1
-%! Overloads the uminus method for the Dynare time series class (@ref{dseries}).
-%! @sp 2
-%! @strong{Inputs}
-%! @sp 1
-%! @table @ @var
-%! @item B
-%! Dynare time series object instantiated by @ref{dseries}.
-%! @item C
-%! Dynare time series object instantiated by @ref{dseries}.
-%! @end table
-%! @sp 1
-%! @strong{Outputs}
-%! @sp 1
-%! @table @ @var
-%! @item A
-%! Dynare time series object.
-%! @end deftypefn
-%@eod:
+% Overloads the uminus method for dseries objects.
+%
+% INPUTS 
+% - o   [dseries]
+%
+% OUTPUTS 
+% - o   [dseries]
 
-% Copyright (C) 2012-2013 Dynare Team
+% Copyright (C) 2012-2017 Dynare Team
 %
 % This file is part of Dynare.
 %
@@ -40,16 +25,13 @@ function A = uminus(B) % --*-- Unitary tests --*--
 % You should have received a copy of the GNU General Public License
 % along with Dynare.  If not, see <http://www.gnu.org/licenses/>.
 
-A = dseries();
+o = copy(o);
 
-A.data = -(B.data);
-A.dates = B.dates;
+o.data = -(o.data);
 
-A.name = cell(vobs(A),1);
-A.tex = cell(vobs(A),1);
-for i = 1:vobs(A)
-    A.name(i) = {[ '-' B.name{i}]};
-    A.tex(i) = {[ '-' B.tex{i}]};
+for i = 1:vobs(o)
+    o.name(i) = {[ '-' o.name{i}]};
+    o.tex(i) = {[ '-' o.tex{i}]};
 end
 
 %@test:1

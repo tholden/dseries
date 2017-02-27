@@ -1,8 +1,8 @@
-function h = plot(ts, varargin)
+function h = plot(o, varargin)
 
 % Overloads Matlab/Octave's plot function for dseries objects. 
 
-% Copyright (C) 2013 Dynare Team
+% Copyright (C) 2013-2017 Dynare Team
 %
 % This file is part of Dynare.
 %
@@ -22,13 +22,13 @@ function h = plot(ts, varargin)
 % Get the number of dseries objects
 if isequal(nargin,1)
     ndseries = 1;
-    nvariables = vobs(ts);
-    nobservations = nobs(ts);
+    nvariables = vobs(o);
+    nobservations = nobs(o);
 else
     if isdseries(varargin{1})
         ndseries = 2;
-        nvariables = vobs(ts);
-        nobservations = nobs(ts);
+        nvariables = vobs(o);
+        nobservations = nobs(o);
         if nargin>2 && any(cellfun(@isdseries,varargin(2:end)))
             error('dseries::plot: You cannot pass more two dseries objects!')
         end
@@ -40,40 +40,40 @@ else
         end
     else
         ndseries = 1;
-        nvariables = vobs(ts);
-        nobservations = nobs(ts);
+        nvariables = vobs(o);
+        nobservations = nobs(o);
     end
 end
 
 switch ndseries
   case 1
     if isequal(nvariables,1)
-        hh = plot(ts.data,varargin{:});
+        hh = plot(o.data,varargin{:});
     else
         if length(varargin)
             message = sprintf('dseries::plot: dseries object %s has %d>1 variables but you passed additional arguments to the plot function.\n                        These additional arguments won''t ne interpreted. Use the Matlab/Octave set command and the plot\n                        handle instead if you wish to modify the properties of the plotted time series.',inputname(1),nvariables);
             warning(message)
         end
-        hh = plot(ts.data);
+        hh = plot(o.data);
     end
     axis tight;
     id = get(gca,'XTick');
     if isequal(id(1),0)
-        dates = strings([ts.dates(1)-1,ts.dates(id(2:end))]);
+        dates = strings([o.dates(1)-1,o.dates(id(2:end))]);
     else
-        dates = strings(ts.dates(id));
+        dates = strings(o.dates(id));
     end
     set(gca,'XTickLabel',dates);
   case 2
-    [ts0, ts1] = align(ts, varargin{1});
+    [o0, o1] = align(o, varargin{1});
     if isequal(nvariables,1)
-        hh = plot(ts0.data, ts1.data, varargin{2:end});
+        hh = plot(o0.data, o1.data, varargin{2:end});
     else
         if length(varargin)>1
              message = sprintf('dseries::plot: dseries objects %s and %s have %d>1 variables but you passed additional arguments to the plot function.\n                        These additional arguments won''t ne interpreted. Use the Matlab/Octave set command and the plot\n                        handle instead if you wish to modify the properties of the plotted time series.',inputname(1),inputname(2),nvariables);
             warning(message)
         end
-        hh = plot(ts0.data, ts1.data);
+        hh = plot(o0.data, o1.data);
     end
   otherwise
     error('dseries::plot: This is a bug! Please report the bug to the authors of Dynare.')

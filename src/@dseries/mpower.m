@@ -3,13 +3,13 @@ function q = mpower(o, p) % --*-- Unitary tests --*--
 % Overloads the power (^) operator for dseries objects.
 %
 % INPUTS 
-% - o [dseries] A dseries object with T observations and N variables.
-% - p [real]    A real scalar.
+% - o [dseries]           T observations and N variables.
+% - p [dseries,double]    scalar, vector or dseries object.
 %
 % OUTPUTS 
-% - q [dseries] A dseries object with T observations and N variables.
+% - q [dseries]           T observations and N variables.
 
-% Copyright (C) 2013-2016 Dynare Team
+% Copyright (C) 2013-2017 Dynare Team
 %
 % This file is part of Dynare.
 %
@@ -100,6 +100,7 @@ error('dseries:WrongInputArguments', 'Wrong calling sequence! Please check the m
 %$    t(4) = dassert(ts3.data,A.^B,1e-15);
 %$    t(5) = dassert(ts3.name,{'power(A1;B1)';'power(A2;B2)'});
 %$    t(6) = dassert(ts3.tex,{'A1^{B1}';'A2^{B2}'});
+%$    t(7) = dassert(ts1.data, A, 1e-15);
 %$ end
 %$ T = all(t);
 %@eof:1

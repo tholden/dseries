@@ -1,4 +1,4 @@
-function C = eq(A,B) % --*-- Unitary tests --*--
+function b = eq(o, p) % --*-- Unitary tests --*--
 
 % Overloads eq (==) operator.
 %
@@ -12,7 +12,7 @@ function C = eq(A,B) % --*-- Unitary tests --*--
 % REMARKS 
 %  If the number of variables, the number of observations or the frequencies are different in A and B, the function returns a zero scalar. 
 
-% Copyright (C) 2013 Dynare Team
+% Copyright (C) 2013-2017 Dynare Team
 %
 % This file is part of Dynare.
 %
@@ -33,35 +33,35 @@ if nargin~=2
     error('dseries::eq: I need exactly two input arguments!')
 end
 
-if ~(isdseries(A) && isdseries(B))
+if ~(isdseries(o) && isdseries(p))
     error('dseries::eq: Both input arguments must be dseries objects!')
 end
 
-if ~isequal(nobs(A), nobs(B))
+if ~isequal(nobs(o), nobs(p))
     warning('dseries::eq: Both input arguments should have the same number of observations!')
-    C = 0;
+    b = 0;
     return
 end
 
-if ~isequal(vobs(A), vobs(B))
+if ~isequal(vobs(o), vobs(p))
     warning('dseries::eq: Both input arguments should have the same number of observations!')
-    C = 0;
+    b = 0;
     return
 end
 
-if ~isequal(frequency(A),frequency(B))
+if ~isequal(frequency(o),frequency(p))
     warning('dseries::eq: Both input arguments should have the same frequencies!')
-    C = 0;
+    b = 0;
     return
 end
 
-if ~isequal(firstdate(A),firstdate(B))
+if ~isequal(firstdate(o),firstdate(p))
     warning('dseries::eq: Both input arguments should have the same initial period!')
-    C = 0;
+    b = 0;
     return
 end
 
-C = eq(A.data, B.data);
+b = eq(o.data, p.data);
 
 %@test:1
 %$ % Define a datasets.

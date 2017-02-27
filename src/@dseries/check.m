@@ -1,6 +1,6 @@
-function [error_flag,message] = check(A)
+function [error_flag, message] = check(o)
 
-% Copyright (C) 2013 Dynare Team
+% Copyright (C) 2013-2017 Dynare Team
 %
 % This file is part of Dynare.
 %
@@ -19,9 +19,9 @@ function [error_flag,message] = check(A)
 
 error_flag = 0;
 
-[n,m] = size(A.data);
+[n,m] = size(o.data);
 
-if ~isequal(m, vobs(A));
+if ~isequal(m, vobs(o));
     error_flag = 1;
     if nargout>1
         message = ['dseries: Wrong number of variables in dseries object ''' inputname(1) '''!'];
@@ -29,7 +29,7 @@ if ~isequal(m, vobs(A));
     return
 end
 
-if ~isequal(n,nobs(A));
+if ~isequal(n,nobs(o));
     error_flag = 1;
     if nargout>1
         message = ['dseries: Wrong number of observations in dseries object ''' inputname(1) '''!'];
@@ -37,7 +37,7 @@ if ~isequal(n,nobs(A));
     return
 end
 
-if ~isequal(m,numel(A.name));
+if ~isequal(m,numel(o.name));
     error_flag = 1;
     if nargout>1
         message = ['dseries: Wrong number of variable names in dseries object ''' inputname(1) '''!'];
@@ -45,7 +45,7 @@ if ~isequal(m,numel(A.name));
     return
 end
 
-if ~isequal(m,numel(A.tex));
+if ~isequal(m,numel(o.tex));
     error_flag = 1;
     if nargout>1
         message = ['dseries: Wrong number of variable tex names in dseries object ''' inputname(1) '''!'];
@@ -53,7 +53,7 @@ if ~isequal(m,numel(A.tex));
     return
 end
 
-if ~isequal(numel(A.name),numel(A.tex));
+if ~isequal(numel(o.name), numel(o.tex));
     error_flag = 1;
     if nargout>1
         message = ['dseries: The number of variable tex names has to be equal to the number of variable names in dseries object ''' inputname(1) '''!'];
@@ -61,7 +61,7 @@ if ~isequal(numel(A.name),numel(A.tex));
     return
 end
 
-if ~isequal(numel(unique(A.name)),numel(A.name));
+if ~isequal(numel(unique(o.name)), numel(o.name));
     error_flag = 1;
     if nargout>1
         message = ['dseries: The variable names in dseries object ''' inputname(1) ''' are not unique!'];
@@ -69,7 +69,7 @@ if ~isequal(numel(unique(A.name)),numel(A.name));
     return
 end
 
-if ~isequal(numel(unique(A.tex)),numel(A.tex));
+if ~isequal(numel(unique(o.tex)), numel(o.tex));
     error_flag = 1;
     if nargout>1
         message = ['dseries: The variable tex names in dseries object ''' inputname(1) ''' are not unique!'];
@@ -77,7 +77,7 @@ if ~isequal(numel(unique(A.tex)),numel(A.tex));
     return
 end
 
-if ~isequal(A.dates,firstdate(A):firstdate(A)+nobs(A))
+if ~isequal(o.dates, firstdate(o):firstdate(o)+nobs(o))
     error_flag = 1;
     if nargout>1
         message = ['dseries: Wrong definition of the dates member in dseries object ''' inputname(1) '''!'];

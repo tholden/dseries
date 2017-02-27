@@ -23,6 +23,7 @@ addpath([dseries_src_root '/utilities/insert'])
 addpath([dseries_src_root '/utilities/file'])
 addpath([dseries_src_root '/utilities/from'])
 addpath([dseries_src_root '/utilities/variables'])
+addpath([dseries_src_root '/utilities/cumulate'])
 
 % Add missing routines if dynare is not in the path
 if ~exist('demean','file')
@@ -44,3 +45,13 @@ end
 if isoctave && ~exist('user_has_octave_forge_package','file')
     addpath([dseries_src_root '/utilities/missing/user_has_octave_forge_package'])
 end
+
+if ~exist('get_cells_id','file')
+    addpath([dseries_src_root '/utilities/missing/get_cells_id'])
+end
+
+% Install X13 binaries
+opath = pwd();
+cd([dseries_src_root '/../externals/x13'])
+installx13();
+cd(opath);

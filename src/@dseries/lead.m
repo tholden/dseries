@@ -1,4 +1,4 @@
-function q = lead(o, p) % --*-- Unitary tests --*--
+function o = lead(o, p) % --*-- Unitary tests --*--
 
 % Returns a lagged time series
 %
@@ -23,7 +23,7 @@ function q = lead(o, p) % --*-- Unitary tests --*--
 %    4Y | 5                 
 %    5Y | NaN       
 
-% Copyright (C) 2013-2016 Dynare Team
+% Copyright (C) 2013-2017 Dynare Team
 %
 % This file is part of Dynare.
 %
@@ -45,25 +45,8 @@ if nargin<2
     p = 1;
 end
 
-% Check second input argument
-if p<=0
-    error('dseries:WrongInputArguments','Second input argument must be strictly positive! Use lag method instead.')
-end
-
-if ~isint(p)
-    error('dseries:WrongInputArguments','Second input argument must be an integer!')
-end
-
-% Copy of ts dseries object
-q = copy(o);
-
-% Update data member
-q.data = [  o.data(p+1:end,:); NaN(p, vobs(o));];
-
-for i=1:vobs(o)
-    q.name(i) = {[ 'lead(' q.name{i} ',' int2str(p) ')']};
-    q.tex(i) = {[ q.tex{i} '_{+' int2str(p) '}']};
-end
+o = copy(o);
+o.lead_(p);
 
 %@test:1
 %$ try

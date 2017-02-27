@@ -1,8 +1,14 @@
-function s = vobs(ts)
+function s = vobs(o)
 
 % Returns the number of variables in a @dseries object.
+% 
+% INPUTS 
+% - o   [dseries]
+%
+% OUTPUTS 
+% - s   [integer]  scalar, number of variables in o.
 
-% Copyright (C) 2014 Dynare Team
+% Copyright (C) 2014-2017 Dynare Team
 %
 % This file is part of Dynare.
 %
@@ -19,4 +25,4 @@ function s = vobs(ts)
 % You should have received a copy of the GNU General Public License
 % along with Dynare.  If not, see <http://www.gnu.org/licenses/>.
 
-s = columns(ts.data);
+s = columns(o.data);

@@ -1,4 +1,17 @@
-function vs = chain(ts,us)  % --*-- Unitary tests --*--
+function q = chain(o, p)  % --*-- Unitary tests --*--
+
+% Chains two dseries objects.
+%
+% INPUTS 
+% - o     [dseries]
+% - p     [dseries]
+%
+% OUTPUTS 
+% - q     [dseries]
+%
+% REMARKS 
+% The two dseries objects must have common frequency and the same number of variables. Also the
+% two samples must overlap.
 
 % Copyright (C) 2014 Dynare Team
 %
@@ -17,26 +30,8 @@ function vs = chain(ts,us)  % --*-- Unitary tests --*--
 % You should have received a copy of the GNU General Public License
 % along with Dynare.  If not, see <http://www.gnu.org/licenses/>.
 
-if vobs(ts)-vobs(us)
-    error(['dseries::chain: dseries objects ' inputname(1) ' and ' inputname(2) ' must have the same number of variables!'])
-end
-
-if frequency(ts)-frequency(us)
-    error(['dseries::chain: dseries objects ' inputname(1) ' and ' inputname(2) ' must have common frequencies!'])
-end
-
-if lastdate(ts)<firstdate(us)
-    error(['dseries::chain: The last date in ' inputname(1) ' (' date2string(ts.dates(end)) ') must not preceed the first date in ' inputname(2) ' (' date2string(us.dates(1)) ')!'])
-end
-
-tdx = find(sum(bsxfun(@eq,us.dates.time,ts.dates.time(end,:)),2)==2);
-GrowthFactor = us.data(tdx+1:end,:)./us.data(tdx:end-1,:);
-CumulatedGrowthFactors = cumprod(GrowthFactor);
-
-vs = ts;
-vs.data = [vs.data; bsxfun(@times,CumulatedGrowthFactors,vs.data(end,:))];
-
-vs.dates = firstdate(vs):firstdate(vs)+nobs(vs);
+q = copy(o);
+q.chain_(p);
 
 %@test:1
 %$ try
@@ -49,12 +44,14 @@ vs.dates = firstdate(vs):firstdate(vs)+nobs(vs);
 %$ end
 %$
 %$ if t(1)
-%$     t(2) = dassert(vs.freq,4);
-%$     t(3) = dassert(vs.init.freq,4);
-%$     t(4) = dassert(vs.init.time,[1950, 1]);
-%$     t(5) = dassert(ts.vobs,1);
-%$     t(6) = dassert(vs.nobs,6);
-%$     t(7) = isequal(vs.data,transpose(1:6));
+%$     t(2) = dassert(vs.freq, 4);
+%$     t(3) = dassert(vs.init.freq, 4);
+%$     t(4) = dassert(vs.init.time, [1950, 1]);
+%$     t(5) = dassert(vs.vobs, 1);
+%$     t(6) = dassert(vs.nobs, 6);
+%$     t(7) = isequal(vs.data, transpose(1:6));
+%$     t(8) = isequal(ts.data, transpose(1:4));
+%$     t(9) = isequal(ts.init.time, [1950, 1]);
 %$ end
 %$
 %$ T = all(t);

@@ -1,7 +1,7 @@
 function [hasPackage] = user_has_octave_forge_package(package)
 % Checks for the availability of a given Octave Forge package
 
-% Copyright (C) 2012 Dynare Team
+% Copyright (C) 2012-2017 Dynare Team
 %
 % This file is part of Dynare.
 %

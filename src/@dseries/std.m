@@ -4,13 +4,13 @@ function s = std(o, geometric) % --*-- Unitary tests --*--
 % See https://en.wikipedia.org/wiki/Geometric_standard_deviation
 %
 % INPUTS
-%  o o             dseries object [mandatory].
-%  o geometric     logical [default is false], if true returns the geometric standard deviation.
+% - o             [dseries]   T observations and N variables.
+% - geometric     [logical]   if true returns the geometric standard deviation (default is false).
 %
 % OUTPUTS
-%  o s             1*vobs(o) vector of doubles.
+% - s             [double]    1*N vector.
 
-% Copyright (C) 2016 Dynare Team
+% Copyright (C) 2016-2017 Dynare Team
 %
 % This file is part of Dynare.
 %

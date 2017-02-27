@@ -1,8 +1,8 @@
-function A = extract(B,varargin) % --*-- Unitary tests --*--
+function p = extract(o, varargin) % --*-- Unitary tests --*--
 
 % Extract some variables from a database.
     
-% Copyright (C) 2012-2016 Dynare Team
+% Copyright (C) 2012-2017 Dynare Team
 %
 % This file is part of Dynare.
 %
@@ -19,7 +19,7 @@ function A = extract(B,varargin) % --*-- Unitary tests --*--
 % You should have received a copy of the GNU General Public License
 % along with Dynare.  If not, see <http://www.gnu.org/licenses/>.
 
-A = dseries();
+p = dseries();
 
 % Get the names of the variables to be extracted from dseries object B.
 VariableName_ = {};
@@ -42,9 +42,9 @@ for i=1:nargin-1
     end
     % Update the list of variables.
     if length(idArobase)
-        VariableName_ = build_list_of_variables_with_loops(B.name, idArobase, VariableName, VariableName_);
+        VariableName_ = build_list_of_variables_with_loops(o.name, idArobase, VariableName, VariableName_);
     elseif length(idBracket.open)
-        VariableName_ = build_list_of_variables_with_regexp(B.name, idBracket, VariableName, VariableName_);
+        VariableName_ = build_list_of_variables_with_regexp(o.name, idBracket, VariableName, VariableName_);
     else
         VariableName_ = varargin(:);
     end
@@ -56,17 +56,17 @@ VariableName_ = strtrim(VariableName_);
 % Get indices of the selected variables
 idVariableName = NaN(length(VariableName_),1);
 for i = 1:length(idVariableName)
-    idx = find(strcmp(VariableName_{i},B.name));
+    idx = find(strcmp(VariableName_{i},o.name));
     if isempty(idx)
         error(['dseries::extract: Variable ' VariableName_{i} ' is not a member of ' inputname(1) '!'])
     end
     idVariableName(i) = idx;
 end
 
-A.data = B.data(:,idVariableName);
-A.dates = B.dates;
-A.name = B.name(idVariableName);
-A.tex = B.tex(idVariableName);
+p.data = o.data(:,idVariableName);
+p.dates = o.dates;
+p.name = o.name(idVariableName);
+p.tex = o.tex(idVariableName);
     
     
 %@test:1

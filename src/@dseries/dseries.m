@@ -111,6 +111,13 @@ classdef dseries<handle % --*-- Unitary tests --*--
                     else
                         o.tex = tex;
                     end
+                elseif ~isoctave() && istable(varargin{1})
+                    % It is assumed that the dates are in the first column.
+                    thistable = varargin{1};
+                    o.name = varargin{1}.Properties.VariableNames(2:end);
+                    o.tex = name2tex(o.name);
+                    o.data = varargin{1}{:,2:end};
+                    o.dates = dates(varargin{1}{1,1}{1})+(0:size(varargin{1}, 1)-1);
                 elseif isnumeric(varargin{1}) && isequal(ndims(varargin{1}),2)
                     o.data = varargin{1};
                     o.name = default_name(vobs(o));
@@ -392,12 +399,21 @@ end % classdef
 
 %@test:9
 %$ try
-%$     [strfile, status] = urlwrite('http://www.dynare.org/Datasets/dseries/dynseries_test_data-1.xlsx','dynseries_test_data-1.xlsx');
+%$     if isoctave()
+%$         [strfile, status] = urlwrite('http://www.dynare.org/Datasets/dseries/dynseries_test_data-1.xlsx','dynseries_test_data-1.xlsx');
+%$     else
+%$         [strfile, status] = urlwrite('http://www.dynare.org/Datasets/dseries/dynseries_test_data-1.xls','dynseries_test_data-1.xls');
+%$     end
 %$     if ~status
 %$         error()
 %$     end
-%$     ts = dseries('dynseries_test_data-1.xlsx');
-%$     delete('dynseries_test_data-1.xlsx');
+%$     if isoctave()
+%$         ts = dseries('dynseries_test_data-1.xlsx');
+%$         delete('dynseries_test_data-1.xlsx');
+%$     else
+%$         ts = dseries('dynseries_test_data-1.xls');
+%$         delete('dynseries_test_data-1.xls');
+%$     end
 %$     t(1) = 1;
 %$ catch
 %$     t(1) = 0;
@@ -418,12 +434,21 @@ end % classdef
 
 %@test:10
 %$ try
-%$     [strfile, status] = urlwrite('http://www.dynare.org/Datasets/dseries/dynseries_test_data-2.xlsx','dynseries_test_data-2.xlsx');
+%$     if isoctave()
+%$         [strfile, status] = urlwrite('http://www.dynare.org/Datasets/dseries/dynseries_test_data-2.xlsx','dynseries_test_data-2.xlsx');
+%$     else
+%$         [strfile, status] = urlwrite('http://www.dynare.org/Datasets/dseries/dynseries_test_data-2.xls','dynseries_test_data-2.xls');
+%$     end
 %$     if ~status
 %$         error()
 %$     end
-%$     ts = dseries('dynseries_test_data-2.xlsx');
-%$     delete('dynseries_test_data-2.xlsx');
+%$     if isoctave()
+%$         ts = dseries('dynseries_test_data-2.xlsx');
+%$         delete('dynseries_test_data-2.xlsx');
+%$     else
+%$         ts = dseries('dynseries_test_data-2.xls');
+%$         delete('dynseries_test_data-2.xls');
+%$     end
 %$     t(1) = 1;
 %$ catch
 %$     t(1) = 0;
@@ -444,12 +469,21 @@ end % classdef
 
 %@test:11
 %$ try
-%$     [strfile, status] = urlwrite('http://www.dynare.org/Datasets/dseries/dynseries_test_data-3.xlsx','dynseries_test_data-3.xlsx');
+%$     if isoctave()
+%$         [strfile, status] = urlwrite('http://www.dynare.org/Datasets/dseries/dynseries_test_data-3.xlsx','dynseries_test_data-3.xlsx');
+%$     else
+%$         [strfile, status] = urlwrite('http://www.dynare.org/Datasets/dseries/dynseries_test_data-3.xls','dynseries_test_data-3.xls');
+%$     end
 %$     if ~status
 %$         error()
 %$     end
-%$     ts = dseries('dynseries_test_data-3.xlsx');
-%$     delete('dynseries_test_data-3.xlsx');
+%$     if isoctave()
+%$         ts = dseries('dynseries_test_data-3.xlsx');
+%$         delete('dynseries_test_data-3.xlsx');
+%$     else
+%$         ts = dseries('dynseries_test_data-3.xls');
+%$         delete('dynseries_test_data-3.xls');
+%$     end
 %$     t(1) = 1;
 %$ catch
 %$     t(1) = 0;
@@ -470,12 +504,21 @@ end % classdef
 
 %@test:12
 %$ try
-%$     [strfile, status] = urlwrite('http://www.dynare.org/Datasets/dseries/dynseries_test_data-4.xlsx','dynseries_test_data-4.xlsx');
+%$     if isoctave()
+%$         [strfile, status] = urlwrite('http://www.dynare.org/Datasets/dseries/dynseries_test_data-4.xlsx','dynseries_test_data-4.xlsx');
+%$     else
+%$         [strfile, status] = urlwrite('http://www.dynare.org/Datasets/dseries/dynseries_test_data-4.xls','dynseries_test_data-4.xls');
+%$     end
 %$     if ~status
 %$         error()
 %$     end
-%$     ts = dseries('dynseries_test_data-4.xlsx');
-%$     delete('dynseries_test_data-4.xlsx');
+%$     if isoctave()
+%$         ts = dseries('dynseries_test_data-4.xlsx');
+%$         delete('dynseries_test_data-4.xlsx');
+%$     else
+%$         ts = dseries('dynseries_test_data-4.xls');
+%$         delete('dynseries_test_data-4.xls');
+%$     end
 %$     t(1) = 1;
 %$ catch
 %$     t(1) = 0;
