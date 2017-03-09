@@ -206,6 +206,19 @@ if isequal(linea{1}{1}, 'bic')
 end
 
 
+%@test:1
+%$ try
+%$    y = dseries([0; 0], '1938Q3', 'y')
+%$    e = dseries(randn(201,1),'1938Q4','e');
+%$    from from 1939Q1 to 1988Q4 do y(t) = .8*y(t-1) - .2*y(t-2) + e(t) - .15*e(t-1)
+%$    model = arima(y, '(2,0,1)');
+%$    estimate(model);
+%$ catch
+%$    t(1) = false;
+%$ end
+%$
+%$ T = all(t);
+%@eof:1
 
 
 
