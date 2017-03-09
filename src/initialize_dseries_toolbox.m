@@ -19,9 +19,11 @@ dseries_src_root = strrep(which('initialize_dseries_toolbox'),'initialize_dserie
 addpath([dseries_src_root '/read'])
 addpath([dseries_src_root '/utilities/is'])
 addpath([dseries_src_root '/utilities/str'])
+addpath([dseries_src_root '/utilities/x13'])
 addpath([dseries_src_root '/utilities/insert'])
 addpath([dseries_src_root '/utilities/file'])
 addpath([dseries_src_root '/utilities/from'])
+addpath([dseries_src_root '/utilities/print'])
 addpath([dseries_src_root '/utilities/variables'])
 addpath([dseries_src_root '/utilities/cumulate'])
 
