@@ -129,21 +129,21 @@ end
 
 l2 = find(strncmp(txt, '$variance$:',7))+2;
 
-% Get the value of the likelihood for the estimated parameters.
+% Get the estimated standard error of the innovations.
 linea = textscan(txt{l2}, '%s %f');
 if isequal(linea{1}{1}, 'mle')
-    o.estimation.mle = linea{2};
+    o.estimation.sigma = linea{2};
 else
-    error('arima:estimate: Unable to find the value of the likelihood in %s.est', basefilename)
+    error('arima:estimate: Unable to find the estimated standard error of the innovations in %s.est', basefilename)
 end
 
-% Get the square root variance of the estimated innovations. 
-linea = textscan(txt{l2+1}, '%s %f');
-if isequal(linea{1}{1}, 'se')
-    o.sigma = linea{2}
-else
-    error('arima:estimate: Unable to find the estimated standard deviation of the innovations in %s.est', basefilename)
-end
+% TODO Figure out what is se
+% linea = textscan(txt{l2+1}, '%s %f');
+% if isequal(linea{1}{1}, 'se')
+%     o.sigma = linea{2}
+% else
+%     error()
+%end
 
 % Get the content of the generated *.rsd file
 fid = fopen(sprintf('%s.rsd', basefilename), 'r');
