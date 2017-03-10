@@ -19,7 +19,11 @@ function installx13()
 
     
 if ~exist('x13.zip','file')
-    websave('x13.zip', 'http://www.dynare.org/x13/x13.zip');
+    if ( ~isoctave() && verLessThan('matlab', 'R2014b') )
+        websave('x13.zip', 'http://www.dynare.org/x13/x13.zip');
+    else
+        urlwrite('http://www.dynare.org/x13/x13.zip', 'x13.zip');
+    end
     unzip('x13.zip');
     movefile('binaries/linux','./linux');
     movefile('binaries/windows','./windows');
