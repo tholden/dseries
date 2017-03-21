@@ -69,40 +69,11 @@ classdef dseries<handle % --*-- Unitary tests --*--
                     end
                     return
                 elseif ischar(varargin{1})
-                    % Create a dseries object loading data in a file (*.csv, *.m, *.mat).
-                    if isempty(varargin{1})
-                        error('dseries:WrongInputArguments', 'Input argument cannot be an empty string!')
-                    elseif check_file_extension(varargin{1},'m')
-                        [freq,init,data,varlist,tex] = load_m_file_data(varargin{1});
-                    elseif check_file_extension(varargin{1},'mat')
-                        [freq,init,data,varlist,tex] = load_mat_file_data(varargin{1});
-                    elseif check_file_extension(varargin{1},'csv')
-                        [freq,init,data,varlist] = load_csv_file_data(varargin{1});
-                        tex = [];
-                    elseif check_file_extension(varargin{1},'xls') || check_file_extension(varargin{1},'xlsx')
-                        if isglobalinbase('options_')
-                            % Check that the object is instantiated within a dynare session so that options_ global structure exists.
-                            % Should provide latter a mechanism to pass range and sheet to dseries constructor...
-                            range = evalin('base','options_.xls_range');
-                            sheet = evalin('base','options_.xls_sheet');
-                        else
-                            % By default only the (whole) first sheet is loaded.
-                            range = [];
-                            sheet = [];
-                        end
-                        [freq,init,data,varlist] = load_xls_file_data(varargin{1}, sheet, range);
-                        tex = [];
-                    else
-                        error('dseries:WrongInputArguments', 'I''m not able to load data from %s!', varargin{1});
-                    end
+                    [init, data, varlist, tex] = load_data(varargin{1});
                     o.data = data;
                     o.name = varlist;
                     o.dates = init:init+(nobs(o)-1);
-                    if isempty(tex)
-                        o.tex = name2tex(varlist);
-                    else
-                        o.tex = tex;
-                    end
+                    o.tex = tex;
                 elseif ~isoctave() && istable(varargin{1})
                     % It is assumed that the dates are in the first column.
                     thistable = varargin{1};
@@ -118,15 +89,25 @@ classdef dseries<handle % --*-- Unitary tests --*--
                 end
               case  {2,3,4}
                 if isequal(nargin,2) && ischar(varargin{1}) && isdates(varargin{2})
-                    % Instantiate dseries object with a data file and force the initial date to be as given by the second input argument.
-                    p = dseries(varargin{1});
-                    o = dseries(p.data, varargin{2}, p.name, p.tex);
+                    % Instantiate dseries object with a data file and force the initial date to
+                    % be as given by the second input argument (initial period represented
+                    % with a dates object).
+                    [init, data, varlist, tex] = load_data(varargin{1});
+                    o.data = data;
+                    o.name = varlist;
+                    o.dates = varargin{2}:varargin{2}+(nobs(o)-1);
+                    o.tex = tex;
                     return
                 end
                 if isequal(nargin,2) && ischar(varargin{1}) && ischar(varargin{2}) && isdate(varargin{2})
-                    % Instantiate dseries object with a data file and force the initial date to be as given by the second input argument.
-                    p = dseries(varargin{1});
-                    o = dseries(p.data, dates(varargin{2}), p.name, p.tex);
+                    % Instantiate dseries object with a data file and force the initial date to
+                    % be as given by the second input argument (initial period represented with a
+                    % string).
+                    [init, data, varlist, tex] = load_data(varargin{1});
+                    o.data = data;
+                    o.name = varlist;
+                    o.dates = dates(varargin{2}):dates(varargin{2})+(nobs(o)-1);
+                    o.tex = tex;
                     return
                 end
                 a = varargin{1};
