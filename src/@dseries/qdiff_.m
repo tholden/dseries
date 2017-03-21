@@ -71,7 +71,7 @@ end
 %$ try
 %$     data = transpose(0:1:80);
 %$     ts = dseries(data,'1950M1');
-%$     ts.qdiff;
+%$     ts.qdiff_;
 %$     t(1) = 1;
 %$ catch
 %$     t(1) = 0;
