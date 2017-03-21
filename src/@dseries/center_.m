@@ -30,10 +30,12 @@ if nargin<2
     geometric = false;
 end
 
+m = mean(o.data);
+
 if geometric
-    o = o/mean(o, true); 
+    o.data = bsxfun(@mrdivide, o.data, m);
 else
-    o = o-mean(o, false);
+    o.data = bsxfun(@minus, o.data, m);
 end
 
 %@test:1
