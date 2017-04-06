@@ -27,7 +27,12 @@ function d = firstobservedperiod(o) % --*-- Unitary tests --*--
 
 b = ~isnan(o);
 c = find(prod(b, 2));
-d = o.firstdate+(c(1)-1);
+
+if isempty(c)
+    error('No overlapping non-NaN data points found in dseries.');
+end
+
+d = firstdate(o)+(c(1)-1);
 
 %@test:1
 %$ try
