@@ -97,8 +97,23 @@ function a = concatenate(b,c)
         elseif b_last_date>c_last_date
             c.data = [c.data; NaN(b_last_date-c_last_date, vobs(c))];
         end
+
+        fillerdates = dates();
+        if max(c.dates) < min(b.dates)
+            fillerdates = max(c.dates):min(b.dates);
+        end
+        if max(b.dates) < min(c.dates)
+            fillerdates = max(b.dates):min(c.dates);
+        end
+
+        if isempty(fillerdates)
+            hd = [b.dates, c.dates];
+        else
+            hd = [b.dates, fillerdates, c.dates];
+        end
+
         a.data = [b.data, c.data];
-        a.dates = sort(unique([b.dates, c.dates]));
+        a.dates = sort(unique(hd));
     end
 
 %@test:1
