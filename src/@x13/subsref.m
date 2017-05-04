@@ -51,15 +51,12 @@ switch S(1).type
       case {'print', 'run'}
         if isequal(length(S), 1)
             feval(S(1).subs, o);
-            %print(o);
         elseif isequal(length(S), 2)
             if isequal(S(2).type,'()')
                 if isempty(S(2).subs)
                     feval(S(1).subs, o);
-                    %print(o);
                 else
                     feval(S(1).subs, o, S(2).subs{:});
-                    %print(o, S(2).subs{1});
                 end
             else
                 error('x13:: Wrong calling sequence!')
