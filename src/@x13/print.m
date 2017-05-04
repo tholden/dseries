@@ -76,7 +76,7 @@ if ~all(cellfun(@isempty, struct2cell(o.regression)))
             elseif isequal(optionnames{i}, 'start')
                 if ischar(o.regression.start)
                     if isdate(o.regression.start)
-                        PERIOD = dates(o.regression.start)
+                        PERIOD = dates(o.regression.start);
                     else
                         error('x13:regression: Option start cannot be interpreted as a date!')
                     end
