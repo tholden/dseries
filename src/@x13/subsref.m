@@ -48,7 +48,7 @@ switch S(1).type
                 error('x13:%s: Wrong calling sequence!', S(1).subs)
             end
         end
-      case {'print', 'run'}
+      case {'print', 'run', 'clean'}
         if isequal(length(S), 1)
             feval(S(1).subs, o);
         elseif isequal(length(S), 2)
@@ -65,6 +65,7 @@ switch S(1).type
             error('x13:: I expect no more than two input arguments!')
         end
       case 'results'
+        % Returns a structure with all the results.
         o = o.results;
       otherwise
         error('x13:: I do not understand what you are asking for!')
