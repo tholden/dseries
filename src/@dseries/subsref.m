@@ -195,17 +195,6 @@ switch S(1).type
         else
             error('dseries::subsref: dseries object is not empty!')
         end
-    elseif isa(S(1).subs{1},'dynTimeIndex')
-        % shift backward/forward (lag/lead) dseries object
-        shift = S(1).subs{1}.index;
-        if shift>0
-            B = feval('lead',A,shift);
-        elseif shift<0
-            B = feval('lag',A,-shift);
-        else
-            % Do nothing.
-            B = A;
-        end
     elseif isscalar(S(1).subs{1}) && isnumeric(S(1).subs{1}) && isint(S(1).subs{1})
         % Input is also interpreted as a backward/forward operator
         if S(1).subs{1}>0
@@ -597,29 +586,7 @@ end
 %$ T = all(t);
 %@eof:12
 
-% % @test:13
-% %$ try
-% %$     data = transpose(0:1:50);
-% %$     ts = dseries(data,'1950Q1');
-% %$     a = ts.lag;
-% %$     b = ts.lead;
-% %$     tt = dynTimeIndex();
-% %$     c = ts(tt-1);
-% %$     d = ts(tt+1);
-% %$     t(1) = 1;
-% %$ catch
-% %$     t(1) = 0;
-% %$ end
-% %$
-% %$ if t(1)>1
-% %$     t(2) = (a==c);
-% %$     t(3) = (b==d);
-% %$ end
-% %$
-% %$ T = all(t);
-% %@eof:13
-
-%@test:13 %14
+%@test:13
 %$ try
 %$     data = transpose(0:1:50);
 %$     ts = dseries(data,'1950Q1');
@@ -640,7 +607,7 @@ end
 %$ T = all(t);
 %@eof:13
 
-%@test:14 %15
+%@test:14
 %$ try
 %$     ds = dseries(transpose(1:5));
 %$     ts = ds(ds.dates(2:3));
@@ -657,7 +624,7 @@ end
 %$ T = all(t);
 %@eof:14
 
-%@test:15 %16
+%@test:15
 %$ try
 %$     ds = dseries(transpose(1:5));
 %$     ts = ds(ds.dates(2:6));
@@ -669,7 +636,7 @@ end
 %$ T = all(t);
 %@eof:15
 
-%@test:16 %17
+%@test:16
 %$ try
 %$     ds = dseries(transpose(1:5));
 %$     ts = ds(dates('1Y'):dates('6Y'));
@@ -681,7 +648,7 @@ end
 %$ T = all(t);
 %@eof:16
 
-%@test:17 %18
+%@test:17
 %$ try
 %$     ds = dseries(transpose(1:5));
 %$     ts = ds(dates('-2Y'):dates('4Y'));
