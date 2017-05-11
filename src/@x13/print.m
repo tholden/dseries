@@ -24,7 +24,13 @@ if nargin<2 || isempty(basename)
 end
 
 fid = fopen(sprintf('%s.spc', basename), 'w');
-fprintf(fid, '# File created on %s by Dynare.\n\n', datetime());
+
+% Print creation date
+if ~isoctave() && ~verLessThan('matlab','8.4')
+    fprintf(fid, '# File created on %s by Dynare.\n\n', datetime());
+else
+    fprintf(fid, '# File created on %s by Dynare.\n\n', datestr(now));
+end
 
 % Write SERIES block
 fprintf(fid, 'series {\n');
