@@ -28,6 +28,20 @@ switch S(1).type
             disp(o.(S(1).subs))
         else
             if isequal(S(2).type,'()')
+                if ~ismember(S(1).subs, o.commands)
+                    switch S(1).subs
+                      case 'arima'
+                        if ismember('automdl', o.commands)
+                            error('x13:arima: ARIMA command is not compatible with AUTOMDL command!')
+                        end
+                      case 'automdl'
+                        if ismember('arima', o.commands)
+                            error('x13:automdl: AUTOMDL command is not compatible with ARIMA command!')
+                        end
+                      otherwise
+                    end
+                    o.command(end+1) = {S(1).subs};
+                end
                 if isempty(S(2).subs)
                     % Reset the member to its default (empty).
                     o.(S(1).subs) = setdefaultmember(S(1).subs);

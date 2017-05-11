@@ -30,6 +30,7 @@ classdef x13<handle % --*-- Unitary tests --*--
         check      = [];         % Check command.
         x11        = [];         % X11 cmmand
         results    = [];         % Estimation results
+        commands   = {};         % List of commands.
     end
 
     methods
@@ -54,6 +55,7 @@ classdef x13<handle % --*-- Unitary tests --*--
                 o.check = setdefaultmember('check');
                 o.x11 = setdefaultmember('x11');
                 o.results = struct();
+                o.commands = {};
                 return
             end
             if isdseries(y)
@@ -83,6 +85,7 @@ classdef x13<handle % --*-- Unitary tests --*--
             o.check = setdefaultmember('check');
             o.x11 = setdefaultmember('x11');
             o.results = struct();
+            o.commands = {};
         end
     end
 end
