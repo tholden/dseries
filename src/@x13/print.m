@@ -106,7 +106,7 @@ if ismember('regression', o.commands)
             fprintf(fid, ' start = %i.%i\n', o.x.init.year, o.x.init.subperiod);
         end
     end
-    fprintf(fid, '\n');
+    fprintf(fid, '}\n\n');
 end
 
 % Write ARIMA block

@@ -40,7 +40,7 @@ switch S(1).type
                         end
                       otherwise
                     end
-                    o.command(end+1) = {S(1).subs};
+                    o.commands(end+1) = {S(1).subs};
                 end
                 if isempty(S(2).subs)
                     % Reset the member to its default (empty).
