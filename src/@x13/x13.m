@@ -21,6 +21,7 @@ classdef x13<handle % --*-- Unitary tests --*--
         y          = [];         % dseries object with a single variable.
         x          = [];         % dseries object with an arbitrary number of variables (to be used in the REGRESSION block).
         arima      = [];         % ARIMA model.
+        automdl    = [];         % ARIMA model selection.
         regression = [];         % Regression model.
         estimate   = [];         % Estimation options.
         transform  = [];         % Transform command  applied to y.
@@ -44,6 +45,7 @@ classdef x13<handle % --*-- Unitary tests --*--
                 o.y = dseries();
                 o.x = dseries();
                 o.arima = setdefaultmember('arima');
+                o.automdl = setdefaultmember('automdl');
                 o.regression = setdefaultmember('regression');
                 o.estimate = setdefaultmember('estimate');
                 o.transform = setdefaultmember('transform');
@@ -72,6 +74,7 @@ classdef x13<handle % --*-- Unitary tests --*--
             end
             % Initialize other members (they are empty initially and must be set by calling methods)
             o.arima = setdefaultmember('arima');
+            o.automdl = setdefaultmember('automdl');
             o.regression = setdefaultmember('regression');
             o.estimate = setdefaultmember('estimate');
             o.transform = setdefaultmember('transform');

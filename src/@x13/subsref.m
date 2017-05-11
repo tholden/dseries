@@ -22,7 +22,7 @@ function o = subsref(o, S) % --*-- Unitary tests --*--
 switch S(1).type
   case '.'
     switch S(1).subs
-      case {'arima','regression','transform','outlier', 'forecast', 'check', 'x11', 'estimate'}
+      case {'arima','automdl','regression','transform','outlier', 'forecast', 'check', 'x11', 'estimate'}
         if isequal(length(S), 1)
             % Just print the member.
             disp(o.(S(1).subs))

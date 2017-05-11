@@ -115,6 +115,18 @@ if ~all(cellfun(@isempty, struct2cell(o.arima)))
     fprintf(fid, '}\n\n');
 end
 
+% Write AUTOMDL block
+if ~all(cellfun(@isempty, struct2cell(o.automdl)))
+    optionnames = fieldnames(o.automdl);
+    fprintf(fid, 'automdl {\n');
+    for i=1:length(optionnames)
+        if ~isempty(o.automdl.(optionnames{i}))
+            printoption(fid, optionnames{i}, o.automdl.(optionnames{i}));
+        end
+    end
+    fprintf(fid, '}\n\n');
+end
+
 % Write OUTLIER block
 if ~all(cellfun(@isempty, struct2cell(o.outlier)))
     optionnames = fieldnames(o.outlier);
