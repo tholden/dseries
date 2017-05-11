@@ -26,7 +26,7 @@ end
 fid = fopen(sprintf('%s.spc', basename), 'w');
 
 % Print creation date
-if ~isoctave() && ~verLessThan('matlab','8.4')
+if ~isoctave() && ~verLessThan('matlab','9.0')
     fprintf(fid, '# File created on %s by Dynare.\n\n', datetime());
 else
     fprintf(fid, '# File created on %s by Dynare.\n\n', datestr(now));
