@@ -36,6 +36,9 @@ end
 fprintf(fid, 'series {\n');
 fprintf(fid, ' title = "%s"\n', o.y.name{1});
 printstart(fid, o.y.init);
+p1 = firstobservedperiod(o.y);
+p2 = lastobservedperiod(o.y);
+printspan(fid, p1, p2);
 fprintf(fid, ' period = %i\n', o.y.init.freq);
 fprintf(fid, ' data = %s', sprintf(data2txt(o.y.data)));
 fprintf(fid, '}\n\n');
