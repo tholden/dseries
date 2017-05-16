@@ -213,3 +213,5 @@ if ismember('x11', o.commands)
     end
     fprintf(fid, '}\n\n');
 end
+
+fclose(fid);
