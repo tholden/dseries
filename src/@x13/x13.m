@@ -73,6 +73,8 @@ classdef x13<handle % --*-- Unitary tests --*--
                 else
                     error('x13:: Wrong input argument (a dseries object is expected)!')
                 end
+            else
+                o.x = dseries();
             end
             % Initialize other members (they are empty initially and must be set by calling methods)
             o.arima = setdefaultmember('arima');
