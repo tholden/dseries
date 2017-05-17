@@ -76,6 +76,3 @@ end
 
 % Save main generated output file.
 o.results.out = fileread(sprintf('%s.out', basename))
-
-% Delete all generated files.
-delete([basename '.*']);
