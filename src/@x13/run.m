@@ -23,7 +23,7 @@ function run(o, basename)
 basename = o.print();
 
 % Run spc file.
-system(sprintf('%s %s', select_x13_binary(), basename));
+[~, ~] = system(sprintf('%s %s', select_x13_binary(), basename));
 
 o.results.name = basename; % Base name of the generated files.
 
@@ -75,4 +75,4 @@ if ~all(cellfun(@isempty, struct2cell(o.forecast)))
 end
 
 % Save main generated output file.
-o.results.out = fileread(sprintf('%s.out', basename))
+o.results.out = fileread(sprintf('%s.out', basename));
