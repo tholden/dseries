@@ -35,12 +35,11 @@ end
 % Write SERIES block
 fprintf(fid, 'series {\n');
 fprintf(fid, ' title = "%s"\n', o.y.name{1});
-printstart(fid, o.y.init);
 p1 = firstobservedperiod(o.y);
 p2 = lastobservedperiod(o.y);
-printspan(fid, p1, p2);
+printstart(fid, p1);
 fprintf(fid, ' period = %i\n', o.y.init.freq);
-fprintf(fid, ' data = %s', sprintf(data2txt(o.y.data)));
+fprintf(fid, ' data = %s', sprintf(data2txt(o.y(p1:p2).data)));
 fprintf(fid, '}\n\n');
 
 % Write TRANSFORM block
