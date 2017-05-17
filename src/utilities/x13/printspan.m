@@ -32,7 +32,7 @@ switch period1.freq
     ListOfMonths = {'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'};
     fprintf(fid, ' span = (%i.%s, %i.%s)\n', period1.year, ListOfMonths{period1.subperiod}, period2.year, ListOfMonths{period2.subperiod});
   case 4
-    fprintf(fid, ' span = (%i.%s, %i.%s)\n', period1.year, period1.subperiod, period2.year, period2.subperiod);
+    fprintf(fid, ' span = (%i.%i, %i.%i)\n', period1.year, period1.subperiod, period2.year, period2.subperiod);
   case 1
     fprintf(fid, ' span = (%i,%i)\n', period1.year, period2.year);
   otherwise
