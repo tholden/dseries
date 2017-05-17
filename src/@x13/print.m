@@ -105,8 +105,8 @@ if ismember('regression', o.commands)
                 end
             end
         end
-        if isempty(o.regression.start)
-            fprintf(fid, ' start = %i.%i\n', o.x.init.year, o.x.init.subperiod);
+        if ~isempty(o.x) && isempty(o.regression.start)
+            fprintf(fid, ' start = %i.%i\n', year(o.x.init), subperiod(o.x.init));
         end
     end
     fprintf(fid, '}\n\n');
