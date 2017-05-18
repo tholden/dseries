@@ -10,7 +10,7 @@ function one_dimensional_cell_array = insert_object_in_a_one_dimensional_cell_ar
 % OUTPUTS
 % - one_dimensional_cell_array [any]     cell array with n+1 elements.
 
-% Copyright (C) 2013-2015 Dynare Team
+% Copyright (C) 2013-2017 Dynare Team
 %
 % This code is free software: you can redistribute it and/or modify
 % it under the terms of the GNU General Public License as published by

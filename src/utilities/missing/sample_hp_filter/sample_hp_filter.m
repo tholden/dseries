@@ -10,7 +10,7 @@ function [hptrend,hpcycle] = sample_hp_filter(y,s)
 %   hptrend                  [double]   T*n matrix, trend component of y.
 %   hpcycle                  [double]   T*n matrix, cycle component of y.
 
-% Copyright (C) 2010-2015 Dynare Team
+% Copyright (C) 2010-2017 Dynare Team
 %
 % This code is free software: you can redistribute it and/or modify
 % it under the terms of the GNU General Public License as published by

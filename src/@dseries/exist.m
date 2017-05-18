@@ -9,7 +9,7 @@ function l = exist(o, varname) % --*-- Unitary tests --*--
 % OUTPUTS
 %  - l       [logical], equal to 1 (true) iff varname is a variable in dseries object o.
 
-% Copyright (C) 2014 Dynare Team
+% Copyright (C) 2014-2017 Dynare Team
 %
 % This file is part of Dynare.
 %

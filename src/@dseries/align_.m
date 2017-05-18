@@ -11,7 +11,7 @@ function [o, p] = align_(o, p) % --*-- Unitary tests --*--
 % - o [dseries]
 % - p [dseries]
 
-% Copyright (C) 2013-2016 Dynare Team
+% Copyright (C) 2013-2017 Dynare Team
 %
 % This file is part of Dynare.
 %

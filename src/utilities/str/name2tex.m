@@ -11,7 +11,7 @@ function tex = name2tex(name, info) % --*-- Unitary tests --*--
 % OUTPUTS
 % - tex  [string or cell of strings]
 
-% Copyright (C) 2012-2016 Dynare Team
+% Copyright (C) 2012-2017 Dynare Team
 %
 % This code is free software: you can redistribute it and/or modify
 % it under the terms of the GNU General Public License as published by
