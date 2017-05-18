@@ -12,7 +12,7 @@ function b = ne(o, p) % --*-- Unitary tests --*--
 % REMARKS 
 %  If the number of variables, the number of observations or the frequencies are different in A and B, the function returns one. 
 
-% Copyright (C) 2013 Dynare Team
+% Copyright (C) 2013-2017 Dynare Team
 %
 % This file is part of Dynare.
 %

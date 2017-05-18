@@ -1,6 +1,6 @@
 function names = default_name(dim)
 
-% Copyright (C) 2013 Dynare Team
+% Copyright (C) 2013-2016 Dynare Team
 %
 % This file is part of Dynare.
 %

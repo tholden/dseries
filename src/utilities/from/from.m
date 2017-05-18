@@ -1,6 +1,6 @@
 function from(varargin)   % --*-- Unitary tests --*--
 
-% Copyright (C) 2014 Dynare Team
+% Copyright (C) 2014-2015 Dynare Team
 %
 % This file is part of Dynare.
 %

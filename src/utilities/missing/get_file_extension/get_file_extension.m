@@ -11,7 +11,7 @@ function ext = get_file_extension(file)
 % REMARKS 
 %  If the provided file name has no extension, the routine will return an empty array.
 
-% Copyright (C) 2013-2015 Dynare Team
+% Copyright (C) 2013-2016 Dynare Team
 %
 % This file is part of Dynare.
 %

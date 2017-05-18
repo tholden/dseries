@@ -2,7 +2,7 @@ classdef dseries<handle % --*-- Unitary tests --*--
 
 % Class for time series.
 
-% Copyright (C) 2013-2016 Dynare Team
+% Copyright (C) 2013-2017 Dynare Team
 %
 % This code is free software: you can redistribute it and/or modify
 % it under the terms of the GNU General Public License as published by
