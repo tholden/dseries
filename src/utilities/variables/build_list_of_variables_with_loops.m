@@ -18,7 +18,7 @@ function list_of_variables = build_list_of_variables_with_loops(o_list_of_variab
 % along with Dynare.  If not, see <http://www.gnu.org/licenses/>.
 
 checknames = ~isempty(o_list_of_variables);
-    
+
 NumberOfImplicitLoops = .5*length(idArobase);
 
 idComma = cell(NumberOfImplicitLoops,1);
@@ -39,7 +39,7 @@ switch NumberOfImplicitLoops
     expression = expressions{1};
     idVariables_ = [];
     while ~isempty(expression)
-        [token, expression] = strtok(expression,',');             
+        [token, expression] = strtok(expression,',');
         candidate = [VariableName(1:idArobase(1)-1), token, VariableName(idArobase(2)+1:end)];
         if checknames
             id = find(strcmp(candidate,o_list_of_variables));

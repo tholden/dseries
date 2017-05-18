@@ -1,9 +1,9 @@
 function [init, data, varlist, tex] = load_data(filename)
 
-% INPUTS 
+% INPUTS
 % - filename     [string]  Name of the file containing data.
 %
-% OUTPUTS 
+% OUTPUTS
 % - init         [dates]   Initial period.
 % - data         [double]  Array of data (T*N).
 % - varlist      [cell]    Names of the N variables (as strings).

@@ -17,5 +17,5 @@ function b = is64bit()
 % You should have received a copy of the GNU General Public License
 % along with Dynare.  If not, see <http://www.gnu.org/licenses/>.
 
-[~, maxsize] = computer(); 
+[~, maxsize] = computer();
 b = (maxsize > 2^31);

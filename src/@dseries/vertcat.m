@@ -2,17 +2,17 @@ function o = vertcat(varargin) % --*-- Unitary tests --*--
 
 % Overloads vertcat method for dseries objects.
 %
-% INPUTS 
+% INPUTS
 %  o o1    dseries object.
 %  o o2    dseries object.
 %  o ...
 %
-% OUTPUTS 
+% OUTPUTS
 %  o o     dseries object.
 %
-% EXAMPLE 1 
+% EXAMPLE 1
 %  If o1, o2 and o3 are dseries objects containing the same variables over different samples, the following syntax:
-%    
+%
 %    o = [o1; o2; o3] ;
 %
 %  merges the samples.
@@ -46,29 +46,29 @@ elseif nargin>1
 end
 
 function d = vertcat_(b, c)
-    d = NaN;
-    if ~isequal(frequency(b), frequency(c))
-        error('dseries::vertcat: Frequencies must be common!')
-    end
-    if ~isequal(vobs(b), vobs(c))
-        error('dseries::vertcat: Number of variables must be common!')
-    end
-    reorder_variables_in_c = false;
-    if ~isequal(b.name, c.name)
-        [t, idx] = ismember(b.name, c.name);
-        if all(t)
-            reorder_variables_in_c = true;
-        else
-            error('dseries::vertcat: Variables must be common!')
-        end
-    end
-    d = b;
-    if reorder_variables_in_c
-        d.data = [b.data; c.data(:,idx)];
+d = NaN;
+if ~isequal(frequency(b), frequency(c))
+    error('dseries::vertcat: Frequencies must be common!')
+end
+if ~isequal(vobs(b), vobs(c))
+    error('dseries::vertcat: Number of variables must be common!')
+end
+reorder_variables_in_c = false;
+if ~isequal(b.name, c.name)
+    [t, idx] = ismember(b.name, c.name);
+    if all(t)
+        reorder_variables_in_c = true;
     else
-        d.data = [b.data; c.data];
+        error('dseries::vertcat: Variables must be common!')
     end
-    d.dates = [b.dates; c.dates];
+end
+d = b;
+if reorder_variables_in_c
+    d.data = [b.data; c.data(:,idx)];
+else
+    d.data = [b.data; c.data];
+end
+d.dates = [b.dates; c.dates];
 
 %@test:1
 %$ % Define a data set.

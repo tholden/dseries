@@ -20,4 +20,3 @@ if isfield(command, optname)
 else
     disp(sprintf('Option %s is unknown!', optname))
 end
-

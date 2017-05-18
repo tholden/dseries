@@ -2,11 +2,11 @@ function q = plus(o, p) % --*-- Unitary tests --*--
 
 % Overloads the plus (+) operator for dseries objects.
 %
-% INPUTS 
+% INPUTS
 % - o [dseries, real]
 % - p [dseries, real]
 %
-% OUTPUTS 
+% OUTPUTS
 % - q [dseries]
 
 % Copyright (C) 2011-2016 Dynare Team
@@ -128,7 +128,7 @@ end
 %$    ts1 = dseries(A,[],A_name,[]);
 %$    ts2 = dseries(B,[],B_name,[]);
 %$    ts3 = ts1+ts2;
-%$    ts4 = ts3+ts1; 
+%$    ts4 = ts3+ts1;
 %$    t(1) = true;
 %$ catch
 %$    t = false;

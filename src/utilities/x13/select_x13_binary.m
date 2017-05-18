@@ -1,5 +1,5 @@
 function x13_binary = select_x13_binary()
- 
+
 % Copyright (C) 2017 Dynare Team
 %
 % This code is free software: you can redistribute it and/or modify
@@ -31,7 +31,7 @@ elseif ispc()
         x13_binary = sprintf('%s%s%s%s', x13_binary, '64', filesep(), 'x13.exe');
     else
         x13_binary = sprintf('%s%s%s%s', x13_binary, '32', filesep(), 'x13.exe');
-    end    
+    end
 else
     error('X13 binary is not yet available for this plateform')
 end

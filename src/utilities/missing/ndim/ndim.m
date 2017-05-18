@@ -2,10 +2,10 @@ function n = ndim(x)
 
 % Returns the number of non singleton dimensions of a matlab array.
 %
-% INPUTS 
+% INPUTS
 % - x  [array]
 %
-% OUTPUTS 
+% OUTPUTS
 % - n  [integer] number of non singleton dimensions.
 
 % Copyright (C) 2012-2015 Dynare Team

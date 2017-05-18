@@ -2,10 +2,10 @@ function a = iscellofchar(b)
 
 % Returns true iff ```b``` is a cell of char.
 %
-% INPUTS 
+% INPUTS
 % - b [any]
 %
-% OUTPUTS 
+% OUTPUTS
 % - a [bool]
 
 % Copyright (C) 2012-2015 Dynare Team

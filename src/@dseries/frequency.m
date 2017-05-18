@@ -2,10 +2,10 @@ function f = frequency(o)
 
 % Returns the frequency of a dseries object.
 %
-% INPUTS 
+% INPUTS
 % - o   [dseries]
 %
-% OUPUTS 
+% OUPUTS
 % - f   [integer]  1 (annual), 4 (quarterly), 12 (monthly)
 
 % Copyright (C) 2014-2017 Dynare Team

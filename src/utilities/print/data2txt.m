@@ -1,5 +1,5 @@
 function str= data2txt(y)
-    
+
 % Prints a one dimensional array.
 
 % Copyright (C) 2017 Dynare Team

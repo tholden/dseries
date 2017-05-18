@@ -1,13 +1,13 @@
 function [o, p] = align_(o, p) % --*-- Unitary tests --*--
-    
+
 % If necessay completes dseries object o and p so that they are defined on the same time range
-% (in place modification). 
-%    
-% INPUTS 
+% (in place modification).
+%
+% INPUTS
 % - o [dseries]
 % - p [dseries]
 %
-% OUTPUTS 
+% OUTPUTS
 % - o [dseries]
 % - p [dseries]
 

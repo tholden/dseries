@@ -2,12 +2,12 @@ function l = exist(o, varname) % --*-- Unitary tests --*--
 
 % Tests if a variable exists in dseries object o.
 %
-% INPUTS 
+% INPUTS
 %  - o       [dseries], dseries object.
 %  - varname [string],  name of a variable.
 %
-% OUTPUTS 
-%  - l       [logical], equal to 1 (true) iff varname is a variable in dseries object o. 
+% OUTPUTS
+%  - l       [logical], equal to 1 (true) iff varname is a variable in dseries object o.
 
 % Copyright (C) 2014 Dynare Team
 %

@@ -2,10 +2,10 @@ function o = log(o) % --*-- Unitary tests --*--
 
 % Apply the logarithm to all the variables in a dseries object (without in place modification).
 %
-% INPUTS 
+% INPUTS
 % - o [dseries]
 %
-% OUTPUTS 
+% OUTPUTS
 % - o [dseries]
 
 % Copyright (C) 2011-2016 Dynare Team
@@ -45,7 +45,7 @@ o.log_;
 %$ catch
 %$     t(1) = false;
 %$ end
-%$ 
+%$
 %$ if t(1)
 %$      t(2) = dassert(o, q);
 %$      t(3) = dassert(p.data, zeros(10, 2));
@@ -67,7 +67,7 @@ o.log_;
 %$ catch
 %$     t(1) = false;
 %$ end
-%$ 
+%$
 %$ if t(1)
 %$      t(2) = dassert(length(p.name), 2);
 %$      t(3) = dassert(p.name{1},'log(Variable_1)');

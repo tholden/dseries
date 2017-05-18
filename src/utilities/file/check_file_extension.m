@@ -3,11 +3,11 @@ function b = check_file_extension(file,type)
 % Check file extension of a file. Returns 1 (true) if the extension of ```file``` is equal to
 % ```type```, 0 (false) otherwise.
 %
-% INPUTS 
+% INPUTS
 % - file [str] file name.
 % - type [str] file extension.
 %
-% OUTPUTS 
+% OUTPUTS
 % - b [bool]
 
 

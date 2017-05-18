@@ -2,19 +2,19 @@ function o = tex_rename_(o, varargin) % --*-- Unitary tests --*--
 
 % Changes TeX name of variables in a dseries object.
 %
-% INPUTS 
+% INPUTS
 % - o           [dseries]
 % - names_1     [string, cell]
 % - names_2     [string]
 %
-% OUTPUTS 
+% OUTPUTS
 % - o     [dseries]
 %
-% REMARKS 
+% REMARKS
 % If varargin has only one element (string or cell of strings) then this input defines the new
 % texnames for all the variables in dseries object o. If varargin has two elements (strings) the
 % first element is the name of the variable and the second argument is the new texname for this
-% variable. 
+% variable.
 
 % Copyright (C) 2013-2017 Dynare Team
 %
@@ -47,7 +47,7 @@ end
 
 assert(ischar(newtexname) || (iscellstr(newtexname) && length(newtexname) == vobs(o)), ...
        ['dseries::tex_rename: third input argument (newtexname) name must either be a string' ...
-            ' or a cell array of strings with the same number of entries as varibles in the dseries']);
+        ' or a cell array of strings with the same number of entries as varibles in the dseries']);
 
 if nargin == 2
     idname = 1;

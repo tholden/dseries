@@ -2,10 +2,10 @@ function o = qdiff(o) % --*-- Unitary tests --*--
 
 % Computes quaterly differences.
 %
-% INPUTS 
+% INPUTS
 % - o   [dseries]
 %
-% OUTPUTS 
+% OUTPUTS
 % - o   [dseries]
 
 % Copyright (C) 2012-2017 Dynare Team

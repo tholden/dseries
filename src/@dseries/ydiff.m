@@ -2,10 +2,10 @@ function o = ydiff(o) % --*-- Unitary tests --*--
 
 % Computes yearly differences.
 %
-% INPUTS 
+% INPUTS
 % - o   [dseries]
 %
-% OUTPUTS 
+% OUTPUTS
 % - o   [dseries]
 
 % Copyright (C) 2012-2017 Dynare Team

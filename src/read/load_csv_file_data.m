@@ -2,16 +2,16 @@ function [freq, init, data, varlist] = load_csv_file_data(file) % --*-- Unitary 
 %function [freq, init, data, varlist] = load_csv_file_data(file)
 % Loads data in a csv file.
 %
-% INPUTS 
+% INPUTS
 %  o file        string, name of the csv file (with path).
 %
-% OUTPUTS 
+% OUTPUTS
 %  o freq        integer scalar equal to 1, 4, 12 or 52 (for annual, quaterly, monthly or weekly frequencies).
 %  o init        dates object, initial date in the dataset.
 %  o data        matrix of doubles, the data.
 %  o varlist     cell of strings, names of the variables.
 %
-% REMARKS 
+% REMARKS
 %  The varlist output will be set only if the first line contains variable
 %  names. Similarly, if the first column does not contain dates, then
 %  freq will be 1 and init will be year 1.

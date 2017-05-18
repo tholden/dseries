@@ -2,24 +2,24 @@ function o = horzcat(varargin) % --*-- Unitary tests --*--
 
 % Overloads horzcat method for dseries objects.
 %
-% INPUTS 
+% INPUTS
 %  o o1    dseries object.
 %  o o2    dseries object.
 %  o ...
 %
-% OUTPUTS 
+% OUTPUTS
 %  o o     dseries object.
 %
-% EXAMPLE 1 
+% EXAMPLE 1
 %  If o1, o2 and o3 are dseries objects the following syntax:
-%    
+%
 %    o = [o1, o2, o3] ;
 %
 %  defines a dseries object o containing the variables appearing in o1, o2 and o3.
 %
-% REMARKS 
+% REMARKS
 %  o o1, o2, ... must not have common variables.
-    
+
 % Copyright (C) 2011-2017 Dynare Team
 %
 % This file is part of Dynare.
@@ -50,71 +50,71 @@ switch nargin
 end
 
 function a = concatenate(b,c)
-    [n,message] = common_strings_in_cell_arrays(b.name, c.name);
-    if isempty(b)
-        a = c;
-        return
-    end
-    if isempty(c)
-        a = b;
-        return
-    end
-    if n
-        error(['dseries::horzcat: I cannot concatenate dseries objects with common variable names (' message ')!'])
-    end
-    if ~isequal(frequency(b),frequency(c))
-        error('dseries::horzcat: All time series objects must have common frequency!')
+[n,message] = common_strings_in_cell_arrays(b.name, c.name);
+if isempty(b)
+    a = c;
+    return
+end
+if isempty(c)
+    a = b;
+    return
+end
+if n
+    error(['dseries::horzcat: I cannot concatenate dseries objects with common variable names (' message ')!'])
+end
+if ~isequal(frequency(b),frequency(c))
+    error('dseries::horzcat: All time series objects must have common frequency!')
+else
+    a = dseries();
+end
+d_nobs_flag = 0;
+if ~isequal(nobs(b),nobs(c))
+    d_nobs_flag = 1;
+end
+d_init_flag = 0;
+if ~isequal(firstdate(b),firstdate(c))
+    d_init_flag = 1;
+end
+a.name = vertcat(b.name,c.name);
+a.tex  = vertcat(b.tex,c.tex);
+if ~( d_nobs_flag(1) || d_init_flag(1) )
+    a.data = [b.data,c.data];
+    a.dates = b.dates;
+else
+    nobs_b = nobs(b);
+    nobs_c = nobs(c);
+    if firstdate(b)<=firstdate(c)
+        if firstdate(b)<firstdate(c)
+            c.data = [NaN(firstdate(c)-firstdate(b), vobs(c)); c.data];
+        end
     else
-        a = dseries();
+        b.data = [NaN(firstdate(b)-firstdate(c), vobs(b)); b.data];
     end
-    d_nobs_flag = 0;
-    if ~isequal(nobs(b),nobs(c))
-        d_nobs_flag = 1;
+    b_last_date = firstdate(b)+nobs_b;
+    c_last_date = firstdate(c)+nobs_c;
+    if b_last_date<c_last_date
+        b.data = [b.data; NaN(c_last_date-b_last_date, vobs(b))];
+    elseif b_last_date>c_last_date
+        c.data = [c.data; NaN(b_last_date-c_last_date, vobs(c))];
     end
-    d_init_flag = 0;
-    if ~isequal(firstdate(b),firstdate(c))
-        d_init_flag = 1;
+
+    fillerdates = dates();
+    if max(c.dates) < min(b.dates)
+        fillerdates = max(c.dates):min(b.dates);
     end
-    a.name = vertcat(b.name,c.name);
-    a.tex  = vertcat(b.tex,c.tex);
-    if ~( d_nobs_flag(1) || d_init_flag(1) )
-        a.data = [b.data,c.data];
-        a.dates = b.dates;
+    if max(b.dates) < min(c.dates)
+        fillerdates = max(b.dates):min(c.dates);
+    end
+
+    if isempty(fillerdates)
+        hd = [b.dates, c.dates];
     else
-        nobs_b = nobs(b);
-        nobs_c = nobs(c);
-        if firstdate(b)<=firstdate(c)
-            if firstdate(b)<firstdate(c)
-                c.data = [NaN(firstdate(c)-firstdate(b), vobs(c)); c.data];
-            end
-        else
-            b.data = [NaN(firstdate(b)-firstdate(c), vobs(b)); b.data];
-        end
-        b_last_date = firstdate(b)+nobs_b;
-        c_last_date = firstdate(c)+nobs_c;
-        if b_last_date<c_last_date
-            b.data = [b.data; NaN(c_last_date-b_last_date, vobs(b))];
-        elseif b_last_date>c_last_date
-            c.data = [c.data; NaN(b_last_date-c_last_date, vobs(c))];
-        end
-
-        fillerdates = dates();
-        if max(c.dates) < min(b.dates)
-            fillerdates = max(c.dates):min(b.dates);
-        end
-        if max(b.dates) < min(c.dates)
-            fillerdates = max(b.dates):min(c.dates);
-        end
-
-        if isempty(fillerdates)
-            hd = [b.dates, c.dates];
-        else
-            hd = [b.dates, fillerdates, c.dates];
-        end
-
-        a.data = [b.data, c.data];
-        a.dates = sort(unique(hd));
+        hd = [b.dates, fillerdates, c.dates];
     end
+
+    a.data = [b.data, c.data];
+    a.dates = sort(unique(hd));
+end
 
 %@test:1
 %$ % Define a data set.

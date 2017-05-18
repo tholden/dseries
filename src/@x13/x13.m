@@ -17,23 +17,23 @@ classdef x13<handle % --*-- Unitary tests --*--
 % You should have received a copy of the GNU General Public License
 % along with Dynare.  If not, see <http://www.gnu.org/licenses/>.
 
-    properties
-        y          = [];         % dseries object with a single variable.
-        x          = [];         % dseries object with an arbitrary number of variables (to be used in the REGRESSION block).
-        arima      = [];         % ARIMA model.
-        automdl    = [];         % ARIMA model selection.
-        regression = [];         % Regression model.
-        estimate   = [];         % Estimation options.
-        transform  = [];         % Transform command  applied to y.
-        outlier    = [];         % Outlier command.
-        forecast   = [];         % Forecast command.
-        check      = [];         % Check command.
-        x11        = [];         % X11 cmmand
-        results    = [];         % Estimation results
-        commands   = {};         % List of commands.
-    end
+properties
+    y          = [];         % dseries object with a single variable.
+    x          = [];         % dseries object with an arbitrary number of variables (to be used in the REGRESSION block).
+    arima      = [];         % ARIMA model.
+    automdl    = [];         % ARIMA model selection.
+    regression = [];         % Regression model.
+    estimate   = [];         % Estimation options.
+    transform  = [];         % Transform command  applied to y.
+    outlier    = [];         % Outlier command.
+    forecast   = [];         % Forecast command.
+    check      = [];         % Check command.
+    x11        = [];         % X11 cmmand
+    results    = [];         % Estimation results
+    commands   = {};         % List of commands.
+end
 
-    methods
+methods
         function o = x13(y, x)
         % Constructor for the x13 class.
         %
@@ -42,41 +42,9 @@ classdef x13<handle % --*-- Unitary tests --*--
         %
         % OUPUTS
         % - o      [x13]        Empty object except for the data.
-            if ~nargin
-                o.y = dseries();
-                o.x = dseries();
-                o.arima = setdefaultmember('arima');
-                o.automdl = setdefaultmember('automdl');
-                o.regression = setdefaultmember('regression');
-                o.estimate = setdefaultmember('estimate');
-                o.transform = setdefaultmember('transform');
-                o.outlier = setdefaultmember('outlier');
-                o.forecast = setdefaultmember('forecast');
-                o.check = setdefaultmember('check');
-                o.x11 = setdefaultmember('x11');
-                o.results = struct();
-                o.commands = {};
-                return
-            end
-            if isdseries(y)
-                if isequal(y.vobs, 1)
-                    o.y = y;
-                else
-                    error('x13:: Wrong input argument (a dseries object with a single variable is expected)!')
-                end
-            else
-                error('x13:: Wrong input argument (a dseries object is expected)!')
-            end
-            if nargin>1
-                if isdseries(x)
-                    o.x = x;
-                else
-                    error('x13:: Wrong input argument (a dseries object is expected)!')
-                end
-            else
-                o.x = dseries();
-            end
-            % Initialize other members (they are empty initially and must be set by calling methods)
+        if ~nargin
+            o.y = dseries();
+            o.x = dseries();
             o.arima = setdefaultmember('arima');
             o.automdl = setdefaultmember('automdl');
             o.regression = setdefaultmember('regression');
@@ -88,6 +56,38 @@ classdef x13<handle % --*-- Unitary tests --*--
             o.x11 = setdefaultmember('x11');
             o.results = struct();
             o.commands = {};
+            return
         end
-    end
+        if isdseries(y)
+            if isequal(y.vobs, 1)
+                o.y = y;
+            else
+                error('x13:: Wrong input argument (a dseries object with a single variable is expected)!')
+            end
+        else
+            error('x13:: Wrong input argument (a dseries object is expected)!')
+        end
+        if nargin>1
+            if isdseries(x)
+                o.x = x;
+            else
+                error('x13:: Wrong input argument (a dseries object is expected)!')
+            end
+        else
+            o.x = dseries();
+        end
+        % Initialize other members (they are empty initially and must be set by calling methods)
+        o.arima = setdefaultmember('arima');
+        o.automdl = setdefaultmember('automdl');
+        o.regression = setdefaultmember('regression');
+        o.estimate = setdefaultmember('estimate');
+        o.transform = setdefaultmember('transform');
+        o.outlier = setdefaultmember('outlier');
+        o.forecast = setdefaultmember('forecast');
+        o.check = setdefaultmember('check');
+        o.x11 = setdefaultmember('x11');
+        o.results = struct();
+        o.commands = {};
+        end
+end
 end

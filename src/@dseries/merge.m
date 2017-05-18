@@ -2,14 +2,14 @@ function q = merge(o, p) % --*-- Unitary tests --*--
 
 % Merge method for dseries objects.
 %
-% INPUTS 
+% INPUTS
 % - o  [dseries]
 % - p  [dseries]
 %
-% OUTPUTS 
+% OUTPUTS
 % - q  [dseries]
 %
-% REMARKS 
+% REMARKS
 % If dseries objects o and p have common variables, the variables in p take precedence.
 
 % Copyright (C) 2013-2017 Dynare Team

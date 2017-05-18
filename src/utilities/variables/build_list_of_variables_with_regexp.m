@@ -47,10 +47,10 @@ list_of_variables = vertcat(list_of_variables, VariableName);
 
 
 function b = isnotempty_cell(CellArray)
-    CellArrayDimension = size(CellArray);
-    b = NaN(CellArrayDimension);
-    for i=1:CellArrayDimension(1)
-        for j = 1:CellArrayDimension(2)
-            b(i,j) = ~isempty(CellArray{i,j});
-        end
+CellArrayDimension = size(CellArray);
+b = NaN(CellArrayDimension);
+for i=1:CellArrayDimension(1)
+    for j = 1:CellArrayDimension(2)
+        b(i,j) = ~isempty(CellArray{i,j});
     end
+end

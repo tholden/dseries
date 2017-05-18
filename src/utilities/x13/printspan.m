@@ -19,7 +19,7 @@ if ~isequal(period1.freq, period2.freq)
     error('x13:printspan: Second and third input argument must have common frequency!')
 end
 
-if ~ismember(period1.freq, [1 4 12]) || ~ismember(period2.freq, [1 4 12]) 
+if ~ismember(period1.freq, [1 4 12]) || ~ismember(period2.freq, [1 4 12])
     error('x13:printspan: Only monthly, quaterly or annual data are allowed!')
 end
 

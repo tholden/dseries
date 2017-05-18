@@ -27,7 +27,7 @@ p = dseries();
 p.data  = o.data;
 p.name  = o.name;
 p.tex   = o.tex;
-p.dates = o.dates; 
+p.dates = o.dates;
 
 %@test:1
 %$ % Define a dates object
@@ -42,7 +42,7 @@ p.dates = o.dates;
 %$ catch
 %$     t(1) = false;
 %$ end
-%$ 
+%$
 %$ if t(1)
 %$      o.log_();
 %$      t(2) = dassert(p, q);

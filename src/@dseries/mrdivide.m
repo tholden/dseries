@@ -2,11 +2,11 @@ function q = mrdivide(o, p) % --*-- Unitary tests --*--
 
 % Overloads the mrdivde (/) operator for dseries objects.
 %
-% INPUTS 
+% INPUTS
 % - o [dseries]           T observations and N variables.
 % - p [dseries,double]    scalar, vector or dseries object.
 %
-% OUTPUTS 
+% OUTPUTS
 % - q [dseries]           T observations and N variables.
 
 % Copyright (C) 2013-2017 Dynare Team
@@ -25,7 +25,7 @@ function q = mrdivide(o, p) % --*-- Unitary tests --*--
 %
 % You should have received a copy of the GNU General Public License
 % along with Dynare.  If not, see <http://www.gnu.org/licenses/>.
- 
+
 if isnumeric(o) && (isscalar(o) ||  isvector(o))
     if ~isdseries(p)
         error('dseries::mrdivide: Second input argument must be a dseries object!')
@@ -42,7 +42,7 @@ if isnumeric(p) && (isscalar(p) || isvector(p))
     q = copy(o);
     q.data = bsxfun(@rdivide, o.data, p);
     return
-end    
+end
 
 if isdseries(o) && isdseries(p)
     % Element by element divisions of two dseries object

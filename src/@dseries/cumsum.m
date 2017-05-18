@@ -2,12 +2,12 @@ function o = cumsum(varargin) % --*-- Unitary tests --*--
 
 % Overloads matlab's cumsum function for dseries objects.
 %
-% INPUTS 
+% INPUTS
 % - o     dseries object [mandatory].
 % - d     dates object [optional]
 % - v     dseries object with one observation [optional]
 %
-% OUTPUTS 
+% OUTPUTS
 % - o     dseries object.
 
 % Copyright (C) 2013-2017 Dynare Team

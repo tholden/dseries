@@ -2,10 +2,10 @@ function o = exp_(o) % --*-- Unitary tests --*--
 
 % Apply the exponential to all the variables in a dseries object (in place modification).
 %
-% INPUTS 
+% INPUTS
 % - o [dseries]
 %
-% OUTPUTS 
+% OUTPUTS
 % - o [dseries]
 
 % Copyright (C) 2015-2016 Dynare Team
@@ -70,7 +70,7 @@ end
 %$ catch
 %$     t(1) = false;
 %$ end
-%$ 
+%$
 %$ if t(1)
 %$      t(2) = dassert(length(o.name), 2);
 %$      t(3) = dassert(o.name{1},'exp(Variable_1)');

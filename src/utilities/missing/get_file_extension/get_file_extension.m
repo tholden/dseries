@@ -2,13 +2,13 @@ function ext = get_file_extension(file)
 
 % returns the extension of a file.
 %
-% INPUTS 
+% INPUTS
 %  o file      string, name of the file
 %
-% OUTPUTS 
+% OUTPUTS
 %  o ext       string, extension.
 %
-% REMARKS 
+% REMARKS
 %  If the provided file name has no extension, the routine will return an empty array.
 
 % Copyright (C) 2013-2016 Dynare Team

@@ -96,7 +96,7 @@ end
 %$ catch
 %$    t = 0;
 %$ end
-%$ 
+%$
 %$ if t(1)
 %$    t(2) = dassert(isequal(size(s),[1, 2]), true);
 %$    t(3) = dassert(max(abs(s-[.1, .1]))<.0001, true);
@@ -116,7 +116,7 @@ end
 %$ catch
 %$    t = 0;
 %$ end
-%$ 
+%$
 %$ if t(1)
 %$    t(2) = dassert(isequal(size(s),[1, 2]), true);
 %$    t(3) = dassert(max(abs(s-[.1, .1]))<.0001, true);

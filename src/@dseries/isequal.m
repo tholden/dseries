@@ -2,12 +2,12 @@ function b = isequal(o, p, tol)
 
 % Overloads the isequal Matlab/Octave's function.
 %
-% INPUTS 
+% INPUTS
 % - o      [dseries]  T periods, N variables.
 % - p      [dseries]  T periods, N variables.
 % - tol    [double]   tolerance parameter.
 %
-% OUTPUTS 
+% OUTPUTS
 %  o b     [logical]
 
 % Copyright (C) 2013-2017 Dynare Team

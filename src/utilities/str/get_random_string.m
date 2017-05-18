@@ -2,10 +2,10 @@ function s = get_random_string(n);
 
 % Builds a random string (starting with a letter).
 %
-% INPUTS 
+% INPUTS
 % - n [integer] scalar, length of the generated string.
 %
-% OUTPUTS 
+% OUTPUTS
 % - s [string] random string of length n.
 
 % Copyright (C) 2012-2015 Dynare Team

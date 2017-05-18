@@ -2,10 +2,10 @@ function o = uminus(o) % --*-- Unitary tests --*--
 
 % Overloads the uminus method for dseries objects.
 %
-% INPUTS 
+% INPUTS
 % - o   [dseries]
 %
-% OUTPUTS 
+% OUTPUTS
 % - o   [dseries]
 
 % Copyright (C) 2012-2017 Dynare Team

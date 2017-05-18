@@ -2,18 +2,18 @@ function [freq,init,data,varlist,tex] = load_m_file_data(file)
 
 % Loads data in a matlab/octave script.
 %
-% INPUTS 
+% INPUTS
 %  o file         string, name of the matlab/octave script (with path)
 %
-% OUTPUTS 
+% OUTPUTS
 %  o freq        integer scalar equal to 1, 4, 12 or 52 (for annual, quaterly, monthly or weekly frequencies).
 %  o init        dates object, initial date in the dataset.
 %  o data        matrix of doubles, the data.
 %  o varlist     cell of strings, names of the variables.
 %
-% REMARKS 
-% The frequency and initial date can be specified with variables FREQ__ and INIT__ in the matlab/octave script. FREQ__ must 
-% be a scalar integer and INIT__ a string like '1938M11', '1945Q3', '1973W3' or '2009A'. If these variables are not specified 
+% REMARKS
+% The frequency and initial date can be specified with variables FREQ__ and INIT__ in the matlab/octave script. FREQ__ must
+% be a scalar integer and INIT__ a string like '1938M11', '1945Q3', '1973W3' or '2009A'. If these variables are not specified
 % default values for freq and init are 1 and dates(1,1).
 
 % Copyright (C) 2012-2015 Dynare Team
@@ -94,7 +94,7 @@ if isempty(varlist0)
                 || isequal(list_of_variables(current_variable_index).name,'varlist0') ...
                 || isequal(list_of_variables(current_variable_index).name,'list_of_variables') ...
                 || isequal(list_of_variables(current_variable_index).name,'tex') ...
-            continue
+                continue
         end
         if list_of_variables(current_variable_index).global || list_of_variables(current_variable_index).persistent
             % A variable cannot be a global or persistent variable.
@@ -117,7 +117,7 @@ if isempty(varlist0)
     end
 else
     for current_variable_index=1:length(varlist0)
-       eval(['data = [data, ' varlist0{current_variable_index} '];'])
+        eval(['data = [data, ' varlist0{current_variable_index} '];'])
     end
     varlist = varlist0;
 end

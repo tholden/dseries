@@ -2,11 +2,11 @@ function [o, id] = pop(o, a) % --*-- Unitary tests --*--
 
 % Removes a variable from a dseries object.
 %
-% INPUTS 
+% INPUTS
 % - o   [dseries]  T observations and N variables.
 % - a   [string]   Name of the variable to be removed.
 %
-% OUTPUTS 
+% OUTPUTS
 % - o   [dseries]  T observations and N-1 variables.
 
 % Copyright (C) 2013-2017 Dynare Team

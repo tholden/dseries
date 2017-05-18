@@ -2,11 +2,11 @@ function o = detrend_(o, model) % --*-- Unitary tests --*--
 
 % Detrends a dseries object with a polynomial of order model.
 %
-% INPUTS 
-% - o       [dseries]   time series to be detrended. 
+% INPUTS
+% - o       [dseries]   time series to be detrended.
 % - model   [integer]   scalar, order of the fitted polynomial.
 %
-% OUTPUTS 
+% OUTPUTS
 % - o       [dseries]   detrended time series.
 
 % Copyright (C) 2014-2017 Dynare Team

@@ -2,12 +2,12 @@ function o = rename_(o, old, new) % --*-- Unitary tests --*--
 
 % Renames variables in a dseries object.
 %
-% INPUTS 
+% INPUTS
 % - o     [dseries]
 % - old   [string, cell]
 % - new   [string, cell]
 %
-% OUTPUTS 
+% OUTPUTS
 % - o     [dseries]
 
 % Copyright (C) 2013-2017 Dynare Team
