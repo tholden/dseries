@@ -19,7 +19,7 @@ function ts = baxter_king_filter(ts, high_frequency, low_frequency, K) % --*-- U
 % This filter use a (symmetric) moving average smoother, so that K observations at the beginning and at the end of the 
 % sample are lost in the computation of the filter.
 
-% Copyright (C) 2013 Dynare Team
+% Copyright (C) 2013-2015 Dynare Team
 %
 % This file is part of Dynare.
 %

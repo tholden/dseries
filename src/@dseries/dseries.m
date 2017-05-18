@@ -59,7 +59,7 @@ function ts = dseries(varargin) % --*-- Unitary tests --*--
 %! @end deftypefn
 %@eod:
 
-% Copyright (C) 2011-2016 Dynare Team
+% Copyright (C) 2011-2017 Dynare Team
 %
 % This file is part of Dynare.
 %

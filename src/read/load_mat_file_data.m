@@ -16,7 +16,7 @@ function [freq,init,data,varlist,tex] = load_mat_file_data(file)  % --*-- Unitar
 % be a scalar integer and INIT__ a string like '1938M11', '1945Q3', '1973W3' or '2009A'. If these variables are not specified 
 % default values for freq and init are 1 and dates(1,1).
 
-% Copyright (C) 2012-2014 Dynare Team
+% Copyright (C) 2012-2017 Dynare Team
 %
 % This file is part of Dynare.
 %
