@@ -2,11 +2,11 @@ function [n,message] = common_strings_in_cell_arrays(a,b)
 
 % Counts the number of common strings in two cell arrays of strings ```a``` and ```b```.
 %
-% INPUTS 
+% INPUTS
 % - a [cell] One dimensional cell array of strings.
 % - b [cell] One dimensional cell array of strings.
 %
-% OUTPUTS 
+% OUTPUTS
 % - n         [integer] scalar, the number of common strings.
 % - message   [string]  formatted list of common strings.
 
@@ -107,4 +107,3 @@ end
 %$ end
 %$ T = all(t);
 %@eof:3
-

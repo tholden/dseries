@@ -2,10 +2,10 @@ function d = firstobservedperiod(o) % --*-- Unitary tests --*--
 
 % Returns the first period where all the variables are observed (first period without NaNs).
 %
-% INPUTS 
+% INPUTS
 % - o [dseries]    with N variables and T periods.
 %
-% OUTPUTS 
+% OUTPUTS
 % - b [dates]      First period where the N variables are observed (without NaNs).
 
 % Copyright (C) 2016-2017 Dynare Team

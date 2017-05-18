@@ -2,15 +2,15 @@ function C = ne(A,B) % --*-- Unitary tests --*--
 
 % Overloads ne (~=) operator.
 %
-% INPUTS 
+% INPUTS
 %  o A      dseries object (T periods, N variables).
 %  o B      dseries object (T periods, N variables).
 %
-% OUTPUTS 
-%  o C      T*N matrix of zeros and ones. Element C(t,n) is nonzero iff observation t of variable n in A and B are different.  
+% OUTPUTS
+%  o C      T*N matrix of zeros and ones. Element C(t,n) is nonzero iff observation t of variable n in A and B are different.
 %
-% REMARKS 
-%  If the number of variables, the number of observations or the frequencies are different in A and B, the function returns one. 
+% REMARKS
+%  If the number of variables, the number of observations or the frequencies are different in A and B, the function returns one.
 
 % Copyright (C) 2013 Dynare Team
 %

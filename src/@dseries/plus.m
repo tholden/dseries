@@ -146,7 +146,7 @@ end
 %$    ts1 = dseries(A,[],A_name,[]);
 %$    ts2 = dseries(B,[],B_name,[]);
 %$    ts3 = ts1+ts2;
-%$    ts4 = ts3+ts1; 
+%$    ts4 = ts3+ts1;
 %$    t(1) = 1;
 %$ catch
 %$    t = 0;

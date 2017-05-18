@@ -31,7 +31,7 @@ end
 
 assert(ischar(newtexname) || (iscellstr(newtexname) && length(newtexname) == vobs(ts)), ...
        ['dseries::tex_rename: third input argument (newtexname) name must either be a string' ...
-            ' or a cell array of strings with the same number of entries as varibles in the dseries']);
+        ' or a cell array of strings with the same number of entries as varibles in the dseries']);
 
 if nargin == 2
     idname = 1;

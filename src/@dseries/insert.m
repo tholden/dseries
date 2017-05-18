@@ -61,10 +61,10 @@ end
 n = length(id);
 
 if n>1
-   [id, jd] = sort(id);
-   us.data = us.data(:,jd);
-   us.name = us.name(jd);
-   us.tex = us.tex(jd);
+    [id, jd] = sort(id);
+    us.data = us.data(:,jd);
+    us.name = us.name(jd);
+    us.tex = us.tex(jd);
 end
 
 for i=1:n

@@ -1,7 +1,7 @@
 function A = extract(B,varargin) % --*-- Unitary tests --*--
 
 % Extract some variables from a database.
-    
+
 % Copyright (C) 2012-2016 Dynare Team
 %
 % This file is part of Dynare.
@@ -67,8 +67,8 @@ A.data = B.data(:,idVariableName);
 A.dates = B.dates;
 A.name = B.name(idVariableName);
 A.tex = B.tex(idVariableName);
-    
-    
+
+
 %@test:1
 %$ % Define a data set.
 %$ A = rand(10,24);

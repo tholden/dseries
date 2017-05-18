@@ -31,7 +31,7 @@ if nargin<2
 end
 
 if geometric
-    o = o/mean(o, true); 
+    o = o/mean(o, true);
 else
     o = o-mean(o, false);
 end

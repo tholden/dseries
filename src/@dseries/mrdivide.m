@@ -39,7 +39,7 @@ function A = mrdivide(B,C) % --*-- Unitary tests --*--
 %
 % You should have received a copy of the GNU General Public License
 % along with Dynare.  If not, see <http://www.gnu.org/licenses/>.
- 
+
 if isnumeric(B) && (isscalar(B) ||  isvector(B))
     if ~isdseries(C)
         error('dseries::mrdivide: Second input argument must be a dseries object!')
@@ -56,7 +56,7 @@ if isnumeric(C) && (isscalar(C) || isvector(C))
     A = B;
     A.data = bsxfun(@rdivide,B.data,C);
     return
-end    
+end
 
 if isdseries(B) && isdseries(C)
     % Element by element divisions of two dseries object

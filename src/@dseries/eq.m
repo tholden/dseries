@@ -2,15 +2,15 @@ function C = eq(A,B) % --*-- Unitary tests --*--
 
 % Overloads eq (==) operator.
 %
-% INPUTS 
+% INPUTS
 %  o A      dseries object (T periods, N variables).
 %  o B      dseries object (T periods, N variables).
 %
-% OUTPUTS 
-%  o C      T*N matrix of zeros and ones. Element C(t,n) is nonzero iff observation t of variable n in A and B are equal.  
+% OUTPUTS
+%  o C      T*N matrix of zeros and ones. Element C(t,n) is nonzero iff observation t of variable n in A and B are equal.
 %
-% REMARKS 
-%  If the number of variables, the number of observations or the frequencies are different in A and B, the function returns a zero scalar. 
+% REMARKS
+%  If the number of variables, the number of observations or the frequencies are different in A and B, the function returns a zero scalar.
 
 % Copyright (C) 2013 Dynare Team
 %

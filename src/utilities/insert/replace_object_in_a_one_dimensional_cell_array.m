@@ -2,12 +2,12 @@ function one_dimensional_cell_array = replace_object_in_a_one_dimensional_cell_a
 
 % Replaces an object in a one dimensional cell array in a position specified by i.
 %
-% INPUTS 
+% INPUTS
 % - one_dimensional_cell_array [any]     cell array with n objects.
 % - object                     [any]     scalar object.
 % - i                          [integer] scalar between 1 and n.
 %
-% OUTPUTS 
+% OUTPUTS
 % - one_dimensional_cell_array [any]     cell array with n+1 elements.
 
 % Copyright (C) 2013-2015 Dynare Team

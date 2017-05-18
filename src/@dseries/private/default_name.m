@@ -17,11 +17,8 @@ function names = default_name(dim)
 % You should have received a copy of the GNU General Public License
 % along with Dynare.  If not, see <http://www.gnu.org/licenses/>.
 
-    
+
 names = {};
 for i=1:dim
     names = vertcat(names, {['Variable_' int2str(i)]});
 end
-
-
-

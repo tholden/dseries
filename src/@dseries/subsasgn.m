@@ -28,156 +28,156 @@ function A = subsasgn(A,S,B) % --*-- Unitary tests --*--
 merge_dseries_objects = 1;
 
 switch length(S)
-    case 1
-      switch S(1).type
-        case '{}' % Multiple variable selection.
-          if ~isequal(numel(S(1).subs),numel(unique(S(1).subs)))
-              error('dseries::subsasgn: Wrong syntax!')
-          end
-          for i=1:numel(S(1).subs)
-              element = S(1).subs{i};
-              % Implicit loop.
-              idArobase = strfind(element,'@');
-              if mod(length(idArobase),2)
-                  error('dseries::subsasgn: (Implicit loops) The number of @ symbols must be even!')
-              end
-              % regular expression.
-              idBracket.open = strfind(element, '[');
-              idBracket.close = strfind(element, ']');
-              if ~isequal(length(idBracket.open),length(idBracket.open))
-                  error('dseries::subsasgn: (Matlab/Octave''s regular expressions) Check opening and closing square brackets!')
-              end
-              % Loops and regular expressions are not compatible
-              if length(idArobase) && length(idBracket.open)
-                  error(['dseries::subsasgn: You cannot use implicit loops and regular expressions in the same rule!'])
-              end
-              if ~isempty(idArobase)
-                  elements = build_list_of_variables_with_loops({}, idArobase, element, {});
-                  S(1).subs = replace_object_in_a_one_dimensional_cell_array(S(1).subs, elements(:), i);
-              end
-              if ~isempty(idBracket.open)
-                  elements = build_list_of_variables_with_regexp(A.name, idBracket, element, {});
-                  S(1).subs = replace_object_in_a_one_dimensional_cell_array(S(1).subs, elements(:), i);
-              end
-          end
-          if isempty(B)
-              for i=1:length(S(1).subs)
-                  A = remove(A,S(1).subs{i});
-              end
-              return
-          end
-          if ~isequal(length(S(1).subs),vobs(B))
-              error('dseries::subsasgn: Wrong syntax!')
-          end
-          if ~isequal(S(1).subs(:),B.name)
-              for i = 1:vobs(B)
-                  if ~isequal(S(1).subs{i},B.name{i})
-                      % Rename a variable.
-                      id = find(strcmp(S(1).subs{i},A.name));
-                      if isempty(id)
-                          % Add a new variable a change its name.
-                          B.name(i) = {S(1).subs{i}};
-                          B.tex(i) = {name2tex(S(1).subs{i})};
-                      else
-                          % Rename variable and change its content.
-                          B.name(i) = A.name(id);
-                          B.tex(i) = A.tex(id);
-                      end
-                  end
-              end
-          end
-        case '.'
-          if isequal(S(1).subs,'init') && isdates(B) && isequal(length(B),1)
-              % Change the initial date (update dates member)
-              A.dates = B:B+(nobs(A)-1);
-              return
-          elseif isequal(S(1).subs,'dates') && isdates(B)
-              % Overwrite the dates member
-              A.dates = B;
-              return
-          elseif ismember(S(1).subs,{'data','name','tex'})
-              error(['dseries::subsasgn: You cannot overwrite ' S(1).subs ' member!'])
-          elseif ~isequal(S(1).subs,B.name)
-              % Single variable selection.
-              if ~isequal(S(1).subs,B.name{1})
-                  % Rename a variable.
-                  id = find(strcmp(S(1).subs,A.name));
-                  if isempty(id)
-                      % Add a new variable a change its name.
-                      B.name(1) = {S(1).subs};
-                      B.tex(1) = {name2tex(S(1).subs)};
-                  else
-                      % Rename variable and change its content.
-                      B.name(1) = A.name(id);
-                      B.tex(1) = A.tex(id);
-                  end
-              end
-          end
-        case '()' % Date(s) selection
-          if isdates(S(1).subs{1}) || isdate(S(1).subs{1})
-                if isdate(S(1).subs{1})
-                    Dates = dates(S(1).subs{1});
-                else
-                    Dates = S(1).subs{1};
+  case 1
+    switch S(1).type
+      case '{}' % Multiple variable selection.
+        if ~isequal(numel(S(1).subs),numel(unique(S(1).subs)))
+            error('dseries::subsasgn: Wrong syntax!')
+        end
+        for i=1:numel(S(1).subs)
+            element = S(1).subs{i};
+            % Implicit loop.
+            idArobase = strfind(element,'@');
+            if mod(length(idArobase),2)
+                error('dseries::subsasgn: (Implicit loops) The number of @ symbols must be even!')
+            end
+            % regular expression.
+            idBracket.open = strfind(element, '[');
+            idBracket.close = strfind(element, ']');
+            if ~isequal(length(idBracket.open),length(idBracket.open))
+                error('dseries::subsasgn: (Matlab/Octave''s regular expressions) Check opening and closing square brackets!')
+            end
+            % Loops and regular expressions are not compatible
+            if length(idArobase) && length(idBracket.open)
+                error(['dseries::subsasgn: You cannot use implicit loops and regular expressions in the same rule!'])
+            end
+            if ~isempty(idArobase)
+                elements = build_list_of_variables_with_loops({}, idArobase, element, {});
+                S(1).subs = replace_object_in_a_one_dimensional_cell_array(S(1).subs, elements(:), i);
+            end
+            if ~isempty(idBracket.open)
+                elements = build_list_of_variables_with_regexp(A.name, idBracket, element, {});
+                S(1).subs = replace_object_in_a_one_dimensional_cell_array(S(1).subs, elements(:), i);
+            end
+        end
+        if isempty(B)
+            for i=1:length(S(1).subs)
+                A = remove(A,S(1).subs{i});
+            end
+            return
+        end
+        if ~isequal(length(S(1).subs),vobs(B))
+            error('dseries::subsasgn: Wrong syntax!')
+        end
+        if ~isequal(S(1).subs(:),B.name)
+            for i = 1:vobs(B)
+                if ~isequal(S(1).subs{i},B.name{i})
+                    % Rename a variable.
+                    id = find(strcmp(S(1).subs{i},A.name));
+                    if isempty(id)
+                        % Add a new variable a change its name.
+                        B.name(i) = {S(1).subs{i}};
+                        B.tex(i) = {name2tex(S(1).subs{i})};
+                    else
+                        % Rename variable and change its content.
+                        B.name(i) = A.name(id);
+                        B.tex(i) = A.tex(id);
+                    end
                 end
-              [junk, tdx] = intersect(A.dates.time,Dates.time,'rows');
-              if isdseries(B)
-                  [junk, tdy] = intersect(B.dates.time,Dates.time,'rows');
-                  if isempty(tdy)
-                      error('dseries::subsasgn: Periods of the dseries objects on the left and right hand sides must intersect!')
-                  end
-                  if ~isequal(vobs(A), vobs(B))
-                      error('dseries::subsasgn: Dimension error! The number of variables on the left and right hand side must match.')
-                  end
-                  A.data(tdx,:) = B.data(tdy,:);
-                  merge_dseries_objects = 0;
-              elseif isnumeric(B)
-                  merge_dseries_objects = 0;
-                  if isequal(length(tdx),rows(B))
-                      if isequal(columns(A.data),columns(B))
-                          A.data(tdx,:) = B;
-                      else
-                          error('dseries::subsasgn: Dimension error! The number of variables on the left and right hand side must match.')
-                      end
-                  else
-                      error('dseries::subsassgn: Dimension error! The number of periods on the left and right hand side must match.')
-                  end
-              else
-                  error('dseries::subsasgn: The object on the right hand side must be a dseries object or a numeric array!')
-              end
-          elseif ischar(S(1).subs{1}) && isequal(S(1).subs{1},':') && isempty(A)
-              if isnumeric(B)
-                  if isequal(rows(B),1)
-                      A.data = repmat(B,A.dates.ndat,1);
-                  elseif isequal(rows(B),A.dates.ndat)
-                      A.data = B;
-                  else
-                      error('dseries::subsasgn: Wrong syntax!')
-                  end
-                  if isempty(A.name)
-                      A.name = default_name(vobs(A));
-                      A.tex = name2tex(A.name);
-                  end
-              elseif isdseries(B)
-                  if isequal(nobs(B), 1)
-                      A.data = repmat(B.data,A.dates.ndat,1);
-                  elseif isequal(nobs(B), A.dates.ndat)
-                      A.data = B;
-                  else
-                      error('dseries::subsasgn: Wrong syntax!')
-                  end
-                  if isempty(A.name)
-                      A.name = B.name;
-                      A.tex = B.tex;
-                  end
-              end
-              return
-          else
-              error('dseries::subsasgn: Wrong syntax!')
-          end
-        otherwise
-          error('dseries::subsasgn: Wrong syntax!')
-      end
+            end
+        end
+      case '.'
+        if isequal(S(1).subs,'init') && isdates(B) && isequal(length(B),1)
+            % Change the initial date (update dates member)
+            A.dates = B:B+(nobs(A)-1);
+            return
+        elseif isequal(S(1).subs,'dates') && isdates(B)
+            % Overwrite the dates member
+            A.dates = B;
+            return
+        elseif ismember(S(1).subs,{'data','name','tex'})
+            error(['dseries::subsasgn: You cannot overwrite ' S(1).subs ' member!'])
+        elseif ~isequal(S(1).subs,B.name)
+            % Single variable selection.
+            if ~isequal(S(1).subs,B.name{1})
+                % Rename a variable.
+                id = find(strcmp(S(1).subs,A.name));
+                if isempty(id)
+                    % Add a new variable a change its name.
+                    B.name(1) = {S(1).subs};
+                    B.tex(1) = {name2tex(S(1).subs)};
+                else
+                    % Rename variable and change its content.
+                    B.name(1) = A.name(id);
+                    B.tex(1) = A.tex(id);
+                end
+            end
+        end
+      case '()' % Date(s) selection
+        if isdates(S(1).subs{1}) || isdate(S(1).subs{1})
+            if isdate(S(1).subs{1})
+                Dates = dates(S(1).subs{1});
+            else
+                Dates = S(1).subs{1};
+            end
+            [junk, tdx] = intersect(A.dates.time,Dates.time,'rows');
+            if isdseries(B)
+                [junk, tdy] = intersect(B.dates.time,Dates.time,'rows');
+                if isempty(tdy)
+                    error('dseries::subsasgn: Periods of the dseries objects on the left and right hand sides must intersect!')
+                end
+                if ~isequal(vobs(A), vobs(B))
+                    error('dseries::subsasgn: Dimension error! The number of variables on the left and right hand side must match.')
+                end
+                A.data(tdx,:) = B.data(tdy,:);
+                merge_dseries_objects = 0;
+            elseif isnumeric(B)
+                merge_dseries_objects = 0;
+                if isequal(length(tdx),rows(B))
+                    if isequal(columns(A.data),columns(B))
+                        A.data(tdx,:) = B;
+                    else
+                        error('dseries::subsasgn: Dimension error! The number of variables on the left and right hand side must match.')
+                    end
+                else
+                    error('dseries::subsassgn: Dimension error! The number of periods on the left and right hand side must match.')
+                end
+            else
+                error('dseries::subsasgn: The object on the right hand side must be a dseries object or a numeric array!')
+            end
+        elseif ischar(S(1).subs{1}) && isequal(S(1).subs{1},':') && isempty(A)
+            if isnumeric(B)
+                if isequal(rows(B),1)
+                    A.data = repmat(B,A.dates.ndat,1);
+                elseif isequal(rows(B),A.dates.ndat)
+                    A.data = B;
+                else
+                    error('dseries::subsasgn: Wrong syntax!')
+                end
+                if isempty(A.name)
+                    A.name = default_name(vobs(A));
+                    A.tex = name2tex(A.name);
+                end
+            elseif isdseries(B)
+                if isequal(nobs(B), 1)
+                    A.data = repmat(B.data,A.dates.ndat,1);
+                elseif isequal(nobs(B), A.dates.ndat)
+                    A.data = B;
+                else
+                    error('dseries::subsasgn: Wrong syntax!')
+                end
+                if isempty(A.name)
+                    A.name = B.name;
+                    A.tex = B.tex;
+                end
+            end
+            return
+        else
+            error('dseries::subsasgn: Wrong syntax!')
+        end
+      otherwise
+        error('dseries::subsasgn: Wrong syntax!')
+    end
   case 2
     merge_dseries_objects = 0;
     if ((isequal(S(1).type,'{}') || isequal(S(1).type,'.')) && isequal(S(2).type,'()'))

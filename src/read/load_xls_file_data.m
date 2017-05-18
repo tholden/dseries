@@ -2,18 +2,18 @@ function [freq, init, data, varlist] = load_xls_file_data(file, sheet, range)
 
 % Loads data in a xls file.
 %
-% INPUTS 
+% INPUTS
 %  o file       string, name of the file (with extension).
 %  o sheet      string, name of the sheet to be read.
 %  o range      string of the form 'B2:D6'
 %
-% OUTPUTS 
+% OUTPUTS
 %  o freq       integer scalar (1, 4, 12 or 52), code for frequency.
 %  o init       dates object, initial date of the sample.
 %  o data       matrix of doubles, the raw data.
 %  o varlist    cell of strings (column), names of the variables in the database.
 %
-% REMARKS 
+% REMARKS
 %  The range argument is only available on windows platform (with Excel installed).
 
 % Copyright (C) 2013-2015 Dynare Team
@@ -45,13 +45,13 @@ if nargin<3 || isempty(range)
 end
 
 if isoctave && ~user_has_octave_forge_package('io')
-  try
-    pkg load io
-  catch
-    error(['The io package is required to read CSV files from Octave. ' ...
-             'It can be installed by running the following from the Octave ' ...
-             ' command line: pkg install -forge io']);
-  end
+    try
+        pkg load io
+    catch
+        error(['The io package is required to read CSV files from Octave. ' ...
+               'It can be installed by running the following from the Octave ' ...
+               ' command line: pkg install -forge io']);
+    end
 end
 
 % Check file extension.
@@ -87,18 +87,18 @@ if isequal(t1,0) && isequal(t2,0)
     notime = 1;
     noname = 1;
 elseif isequal(t2,1) && t1>=t2 && n2~=t2  %only one column present, but no var name in header text
-    % The file contains no informations about the dates.
+                                          % The file contains no informations about the dates.
     notime = 0;
     noname = 1;
 elseif isequal(t2,1) && t1>=t2 && n2==t2 %only one column present with var name in header text
-    % The file contains no informations about the variables.
+                                         % The file contains no informations about the variables.
     notime = 1;
     noname = 0;
 elseif isequal(t1,1) && t2>=t1
     % The file contains no informations about the dates.
     notime = 1;
     noname = 0;
-else 
+else
     % The file contains informations about the variables and dates.
     notime = 0;
     noname = 0;
@@ -135,7 +135,7 @@ if ~noname
     else
         varlist = transpose(txt(1,2:end));
     end
-    % Remove leading and trailing white spaces 
+    % Remove leading and trailing white spaces
     for i=1:length(varlist)
         varlist(i) = {strtrim(varlist{i})};
     end

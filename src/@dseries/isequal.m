@@ -2,12 +2,12 @@ function C = isequal(A, B, tol)
 
 % Overloads the isequal Matlab/Octave's function.
 %
-% INPUTS 
+% INPUTS
 %  o A      dseries object (T periods, N variables).
 %  o B      dseries object (T periods, N variables).
 %  o tol    tolerance parameter.
 %
-% OUTPUTS 
+% OUTPUTS
 %  o C      Integer scalar equal to zero or one.
 
 % Copyright (C) 2013 Dynare Team

@@ -49,23 +49,23 @@ end
 
 switch nargin
   case 1
-      % Initialize the output.
-      B = varargin{1};
-      % Perform the cumulated sum
-      if isequal(idx, 1)
-          B.data = cumprod(B.data);
-      else
-          if common_first_period_witout_nan
-              B.data(idx:end,:) = cumprod(B.data(idx:end,:));
-          else
-              B.data = cumprodnan(B.data);
-          end
-      end
-      % Change the name of the variables
-      for i=1:vobs(B)
-          B.name(i) = {['cumprod(' B.name{i} ')']};
-          B.tex(i) = {['\prod_t ' B.tex{i}]};
-      end
+    % Initialize the output.
+    B = varargin{1};
+    % Perform the cumulated sum
+    if isequal(idx, 1)
+        B.data = cumprod(B.data);
+    else
+        if common_first_period_witout_nan
+            B.data(idx:end,:) = cumprod(B.data(idx:end,:));
+        else
+            B.data = cumprodnan(B.data);
+        end
+    end
+    % Change the name of the variables
+    for i=1:vobs(B)
+        B.name(i) = {['cumprod(' B.name{i} ')']};
+        B.tex(i) = {['\prod_t ' B.tex{i}]};
+    end
   case 2
     if isdseries(varargin{2})
         if ~isequal(vobs(varargin{1}), vobs(varargin{2}))

@@ -2,12 +2,12 @@ function B = cumsum(varargin) % --*-- Unitary tests --*--
 
 % Overloads matlab's cumsum function for dseries objects.
 %
-% INPUTS 
+% INPUTS
 %  o A     dseries object [mandatory].
 %  o d     dates object [optional]
 %  o v     dseries object with one observation [optional]
 %
-% OUTPUTS 
+% OUTPUTS
 %  o B     dseries object.
 
 % Copyright (C) 2013-2016 Dynare Team
@@ -48,24 +48,24 @@ else
 end
 
 switch nargin
-    case 1
-      % Initialize the output.
-      B = varargin{1};
-      % Perform the cumulated sum
-      if isequal(idx, 1)
-          B.data = cumsum(B.data);
-      else
-          if common_first_period_witout_nan
-              B.data(idx:end,:) = cumsum(B.data(idx:end,:));
-          else
-              B.data = cumsumnan(B.data);
-          end
-      end
-      % Change the name of the variables
-      for i=1:vobs(B)
-          B.name(i) = {['cumsum(' B.name{i} ')']};
-          B.tex(i) = {['\sum_t ' B.tex{i}]};
-      end
+  case 1
+    % Initialize the output.
+    B = varargin{1};
+    % Perform the cumulated sum
+    if isequal(idx, 1)
+        B.data = cumsum(B.data);
+    else
+        if common_first_period_witout_nan
+            B.data(idx:end,:) = cumsum(B.data(idx:end,:));
+        else
+            B.data = cumsumnan(B.data);
+        end
+    end
+    % Change the name of the variables
+    for i=1:vobs(B)
+        B.name(i) = {['cumsum(' B.name{i} ')']};
+        B.tex(i) = {['\sum_t ' B.tex{i}]};
+    end
   case 2
     if isdseries(varargin{2})
         if ~isequal(vobs(varargin{1}), vobs(varargin{2}))

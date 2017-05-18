@@ -4,11 +4,11 @@ function ts = hpcycle(ts, lambda) % --*-- Unitary tests --*--
 %
 % Extracts the cycle component from a dseries object using Hodrick Prescott filter.
 %
-% INPUTS 
+% INPUTS
 %  o ts         dseries object.
 %  o lambda     positive scalar, trend smoothness parameter.
 %
-% OUTPUTS 
+% OUTPUTS
 %  o ts         dseries object, with time series replaced by the cyclical component of the original time series.
 
 % Copyright (C) 2013 Dynare Team
@@ -28,13 +28,13 @@ function ts = hpcycle(ts, lambda) % --*-- Unitary tests --*--
 % You should have received a copy of the GNU General Public License
 % along with Dynare.  If not, see <http://www.gnu.org/licenses/>.
 
-if nargin>1 
+if nargin>1
     if lambda<=0
         error(['dseries::hpcycle: Lambda must be a positive integer!'])
     end
 else
     lambda = [];
-end 
+end
 
 for i=1:vobs(ts)
     ts.name(i) = {['hpcycle(' ts.name{i} ')']};
@@ -50,7 +50,7 @@ ts.data = data;
 %$ % Create a dataset.
 %$ e = .2*randn(200,1);
 %$ u = randn(200,1);
-%$ stochastic_trend = cumsum(e); 
+%$ stochastic_trend = cumsum(e);
 %$ deterministic_trend = .1*transpose(1:200);
 %$ x = zeros(200,1);
 %$ for i=2:200

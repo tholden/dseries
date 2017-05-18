@@ -2,12 +2,12 @@ function matrix = insert_column_vector_in_a_matrix(matrix, vector, i)  % --*-- U
 
 % Inserts a vector in a matrix in a column specified by i.
 %
-% INPUTS 
+% INPUTS
 % - matrix [float]   n*m matrix.
 % - vector [float]   n*1 vector.
 % - i      [integer] scalar between 1 and m+1. Default value is m+1.
 %
-% OUTPUTS 
+% OUTPUTS
 % - matrix [float]   n*(m+1) matrix.
 
 % Copyright (C) 2013-2015 Dynare Team

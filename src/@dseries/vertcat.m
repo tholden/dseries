@@ -7,7 +7,7 @@ function a = vertcat(varargin) % --*-- Unitary tests --*--
 %! Method of the dseries class.
 %! @sp 1
 %! This method overloads the vertical concatenation operator, so that
-%! two (or more) time series objects containing the same variables 
+%! two (or more) time series objects containing the same variables
 %! can be merged using the following syntax:
 %!
 %!     a = [b; c; d];
@@ -59,29 +59,29 @@ elseif nargin>1
 end
 
 function d = vertcat_(b, c)
-    d = NaN;
-    if ~isequal(frequency(b), frequency(c))
-        error('dseries::vertcat: Frequencies must be common!')
-    end
-    if ~isequal(vobs(b), vobs(c))
-        error('dseries::vertcat: Number of variables must be common!')
-    end
-    reorder_variables_in_c = false;
-    if ~isequal(b.name, c.name)
-        [t, idx] = ismember(b.name, c.name);
-        if all(t)
-            reorder_variables_in_c = true;
-        else
-            error('dseries::vertcat: Variables must be common!')
-        end
-    end
-    d = b;
-    if reorder_variables_in_c
-        d.data = [b.data; c.data(:,idx)];
+d = NaN;
+if ~isequal(frequency(b), frequency(c))
+    error('dseries::vertcat: Frequencies must be common!')
+end
+if ~isequal(vobs(b), vobs(c))
+    error('dseries::vertcat: Number of variables must be common!')
+end
+reorder_variables_in_c = false;
+if ~isequal(b.name, c.name)
+    [t, idx] = ismember(b.name, c.name);
+    if all(t)
+        reorder_variables_in_c = true;
     else
-        d.data = [b.data; c.data];
+        error('dseries::vertcat: Variables must be common!')
     end
-    d.dates = [b.dates; c.dates];
+end
+d = b;
+if reorder_variables_in_c
+    d.data = [b.data; c.data(:,idx)];
+else
+    d.data = [b.data; c.data];
+end
+d.dates = [b.dates; c.dates];
 
 %@test:1
 %$ % Define a data set.

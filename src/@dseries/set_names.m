@@ -77,7 +77,7 @@ end
 %$ catch
 %$    t = 0;
 %$ end
-%$ 
+%$
 %$ if length(t)>1
 %$    t(2) = dassert(ts2.vobs,3);
 %$    t(3) = dassert(ts2.nobs,10);

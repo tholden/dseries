@@ -2,18 +2,18 @@ function [freq,init,data,varlist,tex] = load_mat_file_data(file)  % --*-- Unitar
 
 % Loads data in a matlab/octave mat-file.
 %
-% INPUTS 
+% INPUTS
 %  o file         string, name of the matlab/octave mat file (with path)
 %
-% OUTPUTS 
+% OUTPUTS
 %  o freq        integer scalar equal to 1, 4, 12 or 52 (for annual, quaterly, monthly or weekly frequencies).
 %  o init        dates object, initial date in the dataset.
 %  o data        matrix of doubles, the data.
 %  o varlist     cell of strings, names of the variables.
 %
-% REMARKS 
-% The frequency and initial date can be specified with variables FREQ__ and INIT__ in the matlab/octave binary file. FREQ__ must 
-% be a scalar integer and INIT__ a string like '1938M11', '1945Q3', '1973W3' or '2009A'. If these variables are not specified 
+% REMARKS
+% The frequency and initial date can be specified with variables FREQ__ and INIT__ in the matlab/octave binary file. FREQ__ must
+% be a scalar integer and INIT__ a string like '1938M11', '1945Q3', '1973W3' or '2009A'. If these variables are not specified
 % default values for freq and init are 1 and dates(1,1).
 
 % Copyright (C) 2012-2017 Dynare Team

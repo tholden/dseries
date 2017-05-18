@@ -3,10 +3,10 @@ function b = isnan(o) % --*-- Unitary tests --*--
 % Returns an array of logicals (true/false). Element (t,i) is true iff the i-th variable at
 % period number t is not a NaN.
 %
-% INPUTS 
+% INPUTS
 % - o [dseries]    with N variables and T periods.
 %
-% OUTPUTS 
+% OUTPUTS
 % - b [logical]    T*N array of logicals.
 
 
