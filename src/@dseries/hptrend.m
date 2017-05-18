@@ -11,7 +11,7 @@ function ts = hptrend(ts, lambda) % --*-- Unitary tests --*--
 % OUTPUTS
 %  o ts         dseries object, with time series replaced by the trend component of the original time series.
 
-% Copyright (C) 2013 Dynare Team
+% Copyright (C) 2013-2017 Dynare Team
 %
 % This file is part of Dynare.
 %

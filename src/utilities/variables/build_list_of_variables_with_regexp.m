@@ -1,6 +1,6 @@
 function list_of_variables = build_list_of_variables_with_regexp(o_list_of_variables, idBrackets, VariableName, list_of_variables)
 
-% Copyright (C) 2016 Dynare Team
+% Copyright (C) 2016-2017 Dynare Team
 %
 % This file is part of Dynare.
 %

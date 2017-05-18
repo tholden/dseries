@@ -10,7 +10,7 @@ function s = std(o, geometric) % --*-- Unitary tests --*--
 % OUTPUTS
 %  o s             1*vobs(o) vector of doubles.
 
-% Copyright (C) 2016 Dynare Team
+% Copyright (C) 2016-2017 Dynare Team
 %
 % This file is part of Dynare.
 %

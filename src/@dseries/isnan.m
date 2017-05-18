@@ -10,7 +10,7 @@ function b = isnan(o) % --*-- Unitary tests --*--
 % - b [logical]    T*N array of logicals.
 
 
-% Copyright (C) 2016 Dynare Team
+% Copyright (C) 2016-2017 Dynare Team
 %
 % This file is part of Dynare.
 %

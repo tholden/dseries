@@ -10,7 +10,7 @@ function B = cumprod(varargin) % --*-- Unitary tests --*--
 % OUTPUTS
 %  o B     dseries object.
 
-% Copyright (C) 2014-2016 Dynare Team
+% Copyright (C) 2014-2017 Dynare Team
 %
 % This file is part of Dynare.
 %

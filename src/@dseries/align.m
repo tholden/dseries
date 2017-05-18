@@ -27,7 +27,7 @@ function [a,b] = align(a, b) % --*-- Unitary tests --*--
 %! @end deftypefn
 %@eod:
 
-% Copyright (C) 2013 Dynare Team
+% Copyright (C) 2013-2017 Dynare Team
 %
 % This file is part of Dynare.
 %

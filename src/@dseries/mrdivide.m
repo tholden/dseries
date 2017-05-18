@@ -23,7 +23,7 @@ function A = mrdivide(B,C) % --*-- Unitary tests --*--
 %! @end deftypefn
 %@eod:
 
-% Copyright (C) 2012-2014 Dynare Team
+% Copyright (C) 2012-2017 Dynare Team
 %
 % This file is part of Dynare.
 %
