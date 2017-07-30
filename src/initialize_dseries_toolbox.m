@@ -71,6 +71,10 @@ if ~exist('randomstring','file')
     p{end+1} = '/utilities/missing/randomstring';
 end
 
+if ~exist('one_sided_hp_filter','file')
+    p{end+1} = '/utilities/missing/one_sided_hp_filter';
+end
+
 % Install X13 binaries
 opath = pwd();
 cd([dseries_src_root '/../externals/x13'])
