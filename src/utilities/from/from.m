@@ -1,6 +1,6 @@
 function from(varargin)   % --*-- Unitary tests --*--
 
-% Copyright (C) 2014 Dynare Team
+% Copyright (C) 2014-2017 Dynare Team
 %
 % This file is part of Dynare.
 %
@@ -281,7 +281,7 @@ end
 % Put all the variables in a unique dseries object.
 list_of_variables = leadlagtable{1,1};
 for i=2:number_of_variables
-   list_of_variables = [list_of_variables, ',' leadlagtable{i,1}];
+    list_of_variables = [list_of_variables, ',' leadlagtable{i,1}];
 end
 eval(sprintf('tmp = [%s];', list_of_variables));
 
@@ -376,52 +376,52 @@ else
 end
 
 function msg = get_error_message_0(msg)
-    if ~nargin
-        msg = sprintf('Wrong syntax! The correct syntax is:\n\n');
-    else
-        msg = [msg, sprintf('The correct syntax is:\n\n')];
-    end
-    msg = [msg, sprintf('    from d1 to d2 do SOMETHING\n\n')];
-    msg = [msg, sprintf('where d1<d2 are dates objects, and SOMETHING is a recursive expression involving dseries objects.')];
+if ~nargin
+    msg = sprintf('Wrong syntax! The correct syntax is:\n\n');
+else
+    msg = [msg, sprintf('The correct syntax is:\n\n')];
+end
+msg = [msg, sprintf('    from d1 to d2 do SOMETHING\n\n')];
+msg = [msg, sprintf('where d1<d2 are dates objects, and SOMETHING is a recursive expression involving dseries objects.')];
 
 
 function index = extractindex(str)
-    index = regexpi(str,'\(t\)|\(t\-\d\)|\(t\+\d\)','match');
+index = regexpi(str,'\(t\)|\(t\-\d\)|\(t\+\d\)','match');
 
 
 function i = index2num(id)
-    if isequal('(t)',id)
-        i = 0;
-        return
-    end
-    if isequal('-',id(3))
-        i = - str2num(id(4:end-1));
-    else
-        i = str2num(id(4:end-1));
-    end
+if isequal('(t)',id)
+    i = 0;
+    return
+end
+if isequal('-',id(3))
+    i = - str2num(id(4:end-1));
+else
+    i = str2num(id(4:end-1));
+end
 
 
 function id = num2index(i)
-    if isequal(i,0)
-        id = '(t)';
-        return
-    end
-    if i<0
-        id = ['(t-' int2str(abs(i)) ')'];
-    else
-        id = ['(t+' int2str(i) ')'];
-    end
+if isequal(i,0)
+    id = '(t)';
+    return
+end
+if i<0
+    id = ['(t-' int2str(abs(i)) ')'];
+else
+    id = ['(t+' int2str(i) ')'];
+end
 
 function i = isassignedvariable(var,expr)
-    idv = strfind(expr,var);
-    idq = strfind(expr,'=');
-    if ~isempty(idv)
-        if idv(1)<idq
-            i = 1;
-            return
-        end
+idv = strfind(expr,var);
+idq = strfind(expr,'=');
+if ~isempty(idv)
+    if idv(1)<idq
+        i = 1;
+        return
     end
-    i = 0;
+end
+i = 0;
 
 %@test:1
 %$ try

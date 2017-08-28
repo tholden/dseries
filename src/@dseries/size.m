@@ -1,6 +1,6 @@
 function varargout = size(o, varargin)
 
-% Overloads size function.    
+% Overloads size function.
 
 % Copyright (C) 2013-2017 Dynare Team
 %

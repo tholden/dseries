@@ -2,11 +2,11 @@ function o = set_names(o,varargin) % --*-- Unitary tests --*--
 
 % Specifies names of the variables in a dseries object (in place modification).
 %
-% INPUTS 
+% INPUTS
 % - o                 [dseries]
 % - s1, s2, s3, ...   [string]
 %
-% OUTPUTS 
+% OUTPUTS
 % - o                 [dseries]
 
 % Copyright (C) 2017 Dynare Team
@@ -59,7 +59,7 @@ end
 %$ catch
 %$    t = 0;
 %$ end
-%$ 
+%$
 %$ if length(t)>1
 %$    t(2) = dassert(ts1.vobs,3);
 %$    t(3) = dassert(ts1.nobs,10);

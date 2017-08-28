@@ -2,11 +2,11 @@ function o = center_(o, geometric) % --*-- Unitary tests --*--
 
 % Centers dseries object o around its mean (arithmetic or geometric).
 %
-% INPUTS 
+% INPUTS
 %  - o             dseries object [mandatory].
 %  - geometric     logical [default is false], if true returns the geometric mean.
 %
-% OUTPUTS 
+% OUTPUTS
 %  - o             dseries object.
 
 % Copyright (C) 2016-2017 Dynare Team
@@ -30,10 +30,12 @@ if nargin<2
     geometric = false;
 end
 
+m = mean(o.data);
+
 if geometric
-    o = o/mean(o, true); 
+    o.data = bsxfun(@mrdivide, o.data, m);
 else
-    o = o-mean(o, false);
+    o.data = bsxfun(@minus, o.data, m);
 end
 
 %@test:1

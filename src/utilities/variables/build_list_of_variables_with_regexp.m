@@ -1,6 +1,6 @@
 function list_of_variables = build_list_of_variables_with_regexp(o_list_of_variables, idBrackets, VariableName, list_of_variables)
 
-% Copyright (C) 2016 Dynare Team
+% Copyright (C) 2016-2017 Dynare Team
 %
 % This file is part of Dynare.
 %
@@ -47,10 +47,10 @@ list_of_variables = vertcat(list_of_variables, VariableName);
 
 
 function b = isnotempty_cell(CellArray)
-    CellArrayDimension = size(CellArray);
-    b = NaN(CellArrayDimension);
-    for i=1:CellArrayDimension(1)
-        for j = 1:CellArrayDimension(2)
-            b(i,j) = ~isempty(CellArray{i,j});
-        end
+CellArrayDimension = size(CellArray);
+b = NaN(CellArrayDimension);
+for i=1:CellArrayDimension(1)
+    for j = 1:CellArrayDimension(2)
+        b(i,j) = ~isempty(CellArray{i,j});
     end
+end

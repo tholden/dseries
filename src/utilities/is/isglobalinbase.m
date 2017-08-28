@@ -2,13 +2,13 @@ function a = isglobalinbase(var)
 
 % Returns true iff ```var``` is a global variable in the main workspace.
 %
-% INPUTS 
+% INPUTS
 % - var [any]
 %
-% OUTPUTS 
+% OUTPUTS
 % - a   [bool]
 
-% Copyright (C) 2013-2015 Dynare Team
+% Copyright (C) 2013-2017 Dynare Team
 %
 % This code is free software: you can redistribute it and/or modify
 % it under the terms of the GNU General Public License as published by

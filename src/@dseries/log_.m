@@ -2,13 +2,13 @@ function o = log_(o) % --*-- Unitary tests --*--
 
 % Apply the logarithm to all the variables in a dseries object (in place modification).
 %
-% INPUTS 
+% INPUTS
 % - o [dseries]
 %
-% OUTPUTS 
+% OUTPUTS
 % - o [dseries]
 
-% Copyright (C) 2011-2016 Dynare Team
+% Copyright (C) 2011-2017 Dynare Team
 %
 % This file is part of Dynare.
 %
@@ -74,7 +74,7 @@ o.data = log(o.data);
 %$ catch
 %$     t(1) = false;
 %$ end
-%$ 
+%$
 %$ if t(1)
 %$      t(2) = dassert(length(o.name), 2);
 %$      t(3) = dassert(o.name{1},'log(Variable_1)');

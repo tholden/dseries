@@ -2,10 +2,10 @@ function disp(o)
 
 % Overloads disp method.
 %
-% INPUTS 
+% INPUTS
 % - o  [dseries]   Object to be displayed.
 %
-% OUTPUTS 
+% OUTPUTS
 % None
 
 % Copyright (C) 2011-2017 Dynare Team

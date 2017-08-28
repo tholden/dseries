@@ -2,14 +2,14 @@ function o = lead(o, p) % --*-- Unitary tests --*--
 
 % Returns a lagged time series
 %
-% INPUTS 
+% INPUTS
 % - o [dseries]
 % - p [integer] Number of leads
 %
-% OUTPUTS 
+% OUTPUTS
 % - o [dseries]
 %
-% EXAMPLE 
+% EXAMPLE
 % Define a dseries object as follows:
 %
 % >> o = dseries(transpose(1:5))
@@ -17,11 +17,11 @@ function o = lead(o, p) % --*-- Unitary tests --*--
 % then o.lag(1) returns
 %
 %       | lead(Variable_1,1)
-%    1Y | 2                 
-%    2Y | 3                 
-%    3Y | 4                 
-%    4Y | 5                 
-%    5Y | NaN       
+%    1Y | 2
+%    2Y | 3
+%    3Y | 4
+%    4Y | 5
+%    5Y | NaN
 
 % Copyright (C) 2013-2017 Dynare Team
 %

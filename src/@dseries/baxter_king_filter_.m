@@ -1,20 +1,20 @@
 function o = baxter_king_filter_(o, high_frequency, low_frequency, K) % --*-- Unitary tests --*--
 
 % Implementation of Baxter and King (1999) band pass filter for dseries objects. The code is adapted from
-% the one provided by Baxter and King. This filter isolates business cycle fluctuations with a period of length 
+% the one provided by Baxter and King. This filter isolates business cycle fluctuations with a period of length
 % ranging between high_frequency to low_frequency (quarters).
 %
-% INPUTS 
+% INPUTS
 %  - o                  dseries object.
 %  - high_frequency     positive scalar, period length (default value is 6).
 %  - low_frequency      positive scalar, period length (default value is 32).
 %  - K                  positive scalar integer, truncation parameter (default value is 12).
 %
-% OUTPUTS 
+% OUTPUTS
 %  - o                  dseries object.
 %
-% REMARKS 
-% This filter use a (symmetric) moving average smoother, so that K observations at the beginning and at the end of the 
+% REMARKS
+% This filter use a (symmetric) moving average smoother, so that K observations at the beginning and at the end of the
 % sample are lost in the computation of the filter.
 
 % Copyright (C) 2013-2017 Dynare Team
@@ -55,7 +55,7 @@ if nargin<4 || isempty(K)
         end
     end
 end
-       
+
 % translate periods into frequencies.
 hf=2.0*pi/high_frequency;
 lf=2.0*pi/low_frequency;
@@ -86,7 +86,7 @@ tmp = zeros(size(o.data));
 
 % Filtering step.
 for t = K+1:nobs(o)-K
-    tmp(t,:)  = weights'*o.data(t-K:t+K,:);    
+    tmp(t,:)  = weights'*o.data(t-K:t+K,:);
 end
 
 % Update dseries object.
@@ -105,7 +105,7 @@ end
 %$ % Create a dataset.
 %$ e = .2*randn(200,1);
 %$ u = randn(200,1);
-%$ stochastic_trend = cumsum(e); 
+%$ stochastic_trend = cumsum(e);
 %$ deterministic_trend = .1*transpose(1:200);
 %$ x = zeros(200,1);
 %$ for i=2:200

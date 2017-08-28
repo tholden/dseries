@@ -1,11 +1,11 @@
-function o = qgrowth_(o) % --*-- Unitary tests --*--
+function o = qgrowth(o) % --*-- Unitary tests --*--
 
 % Computes quaterly growth rates.
 %
-% INPUTS 
+% INPUTS
 % - o   [dseries]
 %
-% OUTPUTS 
+% OUTPUTS
 % - o   [dseries]
 
 % Copyright (C) 2012-2017 Dynare Team

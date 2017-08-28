@@ -2,14 +2,14 @@ function q = minus(o, p) % --*-- Unitary tests --*--
 
 % Overloads the minus operator for dseries objects.
 %
-% INPUTS 
+% INPUTS
 % - o [dseries]
 % - p [dseries]
 %
-% OUTPUTS 
+% OUTPUTS
 % - q [dseries]
 %
-% EXAMPLE 
+% EXAMPLE
 % Define a dseries object:
 %
 % >> a = dseries(transpose(1:5));
@@ -17,17 +17,17 @@ function q = minus(o, p) % --*-- Unitary tests --*--
 % Then we have
 %
 %  >> a-a
-%   
+%
 %  ans is a dseries object:
-%   
+%
 %     | minus(Variable_1;Variable_1)
-%  1Y | 0                           
-%  2Y | 0                           
-%  3Y | 0                           
-%  4Y | 0                           
-%  5Y | 0       
+%  1Y | 0
+%  2Y | 0
+%  3Y | 0
+%  4Y | 0
+%  5Y | 0
 
-% Copyright (C) 2012-2016 Dynare Team
+% Copyright (C) 2012-2017 Dynare Team
 %
 % This file is part of Dynare.
 %

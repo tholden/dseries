@@ -2,10 +2,10 @@ function d = firstobservedperiod(o) % --*-- Unitary tests --*--
 
 % Returns the first period where all the variables are observed (first period without NaNs).
 %
-% INPUTS 
+% INPUTS
 % - o [dseries]    with N variables and T periods.
 %
-% OUTPUTS 
+% OUTPUTS
 % - d [dates]      First period where the N variables are observed (without NaNs).
 
 % Copyright (C) 2016-2017 Dynare Team
@@ -27,7 +27,12 @@ function d = firstobservedperiod(o) % --*-- Unitary tests --*--
 
 b = ~isnan(o);
 c = find(prod(b, 2));
-d = o.firstdate+(c(1)-1);
+
+if isempty(c)
+    error('No overlapping non-NaN data points found in dseries.');
+end
+
+d = firstdate(o)+(c(1)-1);
 
 %@test:1
 %$ try

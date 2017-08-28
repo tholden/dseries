@@ -2,12 +2,12 @@ function o = insert(o, p, id) % --*-- Unitary tests --*--
 
 % Adds a variable in a dseries object.
 %
-% INPUTS 
+% INPUTS
 % - o    [dseries]
 % - p    [dseries]
 % - id   [integer]   vector of indices.
 %
-% OUTPUTS 
+% OUTPUTS
 % - o    [dseries]
 
 % Copyright (C) 2013-2017 Dynare Team
@@ -45,10 +45,10 @@ p = copy(p);
 n = length(id);
 
 if n>1
-   [id, jd] = sort(id);
-   p.data = p.data(:,jd);
-   p.name = p.name(jd);
-   p.tex = p.tex(jd);
+    [id, jd] = sort(id);
+    p.data = p.data(:,jd);
+    p.name = p.name(jd);
+    p.tex = p.tex(jd);
 end
 
 for i=1:n

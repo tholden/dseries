@@ -17,7 +17,7 @@ function uninstallx13()
 % You should have received a copy of the GNU General Public License
 % along with Dynare.  If not, see <http://www.gnu.org/licenses/>.
 
-    
+
 if exist('x13.zip','file')
     delete('x13.zip')
 end

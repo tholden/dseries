@@ -2,13 +2,13 @@ function c = demean(x)
 
 % Removes the mean of each column of a matrix.
 %
-% INPUTS 
+% INPUTS
 % - x  [float] T*n matrix.
 %
-% OUTPUTS 
+% OUTPUTS
 % - c  [float] T*n matrix, the demeaned matrix x.
 
-% Copyright (C) 2011-2015 Dynare Team
+% Copyright (C) 2011-2017 Dynare Team
 %
 % This code is free software: you can redistribute it and/or modify
 % it under the terms of the GNU General Public License as published by

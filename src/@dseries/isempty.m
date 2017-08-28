@@ -2,10 +2,10 @@ function b = isempty(o)
 
 % Overloads isempty method.
 %
-% INPUTS 
+% INPUTS
 % - o  [dseries]
 %
-% OUTPUTS 
+% OUTPUTS
 % - b  [logical]
 
 % Copyright (C) 2011-2017 Dynare Team

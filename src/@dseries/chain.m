@@ -2,18 +2,18 @@ function q = chain(o, p)  % --*-- Unitary tests --*--
 
 % Chains two dseries objects.
 %
-% INPUTS 
+% INPUTS
 % - o     [dseries]
 % - p     [dseries]
 %
-% OUTPUTS 
+% OUTPUTS
 % - q     [dseries]
 %
-% REMARKS 
+% REMARKS
 % The two dseries objects must have common frequency and the same number of variables. Also the
 % two samples must overlap.
 
-% Copyright (C) 2014 Dynare Team
+% Copyright (C) 2014-2017 Dynare Team
 %
 % This file is part of Dynare.
 %

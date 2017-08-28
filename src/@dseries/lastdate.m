@@ -2,10 +2,10 @@ function l = lastdate(o)
 
 % Returns last period of teh sample.
 %
-% INPUTS 
+% INPUTS
 % - o  [dseries]
 %
-% OUTPUTS 
+% OUTPUTS
 % - l  [dates]
 
 % Copyright (C) 2014-2017 Dynare Team

@@ -1,7 +1,7 @@
 function p = extract(o, varargin) % --*-- Unitary tests --*--
 
 % Extract some variables from a database.
-    
+
 % Copyright (C) 2012-2017 Dynare Team
 %
 % This file is part of Dynare.
@@ -67,8 +67,8 @@ p.data = o.data(:,idVariableName);
 p.dates = o.dates;
 p.name = o.name(idVariableName);
 p.tex = o.tex(idVariableName);
-    
-    
+
+
 %@test:1
 %$ % Define a data set.
 %$ A = rand(10,24);

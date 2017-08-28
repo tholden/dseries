@@ -1,11 +1,11 @@
 function s = vobs(o)
 
 % Returns the number of variables in a @dseries object.
-% 
-% INPUTS 
+%
+% INPUTS
 % - o   [dseries]
 %
-% OUTPUTS 
+% OUTPUTS
 % - s   [integer]  scalar, number of variables in o.
 
 % Copyright (C) 2014-2017 Dynare Team

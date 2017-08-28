@@ -2,13 +2,13 @@ function display(o)
 
 % Overloads display method.
 %
-% INPUTS 
+% INPUTS
 % - o  [dseries]   Object to be displayed.
 %
-% OUTPUTS 
+% OUTPUTS
 % None
 %
-% REMARKS 
+% REMARKS
 % Contray to the disp method, the whole dseries object is not displayed if the number of
 % observations is greater than 40 and if the number of variables is greater than 10.
 

@@ -2,11 +2,11 @@ function q = mtimes(o, p) % --*-- Unitary tests --*--
 
 % Overloads the mtimes (*) operator for dseries objects.
 %
-% INPUTS 
+% INPUTS
 % - o [dseries]           T observations and N variables.
 % - p [dseries,double]    scalar, vector or dseries object.
 %
-% OUTPUTS 
+% OUTPUTS
 % - q [dseries]           T observations and N variables.
 
 % Copyright (C) 2013-2017 Dynare Team

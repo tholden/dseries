@@ -1,13 +1,13 @@
-function o = rename_(o, old, new) % --*-- Unitary tests --*--
+function o = rename(o, old, new) % --*-- Unitary tests --*--
 
 % Renames variables in a dseries object.
 %
-% INPUTS 
+% INPUTS
 % - o     [dseries]
 % - old   [string, cell]
 % - new   [string, cell]
 %
-% OUTPUTS 
+% OUTPUTS
 % - o     [dseries]
 
 % Copyright (C) 2013-2017 Dynare Team
@@ -31,7 +31,7 @@ o = copy(o);
 if nargin<3
     o.rename_(old);
 else
-     o.rename_(old, new);
+    o.rename_(old, new);
 end
 
 %@test:1

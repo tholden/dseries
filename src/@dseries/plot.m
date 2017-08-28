@@ -1,6 +1,6 @@
 function h = plot(o, varargin)
 
-% Overloads Matlab/Octave's plot function for dseries objects. 
+% Overloads Matlab/Octave's plot function for dseries objects.
 
 % Copyright (C) 2013-2017 Dynare Team
 %
@@ -70,7 +70,7 @@ switch ndseries
         hh = plot(o0.data, o1.data, varargin{2:end});
     else
         if length(varargin)>1
-             message = sprintf('dseries::plot: dseries objects %s and %s have %d>1 variables but you passed additional arguments to the plot function.\n                        These additional arguments won''t ne interpreted. Use the Matlab/Octave set command and the plot\n                        handle instead if you wish to modify the properties of the plotted time series.',inputname(1),inputname(2),nvariables);
+            message = sprintf('dseries::plot: dseries objects %s and %s have %d>1 variables but you passed additional arguments to the plot function.\n                        These additional arguments won''t ne interpreted. Use the Matlab/Octave set command and the plot\n                        handle instead if you wish to modify the properties of the plotted time series.',inputname(1),inputname(2),nvariables);
             warning(message)
         end
         hh = plot(o0.data, o1.data);
@@ -80,5 +80,5 @@ switch ndseries
 end
 
 if nargout
-     h = hh;
+    h = hh;
 end

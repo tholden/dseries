@@ -2,14 +2,14 @@ function o = lag(o, p) % --*-- Unitary tests --*--
 
 % Returns a lagged time series
 %
-% INPUTS 
+% INPUTS
 % - o [dseries]
 % - p [integer] Number of lags
 %
-% OUTPUTS 
+% OUTPUTS
 % - o [dseries]
 %
-% EXAMPLE 
+% EXAMPLE
 % Define a dseries object as follows:
 %
 % >> o = dseries(transpose(1:5))
@@ -17,13 +17,13 @@ function o = lag(o, p) % --*-- Unitary tests --*--
 % then o.lag(1) returns
 %
 %       | lag(Variable_1,1)
-%    1Y | NaN              
-%    2Y | 1                
-%    3Y | 2                
-%    4Y | 3                
-%    5Y | 4         
+%    1Y | NaN
+%    2Y | 1
+%    3Y | 2
+%    4Y | 3
+%    5Y | 4
 
-% Copyright (C) 2013-2016 Dynare Team
+% Copyright (C) 2013-2017 Dynare Team
 %
 % This file is part of Dynare.
 %

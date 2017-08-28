@@ -2,11 +2,11 @@ function o = center(o, geometric) % --*-- Unitary tests --*--
 
 % Centers dseries object o around its mean (arithmetic or geometric).
 %
-% INPUTS 
+% INPUTS
 %  - o             dseries object [mandatory].
 %  - geometric     logical [default is false], if true returns the geometric mean.
 %
-% OUTPUTS 
+% OUTPUTS
 %  - o             dseries object.
 
 % Copyright (C) 2016-2017 Dynare Team
