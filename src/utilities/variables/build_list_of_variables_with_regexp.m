@@ -1,4 +1,4 @@
-function list_of_variables = build_list_of_variables_with_regexp(o_list_of_variables, VariableName)
+function list_of_variables = build_list_of_variables_with_regexp(o_list_of_variables, VariableName, wildcardparameterflag)
 
 % Copyright (C) 2016-2017 Dynare Team
 %
@@ -29,5 +29,10 @@ end
 list_of_variables = intersect(o_list_of_variables, matched_strings_);
 
 if isempty(list_of_variables)
-    disp(['dseries::extact: The regular expression ''[' VariableName ']'' did not match any variable name!'])
+    if wildcardparameterflag
+        VariableName = strrep(VariableName, '\w*', '*');
+        disp(['dseries::extact: The wildcard expression ''' VariableName ''' did not match any variable name!'])
+    else
+        disp(['dseries::extact: The regular expression ''[' VariableName ']'' did not match any variable name!'])
+    end
 end
