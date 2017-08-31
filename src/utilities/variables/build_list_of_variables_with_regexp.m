@@ -1,4 +1,4 @@
-function list_of_variables = build_list_of_variables_with_regexp(o_list_of_variables, idBrackets, VariableName, list_of_variables)
+function list_of_variables = build_list_of_variables_with_regexp(o_list_of_variables, VariableName)
 
 % Copyright (C) 2016-2017 Dynare Team
 %
@@ -17,40 +17,17 @@ function list_of_variables = build_list_of_variables_with_regexp(o_list_of_varia
 % You should have received a copy of the GNU General Public License
 % along with Dynare.  If not, see <http://www.gnu.org/licenses/>.
 
-first_block_id = 0;
-last_block_id = 0;
+matched_strings = regexp(o_list_of_variables, VariableName, 'match');
+matched_strings_ = {};
 
-idVariables = find(isnotempty_cell(regexp(o_list_of_variables,VariableName,'match')));
-
-if isempty(idVariables)
-    error(['dseries::regexp: Can''t find any variable matching ' VariableName ' pattern!'])
-end
-
-idVariables_ = [];
-
-for j = 1:length(idVariables)
-    first_block_flag = 0;
-    if (first_block_id && strcmp(o_list_of_variables{idVariables(j)}(1:first_block_id),VariableName(1:first_block_id))) || ~first_block_id
-        first_block_flag = 1;
-    end
-    last_block_flag = 0;
-    if (last_block_id && strcmp(o_list_of_variables{idVariables(j)}(end-last_block_id:end),VariableName(end-last_block_id:end))) || ~last_block_id
-        last_block_flag = 1;
-    end
-    if first_block_flag && last_block_flag
-        idVariables_ = [idVariables_; idVariables(j)];
+for i=1:length(matched_strings)
+    if ~isempty(matched_strings{i})
+        matched_strings_ = [matched_strings_, matched_strings{i}(1)];
     end
 end
 
-VariableName = o_list_of_variables(idVariables_);
-list_of_variables = vertcat(list_of_variables, VariableName);
+list_of_variables = intersect(o_list_of_variables, matched_strings_);
 
-
-function b = isnotempty_cell(CellArray)
-CellArrayDimension = size(CellArray);
-b = NaN(CellArrayDimension);
-for i=1:CellArrayDimension(1)
-    for j = 1:CellArrayDimension(2)
-        b(i,j) = ~isempty(CellArray{i,j});
-    end
+if isempty(list_of_variables)
+    disp(['dseries::extact: The regular expression ''[' VariableName ']'' did not match any variable name!'])
 end

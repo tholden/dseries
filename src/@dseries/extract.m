@@ -19,6 +19,9 @@ function p = extract(o, varargin) % --*-- Unitary tests --*--
 % You should have received a copy of the GNU General Public License
 % along with Dynare.  If not, see <http://www.gnu.org/licenses/>.
 
+useimplicitloops = false;
+useregularexpression = false;
+
 p = dseries();
 
 % Get the names of the variables to be extracted from dseries object B.
@@ -30,21 +33,32 @@ for i=1:nargin-1
     if mod(length(idArobase),2)
         error('dseries::extract: (Implicit loops) The number of @ symbols must be even!')
     end
+    if ~isempty(idArobase)
+        useimplicitloops = true;
+    end
     % Regular expression
     idBracket.open = strfind(VariableName,'[');
     idBracket.close = strfind(VariableName,']');
-    if ~isequal(length(idBracket.open),length(idBracket.open))
+    if isequal(idBracket.open(1), 1) && isequal(idBracket.close(end), length(VariableName))
+        useregularexpression = true;
+    end
+    % Check that square brackets are not used, unless extract method is called with a regular expression.
+    if ~useregularexpression
+        error('dseries::extract: Square brackets are not allowed, unless regexp are used to select variables!')
+    end
+    % Check that square brackets in regular expressions
+    if useregularexpression && ~isequal(length(idBracket.open),length(idBracket.open))
         error('dseries::extract: (Matlab/Octave''s regular expressions) Check opening and closing square brackets!')
     end
     % Loops and regular expressions are not compatible
-    if length(idArobase) && length(idBracket.open)
-        error(['dseries::extract: You cannot use implicit loops and regular expressions in the same rule!'])
+    if useregularexpression && useimplicitloops
+        error('dseries::extract: You cannot use implicit loops and regular expressions in the same rule!')
     end
     % Update the list of variables.
-    if length(idArobase)
+    if useimplicitloops
         VariableName_ = build_list_of_variables_with_loops(o.name, idArobase, VariableName, VariableName_);
-    elseif length(idBracket.open)
-        VariableName_ = build_list_of_variables_with_regexp(o.name, idBracket, VariableName, VariableName_);
+    elseif useregularexpression
+        VariableName_ = build_list_of_variables_with_regexp(o.name, VariableName(2:end-1));
     else
         VariableName_ = varargin(:);
     end
