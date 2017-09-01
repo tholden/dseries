@@ -413,14 +413,30 @@ end
 %$ ts1 = dseries(A,[],A_name,[]);
 %$
 %$ % Call the tested method.
-%$ a = ts1{'GDP_[0-9]'};
-%$ b = ts1{'[A-Z]_1$'};
+%$ try
+%$     a = ts1{'[GDP_[0-9]]'};
+%$     t(1) = 1;
+%$ catch
+%$     t(1) = 0;
+%$ end
+%$ try
+%$     b = ts1{'[[A-Z]*_1]'};
+%$     t(2) = 1;
+%$ catch
+%$     t(2) = 0;
+%$ end
+%$ try
+%$     c = ts1{'[A-Z]_1'};
+%$     t(3) = 0;
+%$ catch
+%$     t(3) = 1;
+%$ end
 %$
 %$ % Expected results.
-%$ e1.data = A(:,1:12);
+%$ e1.data = A(:,1:9);
 %$ e1.nobs = 10;
-%$ e1.vobs = 12;
-%$ e1.name = {'GDP_1';'GDP_2';'GDP_3'; 'GDP_4'; 'GDP_5'; 'GDP_6'; 'GDP_7'; 'GDP_8'; 'GDP_9'; 'GDP_10'; 'GDP_11'; 'GDP_12'};
+%$ e1.vobs = 9;
+%$ e1.name = {'GDP_1';'GDP_2';'GDP_3'; 'GDP_4'; 'GDP_5'; 'GDP_6'; 'GDP_7'; 'GDP_8'; 'GDP_9'};
 %$ e1.freq = 1;
 %$ e1.init = dates(1,1);
 %$ e2.data = A(:,[1 13]);
@@ -431,16 +447,16 @@ end
 %$ e2.init = dates(1,1);
 %$
 %$ % Check results.
-%$ t(1) = dassert(e1.data,a.data);
-%$ t(2) = dassert(e1.nobs,a.nobs);
-%$ t(3) = dassert(e1.vobs,a.vobs);
-%$ t(4) = dassert(e1.name,a.name);
-%$ t(5) = dassert(e1.init,a.init);
-%$ t(6) = dassert(e2.data,b.data);
-%$ t(7) = dassert(e2.nobs,b.nobs);
-%$ t(8) = dassert(e2.vobs,b.vobs);
-%$ t(9) = dassert(e2.name,b.name);
-%$ t(10) = dassert(e2.init,b.init);
+%$ t(4) = dassert(e1.data,a.data);
+%$ t(5) = dassert(e1.nobs,a.nobs);
+%$ t(6) = dassert(e1.vobs,a.vobs);
+%$ t(7) = dassert(e1.name,a.name);
+%$ t(8) = dassert(e1.init,a.init);
+%$ t(9) = dassert(e2.data,b.data);
+%$ t(10) = dassert(e2.nobs,b.nobs);
+%$ t(11) = dassert(e2.vobs,b.vobs);
+%$ t(12) = dassert(e2.name,b.name);
+%$ t(13) = dassert(e2.init,b.init);
 %$ T = all(t);
 %@eof:6
 
