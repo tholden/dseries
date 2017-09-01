@@ -31,8 +31,8 @@ list_of_variables = intersect(o_list_of_variables, matched_strings_);
 if isempty(list_of_variables)
     if wildcardparameterflag
         VariableName = strrep(VariableName, '\w*', '*');
-        disp(['dseries::extact: The wildcard expression ''' VariableName ''' did not match any variable name!'])
+        warning(['dseries::extact: The wildcard expression ''' VariableName ''' did not match any variable name!'])
     else
-        disp(['dseries::extact: The regular expression ''[' VariableName ']'' did not match any variable name!'])
+        warning(['dseries::extact: The regular expression ''[' VariableName ']'' did not match any variable name!'])
     end
 end

@@ -426,7 +426,9 @@ end
 %$     t(2) = 0;
 %$ end
 %$ try
+%$     warning off all
 %$     c = ts1{'[A-Z]_1'};
+%$     warning on all
 %$     t(3) = 0;
 %$ catch
 %$     t(3) = 1;
