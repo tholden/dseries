@@ -47,12 +47,12 @@ for i=1:nargin-1
     end
     % Wildcard parameter.
     if ~useregularexpression
-        idStar = strfind(VariableName,'*');
+        idStar = strfind(VariableName,'~');
         if ~isempty(idStar)
             usewildcardparameter = true;
             useregularexpression = true;
             VariableName = sprintf('[%s]', VariableName);
-            VariableName = strrep(VariableName, '*', '\w*');
+            VariableName = strrep(VariableName, '~', '\w*');
         end
     end
     % Check that square brackets are not used, unless extract method is called with a regular expression.
