@@ -26,6 +26,7 @@ if ~exist('x13.zip','file')
     end
     unzip('x13.zip');
     movefile('binaries/linux','./linux');
+    movefile('binaries/osx','./osx');
     movefile('binaries/windows','./windows');
     rmdir('binaries');
 end

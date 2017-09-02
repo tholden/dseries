@@ -32,6 +32,13 @@ elseif ispc()
     else
         x13_binary = sprintf('%s%s%s%s', x13_binary, '32', filesep(), 'x13.exe');
     end
+elseif ismac()
+    x13_binary = sprintf('%s%s%s', dseries_x13_root, 'osx', filesep());
+    if is64bit()
+        x13_binary = sprintf('%s%s%s%s', x13_binary, '64', filesep(), 'x13');
+    else
+        x13_binary = sprintf('%s%s%s%s', x13_binary, '32', filesep(), 'x13');
+    end
 else
     error('X13 binary is not yet available for this plateform')
 end
