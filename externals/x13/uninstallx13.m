@@ -23,9 +23,9 @@ if exist('x13.zip','file')
 end
 
 if exist('linux','dir')
-    rmdir('linux')
+    rmdir('linux', 's')
 end
 
 if exist('windows','dir')
-    rmdir('windows')
+    rmdir('windows', 's')
 end
