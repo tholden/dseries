@@ -87,7 +87,17 @@ if nargin>0 && ischar(varargin{1}) && isequal(varargin{1},'initialize')
     return
 end
 
-ts = evalin('base','emptydseriesobject');
+try
+    ts = evalin('base','emptydseriesobject');
+catch
+    ts = struct;
+    ts.data  = [];
+    ts.name  = {};
+    ts.tex   = {};
+    ts.dates = dates();
+    ts = class(ts,'dseries');
+    assignin('base','emptydseriesobject',ts);
+end
 
 switch nargin
   case 0
@@ -145,6 +155,8 @@ switch nargin
         ts.name = default_name(vobs(ts));
         ts.tex = name2tex(ts.name);
         ts.dates = dates(1,1):dates(1,1)+(nobs(ts)-1);
+    elseif isstruct(varargin{1})
+        error( 'Hello!' );
     end
   case {2,3,4}
     if isequal(nargin,2) && ischar(varargin{1}) && isdates(varargin{2})
