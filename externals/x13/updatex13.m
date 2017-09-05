@@ -1,4 +1,4 @@
-function uninstallx13()
+function updatex13()
 
 % Uninstalls CENSUS X13 binaries (Windows, OSX and Linux).
 
@@ -22,14 +22,4 @@ if exist('x13.zip','file')
     delete('x13.zip')
 end
 
-if exist('linux','dir')
-    rmdir('linux', 's')
-end
-
-if exist('windows','dir')
-    rmdir('windows', 's')
-end
-
-if exist('osx','dir')
-    rmdir('osx', 's')
-end
+installx13();

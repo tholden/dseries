@@ -25,7 +25,17 @@ if ~exist('x13.zip','file')
         urlwrite('http://www.dynare.org/x13/x13.zip', 'x13.zip');
     end
     unzip('x13.zip');
-    movefile('binaries/linux','./linux');
-    movefile('binaries/windows','./windows');
-    rmdir('binaries');
+    if ismac()
+        mkdir osx
+        movefile('binaries/osx/*','./osx');
+    elseif isunix()
+        mkdir linux
+        movefile('binaries/linux/*','./linux');
+    elseif ispc()
+        mkdir windows
+        movefile('binaries/windows/*','./windows');
+    else
+        error('X13 is not available for the current platform!')
+    end
+    rmdir('binaries', 's');
 end
