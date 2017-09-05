@@ -25,8 +25,15 @@ function disp(o)
 % You should have received a copy of the GNU General Public License
 % along with Dynare.  If not, see <http://www.gnu.org/licenses/>.
 
-separator = repmat(' | ', nobs(o)+1,1);
 vspace = ' ';
+
+if ~vobs(o)
+    disp(vspace)
+    disp([inputname(1) ' is an empty dseries object.'])
+    return
+end
+
+separator = repmat(' | ', nobs(o)+1,1);
 TABLE = ' ';
 for t=1:nobs(o)
     TABLE = char(TABLE, date2string(o.dates(t)));

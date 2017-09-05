@@ -32,7 +32,11 @@ o = copy(varargin{1});
 if nargin<2
     o.cumprod_();
 else
-    o.cumprod_(varargin{2:end});
+    if isoctave
+        o = cumprod_(o, varargin{2:end});
+    else
+        o.cumprod_(varargin{2:end});
+    end
 end
 
 %@test:1

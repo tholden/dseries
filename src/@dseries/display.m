@@ -30,6 +30,13 @@ function display(o)
 % along with Dynare.  If not, see <http://www.gnu.org/licenses/>.
 
 vspace = ' ';
+
+if ~vobs(o)
+    disp(vspace)
+    disp([inputname(1) ' is an empty dseries object.'])
+    return
+end
+
 TABLE = ' ';
 
 if vobs(o)<=10

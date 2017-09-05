@@ -35,7 +35,7 @@ return
 %@test:1
 a = dseries(randn(100,3));
 try
-    trend = o.lineartrend;
+    trend = a.lineartrend;
     t(1) = 1;
 catch
     t(1) = 0;

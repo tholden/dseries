@@ -18,7 +18,14 @@ function x13_binary = select_x13_binary()
 dseries_src_root = strrep(which('initialize_dseries_toolbox'),'initialize_dseries_toolbox.m','');
 dseries_x13_root = sprintf('%s%s%s%s%s%s%s', dseries_src_root, '..', filesep(), 'externals', filesep(), 'x13', filesep());
 
-if isunix()
+if ismac()
+    x13_binary = sprintf('%s%s%s', dseries_x13_root, 'osx', filesep());
+    if is64bit()
+        x13_binary = sprintf('%s%s%s%s', x13_binary, '64', filesep(), 'x13');
+    else
+        x13_binary = sprintf('%s%s%s%s', x13_binary, '32', filesep(), 'x13');
+    end
+elseif isunix()
     x13_binary = sprintf('%s%s%s', dseries_x13_root, 'linux', filesep());
     if is64bit()
         x13_binary = sprintf('%s%s%s%s', x13_binary, '64', filesep(), 'x13');

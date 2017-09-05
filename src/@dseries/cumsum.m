@@ -32,7 +32,11 @@ o = copy(varargin{1});
 if nargin<2
     o.cumsum_();
 else
-    o.cumsum_(varargin{2:end});
+    if isoctave()
+        o = cumsum_(o, varargin{2:end});
+    else
+        o.cumsum_(varargin{2:end});
+    end
 end
 
 %@test:1
