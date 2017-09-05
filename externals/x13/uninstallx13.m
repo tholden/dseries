@@ -1,6 +1,6 @@
 function uninstallx13()
 
-% Uninstalls CENSUS X13 binaries (Windows and Linux).
+% Uninstalls CENSUS X13 binaries (Windows, OSX and Linux).
 
 % Copyright (C) 2017 Dynare Team
 %
@@ -28,4 +28,8 @@ end
 
 if exist('windows','dir')
     rmdir('windows', 's')
+end
+
+if exist('osx','dir')
+    rmdir('osx', 's')
 end
