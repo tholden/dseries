@@ -44,7 +44,7 @@ if nargin<2
     p = 1;
 end
 
-if p<=0
+if p<0
     error('dseries::lead: Second input argument must be strictly positive! Use lag method instead.')
 end
 
