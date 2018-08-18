@@ -148,10 +148,11 @@ switch nargin
         ts.name = default_name(vobs(ts));
         ts.tex = name2tex(ts.name);
         ts.dates = dates(1,1):dates(1,1)+(nobs(ts)-1);
-    elseif isstruct(varargin{1})
-        ts = varargin{1};
-        ts.dates = dates( ts.dates );
-        ts = class( ts, 'dseries' );
+    elseif isstruct( varargin{1} )
+        ts.data  = varargin{1}.data;
+        ts.name  = varargin{1}.name;
+        ts.tex   = varargin{1}.tex;
+        ts.dates = dates( varargin{1}.dates );
     end
   case {2,3,4}
     if isequal(nargin,2) && ischar(varargin{1}) && isdates(varargin{2})
